@@ -2,7 +2,6 @@
   "name": "example-rest-node-express-mongo",
   "version": "1.0.0",
   "description": "Example REST API using Node.js, Express, and MongoDB",
-  "main": "index.js",
   "scripts": {
     "start": "nodemon src",
     "test": "echo \"Error: no test specified\" && exit 1"
