@@ -22,6 +22,8 @@ npm install
 
 ## Run
 
+### Local Development
+
 To run the project on your local machine, issue the following commands at a terminal prompt.
 
 ```
@@ -95,3 +97,90 @@ curl --request DELETE \
 ```
 
 Replace the `:id` portion of the URL with the `_id_ attribute of thegreeting you wish todelete.
+
+## Docker
+
+> **NOTE:** To use Docker with this project you must have [Docker installed](https://docs.docker.com/get-docker/) on the machine where Docker commands will be executed, e.g. your local machine and/or a CI/CD pipeline.
+
+This application may be packaged and run as a Docker container.
+
+### Building the Docker Image
+
+To build the Docker image, issue the following command at a terminal prompt.
+
+```
+npm run docker:build
+```
+
+This command builds a Docker container image named `leanstacks/greetings-api-node-express` with the tag `latest`.
+
+### Running the Docker Container
+
+To run the application with Docker, first build the Docker image following the instructions in the section above.
+
+After creating the Docker image, issue the following command at a terminal prompt to start a new running container using that image.
+
+```
+npm run docker:run
+
+OR WITH DOCKER...
+
+docker container run --publish 3001:3001 leanstacks/greetings-api-node-express
+```
+
+The command above starts a new Docker container in the foreground (i.e. it is **not** detached). This is fine for local development when you may wish to have the application logs printed to the console; however, it should not be used in production.
+
+To run the container in the background (i.e. detached), issue the following command at a terminal prompt.
+
+```
+npm run docker:run:detached
+
+OR WITH DOCKER...
+
+docker container run --publish 3001:3001 --detached leanstacks/greetings-api-node-express
+```
+
+### Manage Docker Containers
+
+To list running Docker containers on the machine, issue the following command at a terminal prompt.
+
+```
+docker container ls
+```
+
+To view **ALL** containers regardless of their status, issue the following command at a terminal prompt.
+
+```
+docker container ls --all
+```
+
+> **NOTE:** The container list provides the container name such as `sleepy_willow`, etc. The container name is used in some container management commands illustrated below.
+
+To stop a running container, issue the following command at a terminal prompt.
+
+```
+docker container stop [CONTAINER]
+```
+
+To start a stopped container, issue the following command at a terminal prompt.
+
+```
+docker container start [CONTAINER]
+```
+
+To remove a stopped container, issue the following command at a terminal prompt.
+
+```
+docker container rm [CONTAINER]
+```
+
+To remove **ALL** stopped containers, issue the following command at a terminal prompt.
+
+```
+docker container prune
+```
+
+## Related Information
+
+[Docker Install Guide](https://docs.docker.com/get-docker/)  
+[Docker CLI Reference](https://docs.docker.com/engine/reference/commandline/docker/)
