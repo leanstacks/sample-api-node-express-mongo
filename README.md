@@ -40,63 +40,63 @@ This project provides a REST API. You may test this API using an API client such
 
 The following sections provide examples of `curl` commands.
 
-### Get all Greetings
+### Get all Todos
 
-To fetch all greetings, issue the following `curl` command at a terminal prompt.
+To fetch all todos, issue the following `curl` command at a terminal prompt.
 
 ```
-curl http://localhost:3001/ [--verbose]
+curl http://localhost:3001/v1/todos [--verbose]
 ```
 
 > **NOTE:** You may optionally include the `--verbose` option to view the complete details the call.
 
-### Get a single Greeting by Identifier
+### Get a single Todo by Identifier
 
-To fetch a single greeting by its identifier, issue the following `curl` command at a terminal prompt.
+To fetch a single todo by its identifier, issue the following `curl` command at a terminal prompt.
 
 ```
-curl http://localhost:3001/:id [--verbose]
+curl http://localhost:3001/v1/todos/:id [--verbose]
 ```
 
-Replace the `:id` portion of the URL with the `_id` attribute of the greeting you wish to fetch.
+Replace the `:id` portion of the URL with the `_id` attribute of the todo you wish to fetch.
 
-### Create a Greeting
+### Create a Todo
 
-To create a greeting, issue the following `curl` command at a terminal prompt.
+To create a todo, issue the following `curl` command at a terminal prompt.
 
 ```
 curl --request POST \
      --header 'Content-Type: application/json' \
-     --data '{"title": "Hello world!"}' \
+     --data '{"title": "Buy groceries", "isComplete": false}' \
      --verbose \
-     http://localhost:3001/
+     http://localhost:3001/v1/todos
 ```
 
-### Update a Greeting
+### Update a Todo
 
-To update one or more attributes of a greeting, issue the following `curl` command at a terminal prompt.
+To update one or more attributes of a todo, issue the following `curl` command at a terminal prompt.
 
 ```
 curl --request PUT \
      --header 'Content-Type: application/json' \
-     --data '{"title": "Hola Mundo!"}' \
+     --data '{"isComplete": true}' \
      --verbose \
-     http://localhost:3001/:id
+     http://localhost:3001/v1/todos/:id
 ```
 
-Replace the `:id` portion of the URL with the `_id` attribute of the greeting you wish to update.
+Replace the `:id` portion of the URL with the `_id` attribute of the todo you wish to update.
 
-### Delete a Greeting
+### Delete a Todo
 
-To delete a greeting, issue the following `curl` command at a terminal prompt.
+To delete a todo, issue the following `curl` command at a terminal prompt.
 
 ```
 curl --request DELETE \
      --verbose \
-     http://localhost:3001/:id
+     http://localhost:3001/v1/todos/:id
 ```
 
-Replace the `:id` portion of the URL with the `_id_ attribute of thegreeting you wish todelete.
+Replace the `:id` portion of the URL with the `_id_ attribute of the todo you wish todelete.
 
 ## Docker
 
@@ -112,7 +112,7 @@ To build the Docker image, issue the following command at a terminal prompt.
 npm run docker:build
 ```
 
-This command builds a Docker container image named `leanstacks/greetings-api-node-express` with the tag `latest`.
+This command builds a Docker container image named `leanstacks/todo-api` with the tag `latest`.
 
 ### Running the Docker Container
 
@@ -125,7 +125,7 @@ npm run docker:run
 
 OR WITH DOCKER...
 
-docker container run --publish 3001:3001 leanstacks/greetings-api-node-express
+docker container run --publish 3001:3001 leanstacks/todo-api
 ```
 
 The command above starts a new Docker container in the foreground (i.e. it is **not** detached). This is fine for local development when you may wish to have the application logs printed to the console; however, it should not be used in production.
@@ -137,7 +137,7 @@ npm run docker:run:detached
 
 OR WITH DOCKER...
 
-docker container run --publish 3001:3001 --detached leanstacks/greetings-api-node-express
+docker container run --publish 3001:3001 --detached leanstacks/todo-api
 ```
 
 ### Manage Docker Containers

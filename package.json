@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Example REST API using Node.js, Express, and MongoDB",
   "scripts": {
-    "docker:build": "docker build . -t leanstacks/greetings-api-node-express",
-    "docker:run": "docker container run --publish 3001:3001 leanstacks/greetings-api-node-express",
-    "docker:run:detached": "docker container run --publish 3001:3001 --detach leanstacks/greetings-api-node-express",
+    "docker:build": "docker build . -t leanstacks/todo-api",
+    "docker:run": "docker container run --publish 3001:3001 leanstacks/todo-api",
+    "docker:run:detached": "docker container run --publish 3001:3001 --detach leanstacks/todo-api",
     "start": "nodemon src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

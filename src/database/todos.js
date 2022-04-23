@@ -2,54 +2,47 @@ const crypto = require('crypto');
 
 const { getDatabase } = require('./mongo');
 
-const collectionName = 'greetings';
+const collectionName = 'todos';
 
-const insertGreeting = async (greeting) => {
+exports.create = async (todo) => {
   const database = await getDatabase();
-  const greetingToCreate = {
+  const todoToCreate = {
     _id: crypto.randomBytes(8).toString('hex'),
-    ...greeting,
+    isComplete: false,
+    ...todo,
   };
-  await database.collection(collectionName).insertOne(greetingToCreate);
+  await database.collection(collectionName).insertOne(todoToCreate);
 
-  return greetingToCreate;
+  return todoToCreate;
 };
 
-const getGreetings = async () => {
+exports.findAll = async () => {
   const database = await getDatabase();
   return await database.collection(collectionName).find({}).toArray();
 };
 
-const getGreeting = async (id) => {
+exports.findById = async (id) => {
   const database = await getDatabase();
   return await database.collection(collectionName).findOne({ _id: id });
 };
 
-const updateGreeting = async (id, greeting) => {
+exports.update = async (id, todo) => {
   const database = await getDatabase();
-  delete greeting._id;
+  delete todo._id;
   await database.collection(collectionName).update(
     { _id: id },
     {
       $set: {
-        ...greeting,
+        ...todo,
       },
     }
   );
-  return greeting;
+  return todo;
 };
 
-const deleteGreeting = async (id) => {
+exports.delete = async (id) => {
   const database = await getDatabase();
   await database.collection(collectionName).deleteOne({
     _id: id,
   });
-};
-
-module.exports = {
-  deleteGreeting,
-  getGreeting,
-  getGreetings,
-  insertGreeting,
-  updateGreeting,
 };

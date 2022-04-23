@@ -4,7 +4,9 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 
 const { startDatabase } = require('./database/mongo');
-const { deleteGreeting, getGreeting, getGreetings, insertGreeting, updateGreeting } = require('./database/greetings');
+const v1 = require('./routes/v1');
+const defaultRoutes = require('./routes');
+const Todos = require('./database/todos');
 
 // create the Express app
 const app = express();
@@ -20,43 +22,17 @@ app.use(cors());
 app.use(morgan('combined'));
 
 // configure Express routes / handlers
-app.get('/', async (req, res) => {
-  res.send(await getGreetings());
-});
+// api version1 routes
+app.use('/v1', v1);
 
-app.get('/:id', async (req, res) => {
-  const greeting = await getGreeting(req.params.id);
-  if (greeting) {
-    res.send(greeting);
-  } else {
-    res.status(404);
-    res.end();
-  }
-});
-
-app.post('/', async (req, res) => {
-  const greeting = req.body;
-  const createdGreeting = await insertGreeting(greeting);
-  res.send(createdGreeting);
-});
-
-app.put('/:id', async (req, res) => {
-  const greeting = req.body;
-  const updatedGreeting = await updateGreeting(req.params.id, greeting);
-  res.send(updatedGreeting);
-});
-
-app.delete('/:id', async (req, res) => {
-  await deleteGreeting(req.params.id);
-  res.status(204);
-  res.end();
-});
+// default routes
+app.use('*', defaultRoutes);
 
 // start the in-memory MongoDB instance
 startDatabase().then(async () => {
   // boostrap the database
-  await insertGreeting({
-    title: 'Hello from in-memory MongoDB!',
+  await Todos.create({
+    title: 'Learn to use in-memory MongoDB!',
   });
 
   // start the Express server
