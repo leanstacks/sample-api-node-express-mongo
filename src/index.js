@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const { startDatabase } = require('./database/mongo');
 const v1 = require('./routes/v1');
 const defaultRoutes = require('./routes');
+const { errorHandler, logErrors } = require('./middleware/errors');
 const Todos = require('./database/todos');
 
 // create the Express app
@@ -27,6 +28,10 @@ app.use('/v1', v1);
 
 // default routes
 app.use('*', defaultRoutes);
+
+// error middleware
+app.use(logErrors);
+app.use(errorHandler);
 
 // start the in-memory MongoDB instance
 startDatabase().then(async () => {
