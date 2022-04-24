@@ -36,7 +36,15 @@ startDatabase().then(async () => {
   });
 
   // start the Express server
-  app.listen(3001, () => {
+  const server = app.listen(3001, () => {
     console.log('listening on port 3001');
+  });
+
+  // handle shutdown event
+  process.on('SIGTERM', () => {
+    console.log('SIGTERM signal received; closing server');
+    server.close(() => {
+      console.log('all connections closed; server closed');
+    });
   });
 });
