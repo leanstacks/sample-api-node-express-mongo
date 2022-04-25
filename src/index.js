@@ -5,7 +5,7 @@ const morgan = require('morgan');
 
 const { startDatabase } = require('./database/mongo');
 const v1 = require('./routes/v1');
-const defaultRoutes = require('./routes');
+const baseRoutes = require('./routes');
 const { errorHandler, logErrors } = require('./middleware/errors');
 const Todos = require('./database/todos');
 
@@ -27,7 +27,7 @@ app.use(morgan('combined'));
 app.use('/v1', v1);
 
 // default routes
-app.use('*', defaultRoutes);
+app.use('/', baseRoutes);
 
 // error middleware
 app.use(logErrors);
