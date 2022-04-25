@@ -3,7 +3,7 @@ const HealthStatus = {
   DOWN: 'DOWN',
 };
 
-const health = async (req, res, next) => {
+const health = (req, res, next) => {
   try {
     console.log('handler::health');
     res.send({

@@ -98,6 +98,23 @@ curl --request DELETE \
 
 Replace the `:id` portion of the URL with the `_id_ attribute of the todo you wish todelete.
 
+### Server Health
+
+To assess if the server is processing requests, use the health check endpoint at path: `/health`.
+
+To test this endpoint, issue the following `curl` command at a terminal prompt.
+
+```
+curl http://localhost:3001/health [--verbose]
+```
+
+| Status Code | Description                 |
+| ----------- | --------------------------- |
+| 200         | Service is healthy.         |
+| 4xx or 5xx  | Service is **not** healthy. |
+
+If running the server in a load balanced cluster, this endpoint should be used to determine the node's availability.
+
 ## Docker
 
 > **NOTE:** To use Docker with this project you must have [Docker installed](https://docs.docker.com/get-docker/) on the machine where Docker commands will be executed, e.g. your local machine and/or a CI/CD pipeline.
