@@ -45,7 +45,7 @@ The following sections provide examples of `curl` commands.
 To fetch all todos, issue the following `curl` command at a terminal prompt.
 
 ```
-curl http://localhost:3001/v1/todos [--verbose]
+curl [--verbose] http://localhost:3001/v1/todos
 ```
 
 > **NOTE:** You may optionally include the `--verbose` option to view the complete details the call.
@@ -55,7 +55,7 @@ curl http://localhost:3001/v1/todos [--verbose]
 To fetch a single todo by its identifier, issue the following `curl` command at a terminal prompt.
 
 ```
-curl http://localhost:3001/v1/todos/:id [--verbose]
+curl [--verbose] http://localhost:3001/v1/todos/:id
 ```
 
 Replace the `:id` portion of the URL with the `_id` attribute of the todo you wish to fetch.
@@ -105,7 +105,7 @@ To assess if the server is processing requests, use the health check endpoint at
 To test this endpoint, issue the following `curl` command at a terminal prompt.
 
 ```
-curl http://localhost:3001/health [--verbose]
+curl [--verbose] http://localhost:3001/health
 ```
 
 | Status Code | Description                 |
@@ -114,6 +114,18 @@ curl http://localhost:3001/health [--verbose]
 | 4xx or 5xx  | Service is **not** healthy. |
 
 If running the server in a load balanced cluster, this endpoint should be used to determine the node's availability.
+
+### Server Status
+
+To perform a deeper assessment of the server status including downstream dependencies, use the status endpoint at path: `/status`.
+
+To perform a status check, issue the following `curl` command at a terminal prompt.
+
+```
+curl [--verbose] http://localhost:3001/status
+```
+
+> **NOTE:** Do **not** use the status check to assess if the server is up, i.e. from a load balancer. The status check consumes more server resources than the health check.
 
 ## Docker
 
