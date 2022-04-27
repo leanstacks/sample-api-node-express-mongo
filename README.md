@@ -209,6 +209,28 @@ To remove **ALL** stopped containers, issue the following command at a terminal 
 docker container prune
 ```
 
+## Configuration Guide
+
+This section provides detailed information regarding the configuration of this component.
+
+### Variable Expansion
+
+Variable expansion is supported. This means that the value of a configuration variable may include a reference to a previously defined variable. For example...
+
+```
+FOO=foo             // foo
+BAR=bar             // bar
+FOOBAR=${FOO}${BAR} // foobar
+```
+
+## Configuration Values
+
+| name           | default                                | description                                               |
+| -------------- | -------------------------------------- | --------------------------------------------------------- |
+| SERVER_PORT    | `3001`                                 | The port on which the application listens for requests.   |
+| SERVER_HOST    | `localhost`                            | The hostname (or DNS name) on which the server is hosted. |
+| SERVER_BASEURL | `http://${SERVER_PORT}:${SERVER_PORT}` | The base URL of the application.                          |
+
 ## Related Information
 
 [Docker Install Guide](https://docs.docker.com/get-docker/)  
