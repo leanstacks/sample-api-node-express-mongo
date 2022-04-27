@@ -11,8 +11,12 @@ RUN npm ci --only=production
 
 # Bundle app source
 COPY ./src .
+COPY .env .
+
+# Docker build arguments
+ARG SERVER_PORT=3001
 
 # Expose app port
-EXPOSE 3001
+EXPOSE ${SERVER_PORT}
 
 CMD ["node", "index.js"]
