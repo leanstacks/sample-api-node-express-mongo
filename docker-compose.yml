@@ -1,0 +1,47 @@
+version: "3.7"
+
+services:
+
+  app:
+    # build or use todo-service:latest
+    image: leanstacks/todo-service
+    # when image not present or '--build' option used, build a new
+    # todo-service:latest image using ./Dockerfile
+    build:
+      context: .
+    depends_on:
+      - db
+    # override configuration to use database
+    # and connection URL for 'db' service defined below
+    environment:
+      MONGO_URL: mongodb://todouser:todopass@db:27017
+    networks:
+      - todo-net
+    # map ports [host:container]
+    ports:
+      - "3001:3001"
+    restart: unless-stopped
+
+  db:
+    # use MongoDB  from Docker Hub
+    image: mongo:5.0
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: todouser
+      MONGO_INITDB_ROOT_PASSWORD: todopass
+    networks:
+      - todo-net
+    # optionally expose MongoDB default port on 27017 to use CLI, etc
+    ports:
+      - "27017:27017"
+    restart: unless-stopped
+    volumes:
+      # persistent MongoDB data volume
+      - todo-data-db:/data/db
+
+volumes:
+  # persisent Docker volume for MongoDB data
+  todo-data-db:
+
+networks:
+  # Docker network for the application
+  todo-net:

@@ -1,13 +1,13 @@
 {
   "name": "example-rest-node-express-mongo",
   "version": "1.0.0",
-  "description": "Example REST API using Node.js, Express, and MongoDB",
+  "description": "Example ToDo REST API using Node.js, Express, and MongoDB",
   "scripts": {
-    "docker:build": "docker build . -t leanstacks/todo-api",
-    "docker:remove": "docker container rm todo-api",
-    "docker:run": "docker container run --publish 3001:3001 --name todo-api leanstacks/todo-api",
-    "docker:run:detached": "docker container run --publish 3001:3001 --name todo-api --detach leanstacks/todo-api",
-    "docker:stop": "docker container stop todo-api",
+    "docker:build": "docker build . -t leanstacks/todo-service",
+    "docker:remove": "docker container rm todo-service",
+    "docker:run": "docker container run --publish 3001:3001 --name todo-service leanstacks/todo-service",
+    "docker:run:detached": "docker container run --publish 3001:3001 --name todo-service --detach leanstacks/todo-service",
+    "docker:stop": "docker container stop todo-service",
     "start": "nodemon src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

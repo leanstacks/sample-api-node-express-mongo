@@ -15,7 +15,8 @@ if (expandedResult.error) {
 const { parsed: environmentConfig } = expandedResult;
 
 const defaultConfig = {
-  SERVER_BASEURL: `http://localhost:3001`,
+  MONGO_URL: 'mongodb://username:password@localhost:27017',
+  SERVER_BASEURL: 'http://localhost:3001',
   SERVER_HOST: 'localhost',
   SERVER_PORT: 3001,
 };
