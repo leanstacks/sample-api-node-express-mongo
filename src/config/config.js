@@ -12,7 +12,15 @@ if (expandedResult.error) {
   throw expandedResult.error;
 }
 
-const { parsed: environmentVariables } = expandedResult;
-console.log(`environment variables:\n${JSON.stringify(environmentVariables, null, 2)}`);
+const { parsed: environmentConfig } = expandedResult;
 
-module.exports = environmentVariables;
+const defaultConfig = {
+  SERVER_BASEURL: `http://localhost:3001`,
+  SERVER_HOST: 'localhost',
+  SERVER_PORT: 3001,
+};
+
+const config = Object.assign(defaultConfig, environmentConfig);
+console.log(`config:\n${JSON.stringify(config, null, 2)}`);
+
+module.exports = config;
