@@ -3,6 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 
+const { SERVER_PORT } = require('./config/config');
 const { startDatabase } = require('./database/mongo');
 const v1 = require('./routes/v1');
 const baseRoutes = require('./routes');
@@ -41,8 +42,8 @@ startDatabase().then(async () => {
   });
 
   // start the Express server
-  const server = app.listen(3001, () => {
-    console.log('listening on port 3001');
+  const server = app.listen(SERVER_PORT, () => {
+    console.log(`listening on port ${SERVER_PORT}`);
   });
 
   // handle shutdown event

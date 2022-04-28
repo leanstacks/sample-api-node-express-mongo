@@ -4,8 +4,10 @@
   "description": "Example REST API using Node.js, Express, and MongoDB",
   "scripts": {
     "docker:build": "docker build . -t leanstacks/todo-api",
-    "docker:run": "docker container run --publish 3001:3001 leanstacks/todo-api",
-    "docker:run:detached": "docker container run --publish 3001:3001 --detach leanstacks/todo-api",
+    "docker:remove": "docker container rm todo-api",
+    "docker:run": "docker container run --publish 3001:3001 --name todo-api leanstacks/todo-api",
+    "docker:run:detached": "docker container run --publish 3001:3001 --name todo-api --detach leanstacks/todo-api",
+    "docker:stop": "docker container stop todo-api",
     "start": "nodemon src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,6 +16,8 @@
   "dependencies": {
     "cors": "2.8.5",
     "dayjs": "1.11.1",
+    "dotenv": "16.0.0",
+    "dotenv-expand": "8.0.3",
     "express": "4.17.3",
     "helmet": "5.0.2",
     "mongodb": "4.5.0",
