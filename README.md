@@ -131,7 +131,7 @@ curl [--verbose] http://localhost:3001/status
 
 > **NOTE:** To use Docker with this project you must have [Docker installed](https://docs.docker.com/get-docker/) on the machine where Docker commands will be executed, e.g. your local machine and/or a CI/CD pipeline.
 
-This application may be packaged and run as a Docker container.
+This application may be packaged and run as a Docker container. Or you may run the application **and** MongoDB with Docker Compose, see the section further below.
 
 ### Building the Docker Image
 
@@ -209,6 +209,42 @@ To remove **ALL** stopped containers, issue the following command at a terminal 
 docker container prune
 ```
 
+## Docker Compose
+
+This project is Docker Compose ready. Use Docker Compose to run the project **and** MongoDB on your local machine without needing to install the database.
+
+> **NOTE:** Requires that you have Docker and Docker Compose installed.
+
+### Start the Application
+
+To start the application, issue the following command at a terminal prompt.
+
+```
+docker compose up [--build] --detach
+```
+
+Include the `--build` option and Docker will rebuild the application Docker image using the latest code, using that image when running the application.
+
+### Stop the Application
+
+To stop the application, issue the following command at a terminal prompt.
+
+```
+docker compose down
+```
+
+This command stops and removes the containers and cleans up ephemeral resources.
+
+### View Logs
+
+To view the logs from running compose application, issue the following command at a terminal prompt.
+
+```
+docker compose logs --follow
+```
+
+Press `ctrl-C` to return to the command prompt.
+
 ## Configuration Guide
 
 This section provides detailed information regarding the configuration of this component.
@@ -225,13 +261,18 @@ FOOBAR=${FOO}${BAR} // foobar
 
 ## Configuration Values
 
-| name           | default                                | description                                               |
-| -------------- | -------------------------------------- | --------------------------------------------------------- |
-| SERVER_PORT    | `3001`                                 | The port on which the application listens for requests.   |
-| SERVER_HOST    | `localhost`                            | The hostname (or DNS name) on which the server is hosted. |
-| SERVER_BASEURL | `http://${SERVER_PORT}:${SERVER_PORT}` | The base URL of the application.                          |
+| name           | default                                  | description                                                           |
+| -------------- | ---------------------------------------- | --------------------------------------------------------------------- |
+| MONGO_INMEMORY | `false`                                  | Use an in-memory MongoDB instance.                                    |
+| MONGO_URL      | `mongodb://username:password@host:27017` | The connection URL for MongoDB. Optional if `MONGO_INMEMORY` is true. |
+| SERVER_PORT    | `3001`                                   | The port on which the application listens for requests.               |
+| SERVER_HOST    | `localhost`                              | The hostname (or DNS name) on which the server is hosted.             |
+| SERVER_BASEURL | `http://${SERVER_PORT}:${SERVER_PORT}`   | The base URL of the application.                                      |
 
 ## Related Information
 
 [Docker Install Guide](https://docs.docker.com/get-docker/)  
-[Docker CLI Reference](https://docs.docker.com/engine/reference/commandline/docker/)
+[Docker CLI Reference](https://docs.docker.com/engine/reference/commandline/docker/)  
+[Docker Compose][dockercompose]
+
+[dockercompose]: https://docs.docker.com/compose/ 'Docker Compose'

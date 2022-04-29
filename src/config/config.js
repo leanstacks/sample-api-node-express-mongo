@@ -15,10 +15,11 @@ if (expandedResult.error) {
 const { parsed: environmentConfig } = expandedResult;
 
 const defaultConfig = {
-  MONGO_URL: 'mongodb://username:password@localhost:27017',
+  MONGO_INMEMORY: 'false',
+  MONGO_URL: 'mongodb://username:password@host:27017',
   SERVER_BASEURL: 'http://localhost:3001',
   SERVER_HOST: 'localhost',
-  SERVER_PORT: 3001,
+  SERVER_PORT: '3001',
 };
 
 const config = Object.assign(defaultConfig, environmentConfig);
