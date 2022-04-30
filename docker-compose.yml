@@ -1,5 +1,3 @@
-version: "3.7"
-
 services:
 
   app:
@@ -14,7 +12,7 @@ services:
     # override configuration to use database
     # and connection URL for 'db' service defined below
     environment:
-      MONGO_URL: mongodb://todouser:todopass@db:27017
+      MONGO_URL: mongodb://todoapp:todopass@db:27017/todo_db
     networks:
       - todo-net
     # map ports [host:container]
@@ -26,8 +24,8 @@ services:
     # use MongoDB  from Docker Hub
     image: mongo:5.0
     environment:
-      MONGO_INITDB_ROOT_USERNAME: todouser
-      MONGO_INITDB_ROOT_PASSWORD: todopass
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: admin
     networks:
       - todo-net
     # optionally expose MongoDB default port on 27017 to use CLI, etc
@@ -35,8 +33,9 @@ services:
       - "27017:27017"
     restart: unless-stopped
     volumes:
-      # persistent MongoDB data volume
+      # persistent MongoDB data volumes
       - todo-data-db:/data/db
+      - ./mongo/init:/docker-entrypoint-initdb.d:ro
 
 volumes:
   # persisent Docker volume for MongoDB data

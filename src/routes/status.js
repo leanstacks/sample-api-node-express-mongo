@@ -35,6 +35,7 @@ const serverStatus = () => {
       uptime,
     };
   } catch (err) {
+    console.error('Server status check failed.', err);
     return {
       status: ServerStatus.DOWN,
     };
@@ -49,18 +50,13 @@ const DatabaseStatus = {
 const databaseStatus = async () => {
   try {
     const database = await getDatabase();
-    const databaseStatus = await database.command({ serverStatus: 1 });
-
-    const upMillis = databaseStatus.uptime * 1000;
-    const startedAt = getStartedAt(upMillis);
-    const uptime = getUptime(upMillis);
+    const databaseStatus = await database.command({ dbStats: 1 });
 
     return {
       status: DatabaseStatus.CONNECTED,
-      uptime,
-      startedAt,
     };
   } catch (err) {
+    console.error('Database status check failed.', err);
     return {
       status: DatabaseStatus.DISCONNECTED,
     };
