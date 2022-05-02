@@ -36,11 +36,6 @@ app.use(errorHandler);
 
 // start the in-memory MongoDB instance
 startDatabase().then(async () => {
-  // boostrap the database
-  await Todos.create({
-    title: 'Learn to use in-memory MongoDB!',
-  });
-
   // start the Express server
   const server = app.listen(SERVER_PORT, () => {
     console.log(`listening on port ${SERVER_PORT}`);

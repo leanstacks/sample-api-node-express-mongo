@@ -13,8 +13,8 @@ RUN npm ci --only=production
 COPY ./src .
 COPY .env .
 
-# Docker build arguments
-ARG SERVER_PORT=3001
+# Docker environment variables
+ENV SERVER_PORT=3001
 
 # Expose app port
 EXPOSE ${SERVER_PORT}
