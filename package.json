@@ -8,6 +8,8 @@
     "docker:run": "docker container run --publish 3001:3001 --name todo-service leanstacks/todo-service",
     "docker:run:detached": "docker container run --publish 3001:3001 --name todo-service --detach leanstacks/todo-service",
     "docker:stop": "docker container stop todo-service",
+    "lint:eslint": "eslint src/**",
+    "lint": "run-s lint:eslint",
     "start": "nodemon src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -25,6 +27,10 @@
     "morgan": "1.10.0"
   },
   "devDependencies": {
-    "nodemon": "2.0.15"
+    "eslint": "^8.14.0",
+    "eslint-config-airbnb-base": "15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "nodemon": "2.0.15",
+    "npm-run-all": "4.1.5"
   }
 }
