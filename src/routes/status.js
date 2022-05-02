@@ -50,7 +50,7 @@ const DatabaseStatus = {
 const databaseStatus = async () => {
   try {
     const database = await getDatabase();
-    const databaseStatus = await database.command({ dbStats: 1 });
+    await database.command({ dbStats: 1 });
 
     return {
       status: DatabaseStatus.CONNECTED,

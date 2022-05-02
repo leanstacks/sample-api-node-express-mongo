@@ -8,7 +8,6 @@ const { startDatabase } = require('./database/mongo');
 const v1 = require('./routes/v1');
 const baseRoutes = require('./routes');
 const { errorHandler, logErrors } = require('./middleware/errors');
-const Todos = require('./database/todos');
 
 // create the Express app
 const app = express();

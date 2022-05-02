@@ -3,7 +3,7 @@ const logErrors = (err, req, res, next) => {
   next(err);
 };
 
-const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res) => {
   res.status(500);
   res.end();
 };

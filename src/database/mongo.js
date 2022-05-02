@@ -12,12 +12,12 @@ const startDatabase = async () => {
     if (MONGO_INMEMORY === 'true') {
       mongo = await MongoMemoryServer.create();
     }
-    const connectionUrl = !!mongo ? mongo.getUri() : MONGO_URL;
+    const connectionUrl = mongo ? mongo.getUri() : MONGO_URL;
     console.log(`connecting to database at: ${connectionUrl}`);
     const connection = await MongoClient.connect(connectionUrl);
     database = connection.db(MONGO_DBNAME);
   } catch (err) {
-    console.log(`Unable to connect to database. `, err);
+    console.log('Unable to connect to database.', err);
   }
 };
 
