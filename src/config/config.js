@@ -1,6 +1,8 @@
 const dotenv = require('dotenv');
 const dotenvExpand = require('dotenv-expand');
 
+const logger = require('../utils/logger');
+
 // initialize the application configuration
 const result = dotenv.config();
 if (result.error) {
@@ -24,6 +26,6 @@ const defaultConfig = {
 };
 
 const config = Object.assign(defaultConfig, environmentConfig);
-console.log(`config:\n${JSON.stringify(config, null, 2)}`);
+logger.info(`config:\n${JSON.stringify(config, null, 2)}`);
 
 module.exports = config;

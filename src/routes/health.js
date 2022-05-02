@@ -1,3 +1,5 @@
+const logger = require('../utils/logger');
+
 const HealthStatus = {
   UP: 'UP',
   DOWN: 'DOWN',
@@ -5,7 +7,7 @@ const HealthStatus = {
 
 const health = (req, res, next) => {
   try {
-    console.log('handler::health');
+    logger.info('handler::health');
     res.send({
       status: HealthStatus.UP,
     });

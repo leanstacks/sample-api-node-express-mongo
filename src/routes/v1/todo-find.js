@@ -1,8 +1,9 @@
+const logger = require('../../utils/logger');
 const Todos = require('../../database/todos');
 
 const findTodo = async (req, res, next) => {
   try {
-    console.log('handler::findTodo');
+    logger.info('handler::findTodo');
     const todo = await Todos.findById(req.params.id);
     if (todo) {
       res.send(todo);

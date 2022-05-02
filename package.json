@@ -24,7 +24,8 @@
     "helmet": "5.0.2",
     "mongodb": "4.5.0",
     "mongodb-memory-server": "8.5.0",
-    "morgan": "1.10.0"
+    "morgan": "1.10.0",
+    "winston": "3.7.2"
   },
   "devDependencies": {
     "eslint": "^8.14.0",

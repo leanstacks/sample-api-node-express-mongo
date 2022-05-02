@@ -3,6 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 
+const logger = require('./utils/logger');
 const { SERVER_PORT } = require('./config/config');
 const { startDatabase } = require('./database/mongo');
 const v1 = require('./routes/v1');
@@ -37,14 +38,14 @@ app.use(errorHandler);
 startDatabase().then(async () => {
   // start the Express server
   const server = app.listen(SERVER_PORT, () => {
-    console.log(`listening on port ${SERVER_PORT}`);
+    logger.info(`listening on port ${SERVER_PORT}`);
   });
 
   // handle shutdown event
   process.on('SIGTERM', () => {
-    console.log('SIGTERM signal received; closing server');
+    logger.info('SIGTERM signal received; closing server');
     server.close(() => {
-      console.log('all connections closed; server closed');
+      logger.info('all connections closed; server closed');
     });
   });
 });
