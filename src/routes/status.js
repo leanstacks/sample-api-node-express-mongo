@@ -1,6 +1,7 @@
 const dayjs = require('dayjs');
 const duration = require('dayjs/plugin/duration');
 
+const logger = require('../utils/logger');
 const { getDatabase } = require('../database/mongo');
 
 dayjs.extend(duration);
@@ -35,7 +36,7 @@ const serverStatus = () => {
       uptime,
     };
   } catch (err) {
-    console.error('Server status check failed.', err);
+    logger.error('Server status check failed.', err);
     return {
       status: ServerStatus.DOWN,
     };
@@ -50,13 +51,13 @@ const DatabaseStatus = {
 const databaseStatus = async () => {
   try {
     const database = await getDatabase();
-    const databaseStatus = await database.command({ dbStats: 1 });
+    await database.command({ dbStats: 1 });
 
     return {
       status: DatabaseStatus.CONNECTED,
     };
   } catch (err) {
-    console.error('Database status check failed.', err);
+    logger.error('Database status check failed.', err);
     return {
       status: DatabaseStatus.DISCONNECTED,
     };
@@ -65,7 +66,7 @@ const databaseStatus = async () => {
 
 const status = async (req, res, next) => {
   try {
-    console.log('handler::status');
+    logger.info('handler::status');
     const server = serverStatus();
     const database = await databaseStatus();
     res.send({

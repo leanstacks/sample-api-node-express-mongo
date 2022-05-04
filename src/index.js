@@ -1,14 +1,14 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const morgan = require('morgan');
 
+const loggingMiddleware = require('./middleware/logging');
+const logger = require('./utils/logger');
 const { SERVER_PORT } = require('./config/config');
 const { startDatabase } = require('./database/mongo');
 const v1 = require('./routes/v1');
 const baseRoutes = require('./routes');
 const { errorHandler, logErrors } = require('./middleware/errors');
-const Todos = require('./database/todos');
 
 // create the Express app
 const app = express();
@@ -20,8 +20,8 @@ app.use(helmet());
 app.use(express.json());
 // CORS - enable cross-origin support
 app.use(cors());
-// Morgan - logging
-app.use(morgan('combined'));
+// Logging - log HTTP events
+app.use(loggingMiddleware);
 
 // configure Express routes / handlers
 // api version1 routes
@@ -38,14 +38,14 @@ app.use(errorHandler);
 startDatabase().then(async () => {
   // start the Express server
   const server = app.listen(SERVER_PORT, () => {
-    console.log(`listening on port ${SERVER_PORT}`);
+    logger.info(`listening on port ${SERVER_PORT}`);
   });
 
   // handle shutdown event
   process.on('SIGTERM', () => {
-    console.log('SIGTERM signal received; closing server');
+    logger.info('SIGTERM signal received; closing server');
     server.close(() => {
-      console.log('all connections closed; server closed');
+      logger.info('all connections closed; server closed');
     });
   });
 });

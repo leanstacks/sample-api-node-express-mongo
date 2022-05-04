@@ -18,26 +18,27 @@ exports.create = async (todo) => {
 
 exports.findAll = async () => {
   const database = await getDatabase();
-  return await database.collection(collectionName).find({}).toArray();
+  return database.collection(collectionName).find({}).toArray();
 };
 
 exports.findById = async (id) => {
   const database = await getDatabase();
-  return await database.collection(collectionName).findOne({ _id: id });
+  return database.collection(collectionName).findOne({ _id: id });
 };
 
 exports.update = async (id, todo) => {
   const database = await getDatabase();
-  delete todo._id;
+  const todoToUpdate = todo;
+  delete todoToUpdate._id;
   await database.collection(collectionName).update(
     { _id: id },
     {
       $set: {
-        ...todo,
+        ...todoToUpdate,
       },
-    }
+    },
   );
-  return todo;
+  return this.findById(id);
 };
 
 exports.delete = async (id) => {
