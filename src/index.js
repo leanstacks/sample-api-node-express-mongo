@@ -1,8 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const morgan = require('morgan');
 
+const loggingMiddleware = require('./middleware/logging');
 const logger = require('./utils/logger');
 const { SERVER_PORT } = require('./config/config');
 const { startDatabase } = require('./database/mongo');
@@ -20,8 +20,8 @@ app.use(helmet());
 app.use(express.json());
 // CORS - enable cross-origin support
 app.use(cors());
-// Morgan - logging
-app.use(morgan('combined'));
+// Logging - log HTTP events
+app.use(loggingMiddleware);
 
 // configure Express routes / handlers
 // api version1 routes

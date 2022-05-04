@@ -265,6 +265,7 @@ FOOBAR=${FOO}${BAR} // foobar
 | -------------- | ---------------------------------------- | --------------------------------------------------------------------- |
 | MONGO_INMEMORY | `false`                                  | Use an in-memory MongoDB instance.                                    |
 | MONGO_URL      | `mongodb://username:password@host:27017` | The connection URL for MongoDB. Optional if `MONGO_INMEMORY` is true. |
+| NODE_ENV       | `development`                            | The environment type. One of: `development`, `test`, `production`     |
 | SERVER_PORT    | `3001`                                   | The port on which the application listens for requests.               |
 | SERVER_HOST    | `localhost`                              | The hostname (or DNS name) on which the server is hosted.             |
 | SERVER_BASEURL | `http://${SERVER_PORT}:${SERVER_PORT}`   | The base URL of the application.                                      |
