@@ -26,8 +26,12 @@ npm install
 
 To run the project on your local machine, issue the following commands at a terminal prompt.
 
-```
+```bash
+# start the application
 npm start
+
+# or to start forcing in-memory database
+MONGO_INMEMORY=true npm start
 ```
 
 Node Package Manager (NPM) runs the `start` script. This script starts the Express server and listens for requests on port `3001`.
@@ -263,6 +267,7 @@ FOOBAR=${FOO}${BAR} // foobar
 
 | name           | default                                  | description                                                           |
 | -------------- | ---------------------------------------- | --------------------------------------------------------------------- |
+| MONGO_DBNAME   | `todo_db`                                | The MongoDB database name.                                            |
 | MONGO_INMEMORY | `false`                                  | Use an in-memory MongoDB instance.                                    |
 | MONGO_URL      | `mongodb://username:password@host:27017` | The connection URL for MongoDB. Optional if `MONGO_INMEMORY` is true. |
 | NODE_ENV       | `development`                            | The environment type. One of: `development`, `test`, `production`     |

@@ -1,14 +1,14 @@
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
 
-const loggingMiddleware = require('./middleware/logging');
-const logger = require('./utils/logger');
-const { SERVER_PORT } = require('./config/config');
-const { startDatabase } = require('./database/mongo');
-const v1 = require('./routes/v1');
-const baseRoutes = require('./routes');
-const { errorHandler, logErrors } = require('./middleware/errors');
+import { loggingMiddleware } from './middleware/logging';
+import { logger } from './utils/logger';
+import config from './config/config';
+import { connectToDatabase } from './services/database-service';
+import v1 from './routes/v1';
+import baseRoutes from './routes';
+import { errorHandler, logErrors } from './middleware/errors';
 
 // create the Express app
 const app = express();
@@ -35,10 +35,10 @@ app.use(logErrors);
 app.use(errorHandler);
 
 // start the in-memory MongoDB instance
-startDatabase().then(async () => {
+connectToDatabase().then(async () => {
   // start the Express server
-  const server = app.listen(SERVER_PORT, () => {
-    logger.info(`listening on port ${SERVER_PORT}`);
+  const server = app.listen(config.SERVER_PORT, () => {
+    logger.info(`listening on port ${config.SERVER_PORT}`);
   });
 
   // handle shutdown event
