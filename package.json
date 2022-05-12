@@ -16,7 +16,7 @@
     "start:build": "tsc -w",
     "start:run": "nodemon dist/index.js",
     "start": "run-p start:**",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "repository": "github:mwarman/example-rest-node-express-mongo",
   "license": "MIT",
