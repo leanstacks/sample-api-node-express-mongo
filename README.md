@@ -139,9 +139,13 @@ This application may be packaged and run as a Docker container. Or you may run t
 
 ### Building the Docker Image
 
-To build the Docker image, issue the following command at a terminal prompt.
+To build the Docker image, issue the following commands at a terminal prompt.
 
-```
+```bash
+# build the application
+npm run build
+
+# build the docker image
 npm run docker:build
 ```
 
@@ -153,11 +157,11 @@ To run the application with Docker, first build the Docker image following the i
 
 After creating the Docker image, issue the following command at a terminal prompt to start a new running container using that image.
 
-```
+```bash
+# via npm scripts
 npm run docker:run
 
-OR WITH DOCKER...
-
+# with docker
 docker container run --publish 3001:3001 leanstacks/todo-api
 ```
 
@@ -165,11 +169,11 @@ The command above starts a new Docker container in the foreground (i.e. it is **
 
 To run the container in the background (i.e. detached), issue the following command at a terminal prompt.
 
-```
+```bash
+# via npm scripts
 npm run docker:run:detached
 
-OR WITH DOCKER...
-
+# with docker
 docker container run --publish 3001:3001 --detached leanstacks/todo-api
 ```
 
@@ -223,7 +227,11 @@ This project is Docker Compose ready. Use Docker Compose to run the project **an
 
 To start the application, issue the following command at a terminal prompt.
 
-```
+```bash
+# if building a new image with --build, first build the application
+npm run build
+
+# start the environment
 docker compose up [--build] --detach
 ```
 
