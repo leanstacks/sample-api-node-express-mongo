@@ -1,30 +1,42 @@
-const dayjs = require('dayjs');
-const duration = require('dayjs/plugin/duration');
+import { NextFunction, Request, Response } from 'express';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
 
-const logger = require('../utils/logger');
-const { getDatabase } = require('../database/mongo');
+import { logger } from '../utils/logger';
+import { collections } from '../services/database-service';
 
 dayjs.extend(duration);
 
-const getStartedAt = (uptimeMillis = 0) => {
+const getStartedAt = (uptimeMillis = 0): string => {
   const now = dayjs();
   const uptimeDuration = dayjs.duration(uptimeMillis);
   const startedAt = now.subtract(uptimeDuration);
   return startedAt.format('YYYY-MM-DD[T]HH:mm:ssZ[Z]');
 };
 
-const getUptime = (uptimeMillis = 0) => {
+const getUptime = (uptimeMillis = 0): string => {
   const uptimeDuration = dayjs.duration(uptimeMillis);
   const uptimeFormat = 'M[m] D[d] H[h] m[m] s[s]';
   return uptimeDuration.format(uptimeFormat);
 };
 
-const ServerStatus = {
-  UP: 'UP',
-  DOWN: 'DOWN',
-};
+enum ServerStatus {
+  UP = 'UP',
+  DOWN = 'DOWN',
+}
+enum DatabaseStatus {
+  CONNECTED = 'CONNECTED',
+  DISCONNECTED = 'DISCONNECTED',
+}
+type SystemStatus = ServerStatus | DatabaseStatus;
 
-const serverStatus = () => {
+interface Status {
+  status: SystemStatus;
+  startedAt?: string;
+  uptime?: string;
+}
+
+const serverStatus = (): Status => {
   try {
     const upMillis = Math.floor(process.uptime()) * 1000;
     const startedAt = getStartedAt(upMillis);
@@ -43,15 +55,9 @@ const serverStatus = () => {
   }
 };
 
-const DatabaseStatus = {
-  CONNECTED: 'CONNECTED',
-  DISCONNECTED: 'DISCONNECTED',
-};
-
-const databaseStatus = async () => {
+const databaseStatus = async (): Promise<Status> => {
   try {
-    const database = await getDatabase();
-    await database.command({ dbStats: 1 });
+    await collections.todos?.stats();
 
     return {
       status: DatabaseStatus.CONNECTED,
@@ -64,7 +70,7 @@ const databaseStatus = async () => {
   }
 };
 
-const status = async (req, res, next) => {
+export const status = async (req: Request, res: Response, next: NextFunction) => {
   try {
     logger.info('handler::status');
     const server = serverStatus();
@@ -76,8 +82,4 @@ const status = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
-
-module.exports = {
-  status,
 };

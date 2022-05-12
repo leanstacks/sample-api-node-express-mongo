@@ -1,10 +1,10 @@
-const { createLogger, format, transports } = require('winston');
+import { createLogger, format, LoggerOptions, transports } from 'winston';
 
-const logger = createLogger({
+const loggerOptons: LoggerOptions = {
   level: 'info',
   format: format.combine(format.timestamp(), format.json()),
   defaultMeta: { service: 'todo-service' },
   transports: [new transports.Console()],
-});
+};
 
-module.exports = logger;
+export const logger = createLogger(loggerOptons);

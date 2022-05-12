@@ -3,14 +3,19 @@
   "version": "1.0.0",
   "description": "Example ToDo REST API using Node.js, Express, and MongoDB",
   "scripts": {
+    "build:clean": "rimraf dist",
+    "build:compile": "tsc",
+    "build": "run-s build:clean build:compile",
     "docker:build": "docker build . -t leanstacks/todo-service",
     "docker:remove": "docker container rm todo-service",
     "docker:run": "docker container run --publish 3001:3001 --name todo-service leanstacks/todo-service",
     "docker:run:detached": "docker container run --publish 3001:3001 --name todo-service --detach leanstacks/todo-service",
     "docker:stop": "docker container stop todo-service",
-    "lint:eslint": "eslint src/**",
+    "lint:eslint": "eslint src/**/*.ts",
     "lint": "run-s lint:eslint",
-    "start": "nodemon src",
+    "start:build": "tsc -w",
+    "start:run": "nodemon dist/index.js",
+    "start": "run-p start:**",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": "github:mwarman/example-rest-node-express-mongo",
@@ -28,10 +33,18 @@
     "winston": "3.7.2"
   },
   "devDependencies": {
+    "@types/cors": "2.8.12",
+    "@types/express": "4.17.13",
+    "@types/morgan": "1.9.3",
+    "@types/node": "17.0.31",
+    "@typescript-eslint/eslint-plugin": "5.23.0",
+    "@typescript-eslint/parser": "5.23.0",
     "eslint": "8.14.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.26.0",
     "nodemon": "2.0.15",
-    "npm-run-all": "4.1.5"
+    "npm-run-all": "4.1.5",
+    "rimraf": "^3.0.2",
+    "typescript": "4.6.4"
   }
 }

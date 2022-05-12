@@ -10,7 +10,7 @@ COPY package*.json ./
 RUN npm ci --only=production
 
 # Bundle app source
-COPY ./src .
+COPY ./dist .
 COPY .env .
 
 # Docker environment variables
