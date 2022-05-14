@@ -1,6 +1,7 @@
 // routes/index.ts
 
 import express from 'express';
+import passport from 'passport';
 
 // route handlers
 import { health } from './health';
