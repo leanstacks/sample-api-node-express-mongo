@@ -3,7 +3,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import passport from 'passport';
 
-import { strategyBasic } from './middleware/authStrategyBasic';
+import { strategyAnonymous } from './middleware/auth-strategy-anonymous';
+import { strategyBasic } from './middleware/auth-strategy-basic';
 import { loggingMiddleware } from './middleware/logging';
 import { logger } from './utils/logger';
 import config from './config/config';
@@ -27,13 +28,14 @@ app.use(loggingMiddleware);
 // Passport - API security
 app.use(passport.initialize());
 passport.use(strategyBasic);
+passport.use(strategyAnonymous);
 
 // configure Express routes / handlers
 // api version1 routes
 app.use('/v1', passport.authenticate('basic', { session: false }), v1);
 
 // default routes
-app.use('/', baseRoutes);
+app.use('/', passport.authenticate('anonymous'), baseRoutes);
 
 // error middleware
 app.use(logErrors);
