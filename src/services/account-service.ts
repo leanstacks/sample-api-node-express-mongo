@@ -8,37 +8,50 @@ export enum AccountType {
   USER = 'user',
 }
 
-export interface Account {
-  _id?: ObjectId;
-  type: AccountType;
-  username: string;
-  password: string;
-  authenticationCode?: string;
-  isActive: boolean;
+export class Account {
+  constructor(public type: AccountType, public username: string, public password: string, public _id?: ObjectId) {}
 }
 
 export default class AccountService {
-  findAccount = async (username: string, type: AccountType): Promise<Account | null> => {
-    logger.info('AccountService::findAccount');
-    const filter = {
-      username,
-      type,
-    };
-    const account: Account = (await collections.accounts?.findOne(filter)) as Account;
+  async createOne(account: Account): Promise<Account> {
+    logger.info('AccountService::createOne');
+    await collections.accounts?.insertOne(account);
+
     return account;
-  };
+  }
 
-  authenticateClient = async (clientId: string, clientSecret: string): Promise<Account | null> => {
-    logger.info('AccountService::authenticateClient');
-    const account = await this.findAccount(clientId, AccountType.CLIENT);
-    if (account) {
-      // account found
-      if (account.password === clientSecret) {
-        // credentials match
-        return account;
-      }
-    }
+  async list(): Promise<Account[]> {
+    logger.info('AccountService::list');
 
-    return null;
-  };
+    const accounts = (await collections.accounts?.find({}).toArray()) as Account[];
+
+    return accounts;
+  }
+
+  async findOne(id: string): Promise<Account | null> {
+    logger.info('AccountService::findOne');
+    const query = { _id: new ObjectId(id) };
+    const account = (await collections.accounts?.findOne(query)) as Account;
+
+    return account;
+  }
+
+  async updateOne(id: string, account: Account): Promise<Account | null> {
+    logger.info('AccountService::updateOne');
+    delete account._id;
+    const query = { _id: new ObjectId(id) };
+    const result = await collections.accounts?.updateOne(query, { $set: account });
+    logger.debug('update result', { result });
+
+    return this.findOne(id);
+  }
+
+  async deleteOne(id: string): Promise<number> {
+    logger.info('AccountService::deleteOne');
+    const query = { _id: new ObjectId(id) };
+    const result = await collections.accounts?.deleteOne(query);
+    logger.debug('delete result', { result });
+
+    return result ? result.deletedCount : 0;
+  }
 }
