@@ -5,6 +5,7 @@ import passport from 'passport';
 
 import { strategyAnonymous } from './middleware/auth-strategy-anonymous';
 import { strategyBasic } from './middleware/auth-strategy-basic';
+import { strategyJwt } from './middleware/auth-strategy-jwt';
 import { loggingMiddleware } from './middleware/logging';
 import { logger } from './utils/logger';
 import config from './config/config';
@@ -27,15 +28,16 @@ app.use(cors());
 app.use(loggingMiddleware);
 // Passport - API security
 app.use(passport.initialize());
+passport.use(strategyJwt);
 passport.use(strategyBasic);
 passport.use(strategyAnonymous);
 
 // configure Express routes / handlers
 // api version1 routes
-app.use('/v1', passport.authenticate('basic', { session: false }), v1);
+app.use('/v1', v1);
 
 // default routes
-app.use('/', passport.authenticate('anonymous'), baseRoutes);
+app.use('/', passport.authenticate('anonymous', { session: false }), baseRoutes);
 
 // error middleware
 app.use(logErrors);
