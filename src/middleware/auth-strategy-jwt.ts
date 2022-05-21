@@ -5,7 +5,7 @@ import config from '../config/config';
 import { logger } from '../utils/logger';
 
 const verifyOptions: VerifyOptions = {
-  maxAge: config.JWT_EXPIRES_IN,
+  maxAge: config.JWT_ACCESS_TOKEN_EXPIRES_IN,
 };
 
 const options: StrategyOptions = {

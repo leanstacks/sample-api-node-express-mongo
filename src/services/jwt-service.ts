@@ -4,36 +4,44 @@ import config from '../config/config';
 import { logger } from '../utils/logger';
 
 export default class JwtService {
+  accessTokenExpiresIn: string;
   algorithm = 'HS256';
   audience: string;
-  expiresInSeconds: string;
   issuer: string;
+  refreshTokenExpiresIn: string;
 
   constructor() {
     this.audience = config.JWT_AUDIENCE;
-    this.expiresInSeconds = config.JWT_EXPIRES_IN;
+    this.accessTokenExpiresIn = config.JWT_ACCESS_TOKEN_EXPIRES_IN;
     this.issuer = config.JWT_ISSUER;
+    this.refreshTokenExpiresIn = config.JWT_REFRESH_TOKEN_EXPIRES_IN;
   }
 
-  createAccessToken = (payload: object): string => {
+  createToken = (payload: object, options?: jwt.SignOptions): string => {
     logger.info('JwtService::createAccessToken');
-    const options: jwt.SignOptions = {
+    const defaultOptions: jwt.SignOptions = {
       algorithm: 'HS256',
-      expiresIn: this.expiresInSeconds,
+      expiresIn: this.accessTokenExpiresIn,
       audience: this.audience,
       issuer: this.issuer,
     };
-    return jwt.sign(payload, config.JWT_SECRET, options);
+
+    const signOptions = Object.assign(defaultOptions, options);
+
+    return jwt.sign(payload, config.JWT_SECRET, signOptions);
   };
 
-  verifyToken = (token: string): jwt.JwtPayload => {
+  verifyToken = (token: string, options?: jwt.VerifyOptions): jwt.JwtPayload => {
     logger.info('JwtService::verify');
-    const options: jwt.VerifyOptions = {
+    const defaultOptions: jwt.VerifyOptions = {
       algorithms: ['HS256'],
-      audience: config.JWT_AUDIENCE,
-      issuer: config.JWT_ISSUER,
-      maxAge: config.JWT_EXPIRES_IN,
+      audience: this.audience,
+      issuer: this.issuer,
+      maxAge: this.accessTokenExpiresIn,
     };
-    return jwt.verify(token, config.JWT_SECRET, options) as jwt.JwtPayload;
+
+    const verifyOptions = Object.assign(defaultOptions, options);
+
+    return jwt.verify(token, config.JWT_SECRET, verifyOptions) as jwt.JwtPayload;
   };
 }

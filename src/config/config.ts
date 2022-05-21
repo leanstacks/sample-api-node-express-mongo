@@ -3,8 +3,9 @@ import dotenvExpand from 'dotenv-expand';
 
 interface ConfigProps {
   JWT_AUDIENCE: string;
-  JWT_EXPIRES_IN: string;
+  JWT_ACCESS_TOKEN_EXPIRES_IN: string;
   JWT_ISSUER: string;
+  JWT_REFRESH_TOKEN_EXPIRES_IN: string;
   JWT_SECRET: string;
   MONGO_DBNAME: string;
   MONGO_INMEMORY: string;
@@ -17,8 +18,9 @@ interface ConfigProps {
 
 const defaultConfig: ConfigProps = {
   JWT_AUDIENCE: 'leanstacks.net',
-  JWT_EXPIRES_IN: '1h',
+  JWT_ACCESS_TOKEN_EXPIRES_IN: '1h',
   JWT_ISSUER: 'todos.leanstacks.net',
+  JWT_REFRESH_TOKEN_EXPIRES_IN: '1d',
   JWT_SECRET: 'JS0nW3bT0K3n',
   MONGO_DBNAME: 'todo_db',
   MONGO_INMEMORY: 'false',
