@@ -57,6 +57,18 @@ export default class AccountService {
     return account;
   }
 
+  async authenticate(username: string, password: string): Promise<Account | null> {
+    logger.info('AccountService::authenticate');
+    const account = await this.findOneByUsername(username);
+    if (account) {
+      const isPasswordMatch = await bcrypt.compare(password, account.password);
+      if (isPasswordMatch) {
+        return account;
+      }
+    }
+    return null;
+  }
+
   async updateOne(id: string, account: Account): Promise<Account | null> {
     logger.info('AccountService::updateOne');
     delete account._id;

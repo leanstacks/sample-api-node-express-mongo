@@ -18,7 +18,7 @@ export default class JwtService {
   }
 
   createToken = (payload: object, options?: jwt.SignOptions): string => {
-    logger.info('JwtService::createAccessToken');
+    logger.info('JwtService::createToken');
     const defaultOptions: jwt.SignOptions = {
       algorithm: 'HS256',
       expiresIn: this.accessTokenExpiresIn,
@@ -32,7 +32,7 @@ export default class JwtService {
   };
 
   verifyToken = (token: string, options?: jwt.VerifyOptions): jwt.JwtPayload => {
-    logger.info('JwtService::verify');
+    logger.info('JwtService::verifyToken');
     const defaultOptions: jwt.VerifyOptions = {
       algorithms: ['HS256'],
       audience: this.audience,
