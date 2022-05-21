@@ -9,7 +9,7 @@ export const signIn = async (req: Request, res: Response, next: NextFunction): P
   try {
     logger.info('handler::signIn');
     const accountService = new AccountService();
-    const account = await accountService.authenticate(req.body.username, req.body.password);
+    const account = await accountService.authenticate(req?.body?.username, req?.body?.password);
     if (account) {
       const jwtService = new JwtService();
       const accessToken = jwtService.createToken({
