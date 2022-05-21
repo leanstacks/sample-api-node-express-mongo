@@ -3,9 +3,9 @@ import { NextFunction, Request, Response } from 'express';
 import { logger } from '../../../utils/logger';
 import AccountService, { AccountExistsError } from '../../../services/account-service';
 
-export const createAccount = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const signUp = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    logger.info('handler::createAccount');
+    logger.info('handler::signUp');
     const accountService = new AccountService();
     const account = await accountService.createOne(req.body);
     res.status(201).send(account);

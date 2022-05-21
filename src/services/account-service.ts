@@ -1,20 +1,34 @@
 import { ObjectId } from 'mongodb';
+import bcrypt from 'bcrypt';
 
 import { collections } from './database-service';
 import { logger } from '../utils/logger';
 
-export enum AccountType {
-  CLIENT = 'client',
-  USER = 'user',
+export class AccountExistsError extends Error {
+  name = 'AccountExistsError';
+  constructor(message: string) {
+    super(message);
+  }
 }
 
 export class Account {
-  constructor(public type: AccountType, public username: string, public password: string, public _id?: ObjectId) {}
+  constructor(public username: string, public password: string, public _id?: ObjectId) {}
 }
 
 export default class AccountService {
   async createOne(account: Account): Promise<Account> {
     logger.info('AccountService::createOne');
+    // check unique username
+    const existingAccount = await this.findOneByUsername(account.username);
+    if (existingAccount) {
+      throw new AccountExistsError('Username in use');
+    }
+
+    // hash password
+    const passwordHash = await bcrypt.hash(account.password, 10);
+    account.password = passwordHash;
+
+    // save account
     await collections.accounts?.insertOne(account);
 
     return account;
@@ -33,6 +47,13 @@ export default class AccountService {
     const query = { _id: new ObjectId(id) };
     const account = (await collections.accounts?.findOne(query)) as Account;
 
+    return account;
+  }
+
+  async findOneByUsername(username: string): Promise<Account | null> {
+    logger.info('AccountService::findOneByUsername');
+    const query = { username };
+    const account = (await collections.accounts?.findOne(query)) as Account;
     return account;
   }
 
