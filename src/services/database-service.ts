@@ -3,9 +3,11 @@ import { Collection, MongoClient } from 'mongodb';
 
 import { logger } from '../utils/logger';
 import config from '../config/config';
+import { Account } from './account-service';
 import { Todo } from './todo-service';
 
 interface Collections {
+  accounts?: Collection<Account>;
   todos?: Collection<Todo>;
 }
 
@@ -23,6 +25,7 @@ export const connectToDatabase = async (): Promise<void> => {
     const mongoClient = await MongoClient.connect(connectionUrl);
     const db = mongoClient.db(config.MONGO_DBNAME);
 
+    collections.accounts = db.collection('accounts');
     collections.todos = db.collection('todos');
   } catch (err) {
     logger.error('Unable to connect to database.', err);

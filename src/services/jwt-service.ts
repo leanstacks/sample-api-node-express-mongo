@@ -1,0 +1,47 @@
+import jwt from 'jsonwebtoken';
+
+import config from '../config/config';
+import { logger } from '../utils/logger';
+
+export default class JwtService {
+  accessTokenExpiresIn: number;
+  algorithm = 'HS256';
+  audience: string;
+  issuer: string;
+  refreshTokenExpiresIn: number;
+
+  constructor() {
+    this.audience = config.JWT_AUDIENCE;
+    this.accessTokenExpiresIn = parseInt(config.JWT_ACCESS_TOKEN_EXPIRES_IN, 10);
+    this.issuer = config.JWT_ISSUER;
+    this.refreshTokenExpiresIn = parseInt(config.JWT_REFRESH_TOKEN_EXPIRES_IN, 10);
+  }
+
+  createToken = (payload: object, options?: jwt.SignOptions): string => {
+    logger.info('JwtService::createToken');
+    const defaultOptions: jwt.SignOptions = {
+      algorithm: 'HS256',
+      expiresIn: this.accessTokenExpiresIn,
+      audience: this.audience,
+      issuer: this.issuer,
+    };
+
+    const signOptions = Object.assign(defaultOptions, options);
+
+    return jwt.sign(payload, config.JWT_SECRET, signOptions);
+  };
+
+  verifyToken = (token: string, options?: jwt.VerifyOptions): jwt.JwtPayload => {
+    logger.info('JwtService::verifyToken');
+    const defaultOptions: jwt.VerifyOptions = {
+      algorithms: ['HS256'],
+      audience: this.audience,
+      issuer: this.issuer,
+      maxAge: this.accessTokenExpiresIn,
+    };
+
+    const verifyOptions = Object.assign(defaultOptions, options);
+
+    return jwt.verify(token, config.JWT_SECRET, verifyOptions) as jwt.JwtPayload;
+  };
+}

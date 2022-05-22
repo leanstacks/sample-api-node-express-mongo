@@ -6,7 +6,11 @@ export const logErrors = (err: Error, req: Request, res: Response, next: NextFun
   next(err);
 };
 
-export const errorHandler = (err: Error, req: Request, res: Response) => {
-  res.status(500);
-  res.end();
+export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+  try {
+    res.status(500);
+    res.end();
+  } catch (err) {
+    next(err);
+  }
 };
