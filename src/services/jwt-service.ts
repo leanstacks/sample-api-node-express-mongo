@@ -4,17 +4,17 @@ import config from '../config/config';
 import { logger } from '../utils/logger';
 
 export default class JwtService {
-  accessTokenExpiresIn: string;
+  accessTokenExpiresIn: number;
   algorithm = 'HS256';
   audience: string;
   issuer: string;
-  refreshTokenExpiresIn: string;
+  refreshTokenExpiresIn: number;
 
   constructor() {
     this.audience = config.JWT_AUDIENCE;
-    this.accessTokenExpiresIn = config.JWT_ACCESS_TOKEN_EXPIRES_IN;
+    this.accessTokenExpiresIn = parseInt(config.JWT_ACCESS_TOKEN_EXPIRES_IN, 10);
     this.issuer = config.JWT_ISSUER;
-    this.refreshTokenExpiresIn = config.JWT_REFRESH_TOKEN_EXPIRES_IN;
+    this.refreshTokenExpiresIn = parseInt(config.JWT_REFRESH_TOKEN_EXPIRES_IN, 10);
   }
 
   createToken = (payload: object, options?: jwt.SignOptions): string => {

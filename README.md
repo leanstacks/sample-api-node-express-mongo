@@ -276,9 +276,9 @@ FOOBAR=${FOO}${BAR} // foobar
 | name                         | default                                  | description                                                           |
 | ---------------------------- | ---------------------------------------- | --------------------------------------------------------------------- |
 | JWT_AUDIENCE                 |                                          | The JWT audience attribute value.                                     |
-| JWT_ACCESS_TOKEN_EXPIRES_IN  | `1h`                                     | The JWT duration an access token is valid.                            |
+| JWT_ACCESS_TOKEN_EXPIRES_IN  | `3600`                                   | The JWT duration an access token is valid.                            |
 | JWT_ISSUER                   |                                          | The JWT issuer attribute value.                                       |
-| JWT_REFRESH_TOKEN_EXPIRES_IN | `24h`                                    | The JWT duration a refresh token is valid.                            |
+| JWT_REFRESH_TOKEN_EXPIRES_IN | `86400`                                  | The JWT duration a refresh token is valid.                            |
 | JWT_SECRET                   |                                          | The JWT signing secret value.                                         |
 | MONGO_DBNAME                 | `todo_db`                                | The MongoDB database name.                                            |
 | MONGO_INMEMORY               | `false`                                  | Use an in-memory MongoDB instance.                                    |

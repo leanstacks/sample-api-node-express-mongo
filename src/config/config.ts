@@ -18,9 +18,9 @@ interface ConfigProps {
 
 const defaultConfig: ConfigProps = {
   JWT_AUDIENCE: 'leanstacks.net',
-  JWT_ACCESS_TOKEN_EXPIRES_IN: '1h',
+  JWT_ACCESS_TOKEN_EXPIRES_IN: '3600',
   JWT_ISSUER: 'todos.leanstacks.net',
-  JWT_REFRESH_TOKEN_EXPIRES_IN: '1d',
+  JWT_REFRESH_TOKEN_EXPIRES_IN: '86400',
   JWT_SECRET: 'JS0nW3bT0K3n',
   MONGO_DBNAME: 'todo_db',
   MONGO_INMEMORY: 'false',

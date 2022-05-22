@@ -22,12 +22,12 @@ export const signIn = async (req: Request, res: Response, next: NextFunction): P
           username: account.username,
         },
         {
-          expiresIn: config.JWT_REFRESH_TOKEN_EXPIRES_IN,
+          expiresIn: parseInt(config.JWT_REFRESH_TOKEN_EXPIRES_IN, 10),
         },
       );
       res.send({
         access_token: accessToken,
-        expires_in: config.JWT_ACCESS_TOKEN_EXPIRES_IN,
+        expires_in: parseInt(config.JWT_ACCESS_TOKEN_EXPIRES_IN, 10),
         refresh_token: refreshToken,
         token_type: 'Bearer',
       });
