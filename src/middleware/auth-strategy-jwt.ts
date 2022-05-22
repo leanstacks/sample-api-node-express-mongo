@@ -19,10 +19,10 @@ const options: StrategyOptions = {
 
 const verify: VerifyCallback = (payload, done) => {
   try {
-    logger.info(`JWT payload`, { payload });
+    const { accountId, username } = payload;
     const user = {
-      name: 'Json Token',
-      role: 'bearer',
+      accountId,
+      username,
     };
     return done(null, user);
   } catch (err) {
