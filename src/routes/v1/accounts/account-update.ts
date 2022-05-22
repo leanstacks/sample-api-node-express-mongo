@@ -10,7 +10,16 @@ export const updateAccount = async (req: Request, res: Response, next: NextFunct
     const accountService = new AccountService();
     const updatedAccount = await accountService.updateOne(req?.params?.id, account);
 
-    res.send(updatedAccount);
+    if (updatedAccount) {
+      // do not return sensitive account attributes
+      const { _id, username } = updatedAccount;
+      res.send({
+        _id,
+        username,
+      });
+    } else {
+      res.send(404).end();
+    }
   } catch (err) {
     next(err);
   }

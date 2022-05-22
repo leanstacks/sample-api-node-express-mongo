@@ -8,7 +8,13 @@ export const signUp = async (req: Request, res: Response, next: NextFunction): P
     logger.info('handler::signUp');
     const accountService = new AccountService();
     const account = await accountService.createOne(req.body);
-    res.status(201).send(account);
+
+    // do not return sensitive account attributes
+    const { _id, username } = account;
+    res.send({
+      _id,
+      username,
+    });
   } catch (err: AccountExistsError | unknown) {
     if (err instanceof AccountExistsError) {
       res.status(409).end();

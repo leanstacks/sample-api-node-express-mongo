@@ -2,7 +2,6 @@ import { VerifyOptions } from 'jsonwebtoken';
 import { ExtractJwt, Strategy, StrategyOptions, VerifyCallback } from 'passport-jwt';
 
 import config from '../config/config';
-import { logger } from '../utils/logger';
 
 const verifyOptions: VerifyOptions = {
   maxAge: parseInt(config.JWT_ACCESS_TOKEN_EXPIRES_IN, 10),

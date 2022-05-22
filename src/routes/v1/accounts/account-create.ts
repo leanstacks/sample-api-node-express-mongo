@@ -8,7 +8,12 @@ export const createAccount = async (req: Request, res: Response, next: NextFunct
     logger.info('handler::createAccount');
     const accountService = new AccountService();
     const account = await accountService.createOne(req.body);
-    res.status(201).send(account);
+    // do not return sensitive account attributes
+    const { _id, username } = account;
+    res.send({
+      _id,
+      username,
+    });
   } catch (err: AccountExistsError | unknown) {
     if (err instanceof AccountExistsError) {
       res.status(409).end();
