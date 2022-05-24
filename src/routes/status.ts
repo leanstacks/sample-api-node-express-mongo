@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
+import mongoose from 'mongoose';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 
 import { logger } from '../utils/logger';
-import { collections } from '../services/database-service';
 
 dayjs.extend(duration);
 
@@ -55,13 +55,19 @@ const serverStatus = (): Status => {
   }
 };
 
-const databaseStatus = async (): Promise<Status> => {
+const databaseStatus = (): Status => {
   try {
-    await collections.accounts?.stats();
+    const connectionState = mongoose.connection.readyState;
 
-    return {
-      status: DatabaseStatus.CONNECTED,
-    };
+    if (connectionState === mongoose.ConnectionStates.connected) {
+      return {
+        status: DatabaseStatus.CONNECTED,
+      };
+    } else {
+      return {
+        status: DatabaseStatus.DISCONNECTED,
+      };
+    }
   } catch (err) {
     logger.error('Database status check failed.', err);
     return {
@@ -74,7 +80,7 @@ export const status = async (req: Request, res: Response, next: NextFunction) =>
   try {
     logger.info('handler::status');
     const server = serverStatus();
-    const database = await databaseStatus();
+    const database = databaseStatus();
     res.send({
       server,
       database,

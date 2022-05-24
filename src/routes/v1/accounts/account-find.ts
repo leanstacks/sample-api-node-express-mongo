@@ -10,11 +10,7 @@ export const findAccount = async (req: Request, res: Response, next: NextFunctio
     const account = await accountService.findOne(req.params.id);
     if (account) {
       // do not return sensitive account attributes
-      const { _id, username } = account;
-      res.send({
-        _id,
-        username,
-      });
+      res.send(account);
     } else {
       res.status(404).end();
     }

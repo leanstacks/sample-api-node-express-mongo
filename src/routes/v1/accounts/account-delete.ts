@@ -7,13 +7,8 @@ export const deleteAccount = async (req: Request, res: Response, next: NextFunct
   try {
     logger.info('handler::deleteAccount');
     const accountService = new AccountService();
-    const deleted = await accountService.deleteOne(req.params.id);
-
-    if (deleted) {
-      res.status(204).end();
-    } else {
-      res.status(404).end();
-    }
+    await accountService.deleteOne(req.params.id);
+    res.status(204).end();
   } catch (err) {
     next(err);
   }
