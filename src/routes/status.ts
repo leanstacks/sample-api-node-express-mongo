@@ -57,7 +57,7 @@ const serverStatus = (): Status => {
 
 const databaseStatus = async (): Promise<Status> => {
   try {
-    await collections.todos?.stats();
+    await collections.accounts?.stats();
 
     return {
       status: DatabaseStatus.CONNECTED,

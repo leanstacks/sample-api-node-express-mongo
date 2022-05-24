@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import passport from 'passport';
+import mongoose from 'mongoose';
 
 import { strategyAnonymous } from './middleware/auth-strategy-anonymous';
 import { strategyBasic } from './middleware/auth-strategy-basic';
