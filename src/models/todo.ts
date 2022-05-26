@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import toJSON from './plugins/toJSON';
 
 export interface ITodo {
   title: string;
@@ -10,6 +11,7 @@ const todoSchema = new Schema<ITodo>({
   isComplete: { type: Boolean, required: true, default: false },
 });
 
+todoSchema.plugin(toJSON);
 const Todo = model<ITodo>('Todo', todoSchema);
 
 export default Todo;

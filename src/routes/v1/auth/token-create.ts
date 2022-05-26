@@ -13,7 +13,7 @@ export const createToken = async (req: Request, res: Response, next: NextFunctio
       const payload = jwtService.verifyToken(req?.body?.refresh_token);
 
       const accountService = new AccountService();
-      const account = await accountService.findOne(payload.account._id);
+      const account = await accountService.findOne(payload.account.id);
 
       if (account) {
         // TODO: do not send sensitive information
