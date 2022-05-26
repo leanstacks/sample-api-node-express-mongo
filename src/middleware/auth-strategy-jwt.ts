@@ -4,7 +4,7 @@ import { ExtractJwt, Strategy, StrategyOptions, VerifyCallback } from 'passport-
 import config from '../config/config';
 
 const verifyOptions: VerifyOptions = {
-  maxAge: parseInt(config.JWT_ACCESS_TOKEN_EXPIRES_IN, 10),
+  maxAge: config.JWT_ACCESS_TOKEN_EXPIRES_IN,
 };
 
 const options: StrategyOptions = {

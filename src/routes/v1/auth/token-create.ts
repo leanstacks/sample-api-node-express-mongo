@@ -22,7 +22,7 @@ export const createToken = async (req: Request, res: Response, next: NextFunctio
         });
         res.send({
           access_token: accessToken,
-          expires_in: parseInt(config.JWT_ACCESS_TOKEN_EXPIRES_IN, 10),
+          expires_in: config.JWT_ACCESS_TOKEN_EXPIRES_IN,
           refresh_token: req?.body?.refresh_token,
           token_type: 'Bearer',
         });

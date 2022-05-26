@@ -8,7 +8,7 @@ export const connectToDatabase = async (): Promise<void> => {
   logger.info('connecting to the database...');
   try {
     let connectionUrl = config.MONGO_URL;
-    if (config.MONGO_INMEMORY === 'true') {
+    if (config.MONGO_INMEMORY) {
       logger.info('using in-memory MongoDB');
       const mongo = await MongoMemoryServer.create();
       connectionUrl = mongo.getUri();
