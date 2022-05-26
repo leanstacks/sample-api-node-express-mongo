@@ -2,20 +2,14 @@ import Todo, { ITodo } from '../models/todo';
 import { logger } from '../utils/logger';
 
 export default class TodoService {
-  async createOne(title: string): Promise<ITodo> {
+  async createOne(todo: ITodo): Promise<ITodo> {
     logger.debug('TodoService::createOne');
-    const todo = new Todo({
-      title,
-      isComplete: false,
-    });
-    await todo.save();
-    return todo;
+    return Todo.create(todo);
   }
 
   async list(): Promise<ITodo[]> {
     logger.debug('TodoService::list');
-    const todos = await Todo.find();
-    return todos;
+    return Todo.find();
   }
 
   async findOne(id: string): Promise<ITodo> {
@@ -26,7 +20,7 @@ export default class TodoService {
 
   async updateOne(id: string, todo: ITodo): Promise<ITodo> {
     logger.debug('TodoService::updateOne');
-    const todoUpdated = (await Todo.findOneAndUpdate({ _id: id }, todo, { new: true })) as ITodo;
+    const todoUpdated = (await Todo.findByIdAndUpdate(id, todo, { new: true })) as ITodo;
     return todoUpdated;
   }
 

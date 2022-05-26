@@ -7,7 +7,7 @@ export const createTodo = async (req: Request, res: Response, next: NextFunction
   try {
     logger.info('handler::createTodo');
     const todoService = new TodoService();
-    const createdTodo = await todoService.createOne(req?.body?.title);
+    const createdTodo = await todoService.createOne(req?.body);
     res.send(createdTodo);
   } catch (err) {
     next(err);
