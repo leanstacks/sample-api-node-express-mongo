@@ -12,14 +12,13 @@ export const signIn = async (req: Request, res: Response, next: NextFunction): P
     const account = await accountService.authenticate(req?.body?.username, req?.body?.password);
     if (account) {
       const jwtService = new JwtService();
+      // TODO: do not send sensitive information
       const accessToken = jwtService.createToken({
-        accountId: account._id,
-        username: account.username,
+        account,
       });
       const refreshToken = jwtService.createToken(
         {
-          accountId: account._id,
-          username: account.username,
+          account,
         },
         {
           expiresIn: parseInt(config.JWT_REFRESH_TOKEN_EXPIRES_IN, 10),

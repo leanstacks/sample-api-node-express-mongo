@@ -1,7 +1,6 @@
-import { ObjectId } from 'mongodb';
 import bcrypt from 'bcrypt';
 
-import { collections } from './database-service';
+import Account, { IAccount } from '../models/account';
 import { logger } from '../utils/logger';
 
 export class AccountExistsError extends Error {
@@ -11,12 +10,8 @@ export class AccountExistsError extends Error {
   }
 }
 
-export class Account {
-  constructor(public username: string, public password: string, public _id?: ObjectId) {}
-}
-
 export default class AccountService {
-  async createOne(account: Account): Promise<Account> {
+  async createOne(account: IAccount): Promise<IAccount> {
     logger.info('AccountService::createOne');
     // check unique username
     const existingAccount = await this.findOneByUsername(account.username);
@@ -29,35 +24,31 @@ export default class AccountService {
     account.password = passwordHash;
 
     // save account
-    await collections.accounts?.insertOne(account);
+    const newAccount = new Account(account);
+    await newAccount.save();
 
-    return account;
+    return newAccount;
   }
 
-  async list(): Promise<Account[]> {
+  async list(): Promise<IAccount[]> {
     logger.info('AccountService::list');
-
-    const accounts = (await collections.accounts?.find({}).toArray()) as Account[];
-
+    const accounts = await Account.find();
     return accounts;
   }
 
-  async findOne(id: string): Promise<Account | null> {
+  async findOne(id: string): Promise<IAccount> {
     logger.info('AccountService::findOne');
-    const query = { _id: new ObjectId(id) };
-    const account = (await collections.accounts?.findOne(query)) as Account;
-
+    const account = (await Account.findById(id)) as IAccount;
     return account;
   }
 
-  async findOneByUsername(username: string): Promise<Account | null> {
+  async findOneByUsername(username: string): Promise<IAccount> {
     logger.info('AccountService::findOneByUsername');
-    const query = { username };
-    const account = (await collections.accounts?.findOne(query)) as Account;
+    const account = (await Account.findOne({ username })) as IAccount;
     return account;
   }
 
-  async authenticate(username: string, password: string): Promise<Account | null> {
+  async authenticate(username: string, password: string): Promise<IAccount | null> {
     logger.info('AccountService::authenticate');
     const account = await this.findOneByUsername(username);
     if (account) {
@@ -69,22 +60,18 @@ export default class AccountService {
     return null;
   }
 
-  async updateOne(id: string, account: Account): Promise<Account | null> {
+  async updateOne(id: string, account: IAccount): Promise<IAccount | null> {
     logger.info('AccountService::updateOne');
-    delete account._id;
-    const query = { _id: new ObjectId(id) };
-    const result = await collections.accounts?.updateOne(query, { $set: account });
-    logger.debug('update result', { result });
-
-    return this.findOne(id);
+    const accountToUpdate = await Account.findById(id);
+    if (accountToUpdate) {
+      accountToUpdate.username = account.username;
+      accountToUpdate.save();
+    }
+    return accountToUpdate;
   }
 
-  async deleteOne(id: string): Promise<number> {
+  async deleteOne(id: string): Promise<void> {
     logger.info('AccountService::deleteOne');
-    const query = { _id: new ObjectId(id) };
-    const result = await collections.accounts?.deleteOne(query);
-    logger.debug('delete result', { result });
-
-    return result ? result.deletedCount : 0;
+    await Account.findByIdAndDelete(id);
   }
 }

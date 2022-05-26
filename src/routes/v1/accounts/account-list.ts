@@ -9,8 +9,7 @@ export const listAccounts = async (req: Request, res: Response, next: NextFuncti
     const accountService = new AccountService();
     const accounts = await accountService.list();
 
-    const list = accounts.map((account) => ({ _id: account._id, username: account.username }));
-    res.send(list);
+    res.send(accounts);
   } catch (err) {
     next(err);
   }

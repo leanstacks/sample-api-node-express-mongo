@@ -1,52 +1,32 @@
-import { ObjectId } from 'mongodb';
-
-import { collections } from './database-service';
+import Todo, { ITodo } from '../models/todo';
 import { logger } from '../utils/logger';
 
-export interface Todo {
-  _id?: ObjectId;
-  title: string;
-  isComplete: boolean;
-}
-
 export default class TodoService {
-  collectionName = 'todos';
-
-  async createOne(todo: { title: string }): Promise<Todo> {
+  async createOne(todo: ITodo): Promise<ITodo> {
     logger.debug('TodoService::createOne');
-    const todoToCreate: Todo = {
-      isComplete: false,
-      title: todo.title,
-    };
-    await collections.todos?.insertOne(todoToCreate);
-
-    return todoToCreate;
+    return Todo.create(todo);
   }
 
-  async list(): Promise<Todo[]> {
+  async list(): Promise<ITodo[]> {
     logger.debug('TodoService::list');
-    const todos = (await collections.todos?.find({}).toArray()) as Todo[];
-    return todos;
+    return Todo.find();
   }
 
-  async findOne(id: string): Promise<Todo> {
+  async findOne(id: string): Promise<ITodo> {
     logger.debug('TodoService::findOne');
-    const todo: Todo = (await collections.todos?.findOne({ _id: new ObjectId(id) })) as Todo;
+    const todo = (await Todo.findById(id)) as ITodo;
     return todo;
   }
 
-  async updateOne(id: string, todo: Todo): Promise<Todo> {
+  async updateOne(id: string, todo: ITodo): Promise<ITodo> {
     logger.debug('TodoService::updateOne');
-    const todoToUpdate = todo;
-    delete todoToUpdate._id;
-    await collections.todos?.updateOne({ _id: new ObjectId(id) }, { $set: todoToUpdate });
-
-    return await this.findOne(id);
+    const todoUpdated = (await Todo.findByIdAndUpdate(id, todo, { new: true })) as ITodo;
+    return todoUpdated;
   }
 
   async deleteOne(id: string): Promise<void> {
     logger.debug('TodoService::deleteOne');
-    await collections.todos?.deleteOne({ _id: new ObjectId(id) });
+    await Todo.findByIdAndDelete(id);
     return;
   }
 }

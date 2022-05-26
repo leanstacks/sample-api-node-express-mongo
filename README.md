@@ -62,7 +62,7 @@ To fetch a single todo by its identifier, issue the following `curl` command at 
 curl [--verbose] http://localhost:3001/v1/todos/:id
 ```
 
-Replace the `:id` portion of the URL with the `_id` attribute of the todo you wish to fetch.
+Replace the `:id` portion of the URL with the `id` attribute of the todo you wish to fetch.
 
 ### Create a Todo
 
@@ -88,7 +88,7 @@ curl --request PUT \
      http://localhost:3001/v1/todos/:id
 ```
 
-Replace the `:id` portion of the URL with the `_id` attribute of the todo you wish to update.
+Replace the `:id` portion of the URL with the `id` attribute of the todo you wish to update.
 
 ### Delete a Todo
 
@@ -100,7 +100,7 @@ curl --request DELETE \
      http://localhost:3001/v1/todos/:id
 ```
 
-Replace the `:id` portion of the URL with the `_id_ attribute of the todo you wish todelete.
+Replace the `:id` portion of the URL with the `id` attribute of the todo you wish todelete.
 
 ### Server Health
 

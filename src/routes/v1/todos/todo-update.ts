@@ -10,7 +10,11 @@ export const updateTodo = async (req: Request, res: Response, next: NextFunction
     const todoService = new TodoService();
     const updatedTodo = await todoService.updateOne(req.params.id, todo);
 
-    res.send(updatedTodo);
+    if (updatedTodo) {
+      res.send(updatedTodo);
+    } else {
+      res.status(404).end();
+    }
   } catch (err) {
     next(err);
   }

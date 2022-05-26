@@ -13,12 +13,12 @@ export const createToken = async (req: Request, res: Response, next: NextFunctio
       const payload = jwtService.verifyToken(req?.body?.refresh_token);
 
       const accountService = new AccountService();
-      const account = await accountService.findOne(payload.accountId);
+      const account = await accountService.findOne(payload.account.id);
 
       if (account) {
+        // TODO: do not send sensitive information
         const accessToken = jwtService.createToken({
-          accountId: account._id,
-          username: account.username,
+          account,
         });
         res.send({
           access_token: accessToken,
