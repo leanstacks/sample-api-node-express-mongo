@@ -62,12 +62,19 @@ export default class AccountService {
 
   async updateOne(id: string, account: IAccount): Promise<IAccount | null> {
     logger.info('AccountService::updateOne');
-    const accountToUpdate = await Account.findById(id);
-    if (accountToUpdate) {
-      accountToUpdate.username = account.username;
-      accountToUpdate.save();
+    try {
+      const accountToUpdate = await Account.findById(id);
+      if (accountToUpdate) {
+        accountToUpdate.username = account.username;
+        await accountToUpdate.save();
+      }
+      return accountToUpdate;
+    } catch (err: unknown) {
+      if (err instanceof Error && err.message.includes('duplicate')) {
+        throw new AccountExistsError('Username in use');
+      }
+      throw err;
     }
-    return accountToUpdate;
   }
 
   async deleteOne(id: string): Promise<void> {

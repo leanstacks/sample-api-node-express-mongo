@@ -6,11 +6,12 @@ import AccountService from '../../../services/account-service';
 export const listAccounts = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     logger.info('handler::listAccounts');
+
     const accountService = new AccountService();
     const accounts = await accountService.list();
 
     res.send(accounts);
-  } catch (err) {
+  } catch (err: any) {
     next(err);
   }
 };
