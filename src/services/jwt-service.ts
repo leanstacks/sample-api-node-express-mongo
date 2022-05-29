@@ -12,9 +12,9 @@ export default class JwtService {
 
   constructor() {
     this.audience = config.JWT_AUDIENCE;
-    this.accessTokenExpiresIn = parseInt(config.JWT_ACCESS_TOKEN_EXPIRES_IN, 10);
+    this.accessTokenExpiresIn = config.JWT_ACCESS_TOKEN_EXPIRES_IN;
     this.issuer = config.JWT_ISSUER;
-    this.refreshTokenExpiresIn = parseInt(config.JWT_REFRESH_TOKEN_EXPIRES_IN, 10);
+    this.refreshTokenExpiresIn = config.JWT_REFRESH_TOKEN_EXPIRES_IN;
   }
 
   createToken = (payload: object, options?: jwt.SignOptions): string => {

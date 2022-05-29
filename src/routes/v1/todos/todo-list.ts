@@ -6,10 +6,12 @@ import TodoService from '../../../services/todo-service';
 export const listTodos = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     logger.info('handler::listTodos');
+
     const todoService = new TodoService();
     const todos = await todoService.list();
+
     res.send(todos);
-  } catch (err) {
+  } catch (err: unknown) {
     next(err);
   }
 };

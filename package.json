@@ -28,6 +28,7 @@
     "dotenv-expand": "8.0.3",
     "express": "4.17.3",
     "helmet": "5.0.2",
+    "joi": "17.6.0",
     "jsonwebtoken": "8.5.1",
     "mongodb": "4.5.0",
     "mongodb-memory-server": "8.5.0",

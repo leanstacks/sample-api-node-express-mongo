@@ -6,13 +6,7 @@ db.createCollection(collectionName);
 
 db.getCollection(collectionName).insertMany([
   {
-    type: 'client',
-    username: 'clientId',
-    password: 'clientSecret',
-  },
-  {
-    type: 'user',
-    username: 'joe.mailbot@gmail.com',
-    password: 'logmein',
+    username: 'user@example.com',
+    password: 'StrongPassword0!',
   },
 ]);

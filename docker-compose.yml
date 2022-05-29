@@ -1,6 +1,7 @@
+name: todos
 services:
 
-  app:
+  api:
     # build or use todo-service:latest
     image: leanstacks/todo-service
     # when image not present or '--build' option used, build a new
@@ -35,7 +36,7 @@ services:
     volumes:
       # persistent MongoDB data volumes
       - todo-data-db:/data/db
-      - ./mongo/init:/docker-entrypoint-initdb.d:ro
+      - ./etc/docker/mongo/init:/docker-entrypoint-initdb.d:ro
 
 volumes:
   # persisent Docker volume for MongoDB data
