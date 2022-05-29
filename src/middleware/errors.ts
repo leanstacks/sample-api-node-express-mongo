@@ -8,12 +8,21 @@ export const logErrors = (err: Error, req: Request, res: Response, next: NextFun
 
 export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
   try {
-    if (err.name === 'ValidationError') {
-      res.status(409).send({
-        message: err.message,
-      });
-    } else {
-      res.status(500).end();
+    switch (err.name) {
+      case 'ValidationError':
+        res.status(422).send({ message: err.message });
+        break;
+      case 'TokenExpiredError':
+        res.status(400).send({ message: 'token expired' });
+        break;
+      case 'JsonWebTokenError':
+        res.status(400).send({ message: 'token invalid' });
+        break;
+      case 'AccountExistsError':
+        res.status(409).send({ message: 'account exists' });
+        break;
+      default:
+        res.status(500).end();
     }
   } catch (err) {
     next(err);

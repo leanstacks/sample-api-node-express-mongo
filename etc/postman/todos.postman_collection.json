@@ -115,7 +115,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"joe.mailbot@gmail.com\",\n    \"password\": \"S3curEmE!\"\n}",
+					"raw": "{\n    \"username\": \"user2@example.com\",\n    \"password\": \"StrongPassword0!\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -168,7 +168,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"joe.mailbot@gmail.com\",\n    \"password\": \"S3curEmE!\"\n}",
+					"raw": "{\n    \"username\": \"user2@example.com\",\n    \"password\": \"StrongPassword0!\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -300,7 +300,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"joe.mailbot@gmail.com\",\n    \"password\": \"openthedoor\"\n}",
+					"raw": "{\n    \"username\": \"joe.mailbot+newaccount@gmail.com\",\n    \"password\": \"openthedoor\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"

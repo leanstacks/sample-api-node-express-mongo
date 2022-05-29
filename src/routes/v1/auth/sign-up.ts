@@ -37,11 +37,7 @@ export const signUp = async (req: Request, res: Response, next: NextFunction): P
     const account = await accountService.createOne(validatedRequest);
 
     res.send(account);
-  } catch (err: AccountExistsError | unknown) {
-    if (err instanceof AccountExistsError) {
-      res.status(409).end();
-    } else {
-      next(err);
-    }
+  } catch (err: any) {
+    next(err);
   }
 };

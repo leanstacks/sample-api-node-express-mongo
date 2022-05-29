@@ -26,7 +26,7 @@ const configSchema = Joi.object({
   MONGO_DBNAME: Joi.string().default('todo_db'),
   MONGO_INMEMORY: Joi.boolean().default(false),
   MONGO_URL: Joi.string().default('mongodb://username:password@host:27017'),
-  NODE_ENV: Joi.string().allow('development', 'test', 'production').default('development'),
+  NODE_ENV: Joi.string().valid('development', 'test', 'production').default('development'),
   SERVER_BASEURL: Joi.string().uri().default('http://localhost:3001'),
   SERVER_HOST: Joi.string().default('localhost'),
   SERVER_PORT: Joi.number().default(3001),
