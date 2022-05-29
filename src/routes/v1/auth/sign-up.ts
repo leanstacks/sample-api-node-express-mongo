@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 
 import { logger } from '../../../utils/logger';
-import AccountService, { AccountExistsError } from '../../../services/account-service';
+import AccountService from '../../../services/account-service';
 
 interface SignUpRequest {
   username: string;

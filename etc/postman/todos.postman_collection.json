@@ -300,7 +300,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"joe.mailbot+newaccount@gmail.com\",\n    \"password\": \"openthedoor\"\n}",
+					"raw": "{\n    \"username\": \"user3@example.com\",\n    \"password\": \"StrongPassword0!\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -381,7 +381,7 @@
 							"});",
 							"pm.test(\"clientId matches\", function () {",
 							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData.username).to.eql('joe.mailbot+updated@gmail.com');",
+							"    pm.expect(jsonData.username).to.eql('user3+updated@example.com');",
 							"});"
 						],
 						"type": "text/javascript"
@@ -399,7 +399,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"joe.mailbot+updated@gmail.com\",\n    \"id\": \"{{accountId}}\"\n}",
+					"raw": "{\n    \"username\": \"user3+updated@example.com\",\n    \"id\": \"{{accountId}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
