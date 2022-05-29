@@ -2,7 +2,6 @@ import { VerifyOptions } from 'jsonwebtoken';
 import { ExtractJwt, Strategy, StrategyOptions, VerifyCallback } from 'passport-jwt';
 
 import AccountService from '../services/account-service';
-import { logger } from '../utils/logger';
 
 import config from '../config/config';
 
