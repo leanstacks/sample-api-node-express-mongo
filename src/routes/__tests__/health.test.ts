@@ -3,7 +3,7 @@ import app from '../../app';
 import request from 'supertest';
 
 describe('GET /health', () => {
-  it('should return status 200', async () => {
+  it('should return status code 200', async () => {
     const res = await request(app).get('/health');
 
     expect(res.statusCode).toEqual(200);
