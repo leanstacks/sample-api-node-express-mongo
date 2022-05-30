@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 
-import { logger } from '../utils/logger';
+import logger from '../utils/logger';
 
 dayjs.extend(duration);
 

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { logger } from '../utils/logger';
+import logger from '../utils/logger';
 
 export const logErrors = (err: Error, req: Request, res: Response, next: NextFunction) => {
   logger.error(`${err.message}`, { name: err.name, stack: err.stack });

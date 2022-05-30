@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 
-import { logger } from '../../../utils/logger';
+import logger from '../../../utils/logger';
 import TodoService from '../../../services/todo-service';
 import { ITodo } from '../../../models/todo';
 

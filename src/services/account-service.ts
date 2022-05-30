@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 
 import Account, { IAccount } from '../models/account';
-import { logger } from '../utils/logger';
+import logger from '../utils/logger';
 
 export class AccountExistsError extends Error {
   name = 'AccountExistsError';

@@ -1,5 +1,5 @@
 import Todo, { ITodo } from '../models/todo';
-import { logger } from '../utils/logger';
+import logger from '../utils/logger';
 
 export default class TodoService {
   async createOne(todo: ITodo): Promise<ITodo> {

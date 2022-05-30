@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 
-import { logger } from '../../../utils/logger';
+import logger from '../../../utils/logger';
 import config from '../../../config/config';
 import JwtService from '../../../services/jwt-service';
 import AccountService from '../../../services/account-service';

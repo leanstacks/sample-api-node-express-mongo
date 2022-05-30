@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 import config from '../config/config';
-import { logger } from '../utils/logger';
+import logger from '../utils/logger';
 
 export default class JwtService {
   accessTokenExpiresIn: number;
