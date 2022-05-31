@@ -1,7 +1,9 @@
+import { ObjectId } from 'mongodb';
 import { Schema, model } from 'mongoose';
 import toJSON from './plugins/toJSON';
 
 export interface ITodo {
+  id?: ObjectId;
   title: string;
   isComplete: boolean;
 }
