@@ -23,8 +23,7 @@ export const createTodo = async (req: Request, res: Response, next: NextFunction
 
     const validatedRequest = validate(req.body);
 
-    const todoService = new TodoService();
-    const createdTodo = await todoService.createOne(validatedRequest);
+    const createdTodo = await TodoService.createOne(validatedRequest);
 
     res.send(createdTodo);
   } catch (err: unknown) {

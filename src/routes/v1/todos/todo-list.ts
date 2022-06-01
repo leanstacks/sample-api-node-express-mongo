@@ -7,8 +7,7 @@ export const listTodos = async (req: Request, res: Response, next: NextFunction)
   try {
     logger.info('handler::listTodos');
 
-    const todoService = new TodoService();
-    const todos = await todoService.list();
+    const todos = await TodoService.list();
 
     res.send(todos);
   } catch (err: unknown) {

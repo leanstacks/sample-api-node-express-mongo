@@ -23,8 +23,7 @@ export const updateTodo = async (req: Request, res: Response, next: NextFunction
     logger.info('handler::updateTodo');
     const validatedRequest = validate(req?.body);
 
-    const todoService = new TodoService();
-    const updatedTodo = await todoService.updateOne(req?.params?.id, validatedRequest);
+    const updatedTodo = await TodoService.updateOne(req?.params?.id, validatedRequest);
 
     if (updatedTodo) {
       res.send(updatedTodo);

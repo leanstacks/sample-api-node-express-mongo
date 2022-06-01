@@ -3,7 +3,7 @@ import { Schema, model } from 'mongoose';
 import toJSON from './plugins/toJSON';
 
 export interface ITodo {
-  id?: ObjectId;
+  id?: ObjectId | string;
   title: string;
   isComplete: boolean;
 }
