@@ -7,7 +7,7 @@ export const deleteTodo = async (req: Request, res: Response, next: NextFunction
   try {
     logger.info('handler::deleteTodo');
 
-    await TodoService.deleteOne(req?.params?.id);
+    await TodoService.deleteOne(req.params.id);
 
     res.status(204).end();
   } catch (err: unknown) {
