@@ -22,8 +22,7 @@ describe('POST /v1/todos', () => {
 
   beforeEach(async () => {
     const account = await AccountService.createOne({ username: 'user@example.com', password: 'Iamagoodpassword1!' });
-    const jwtService = new JwtService();
-    token = jwtService.createToken({ account });
+    token = JwtService.createToken({ account });
   });
 
   afterEach(async () => {

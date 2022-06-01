@@ -44,11 +44,10 @@ export const signIn = async (req: Request, res: Response, next: NextFunction): P
 
     const account = await AccountService.authenticate(validatedRequest.username, validatedRequest.password);
     if (account) {
-      const jwtService = new JwtService();
-      const access_token = jwtService.createToken({
+      const access_token = JwtService.createToken({
         account,
       });
-      const refresh_token = jwtService.createToken(
+      const refresh_token = JwtService.createToken(
         {
           account,
         },

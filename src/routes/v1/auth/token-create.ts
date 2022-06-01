@@ -37,13 +37,12 @@ export const createToken = async (req: Request, res: Response, next: NextFunctio
     const validatedRequest = validate(req.body);
 
     if (validatedRequest.grant_type === 'refresh_token') {
-      const jwtService = new JwtService();
-      const payload = jwtService.verifyToken(validatedRequest.refresh_token);
+      const payload = JwtService.verifyToken(validatedRequest.refresh_token);
 
       const account = await AccountService.findOne(payload.account.id);
 
       if (account) {
-        const accessToken = jwtService.createToken({
+        const accessToken = JwtService.createToken({
           account,
         });
 
