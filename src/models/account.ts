@@ -3,7 +3,7 @@ import { Schema, model } from 'mongoose';
 import toJSON from './plugins/toJSON';
 
 export interface IAccount {
-  id?: ObjectId;
+  id?: ObjectId | string;
   username: string;
   password: string;
 }

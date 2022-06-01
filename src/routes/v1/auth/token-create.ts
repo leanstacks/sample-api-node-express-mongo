@@ -40,8 +40,7 @@ export const createToken = async (req: Request, res: Response, next: NextFunctio
       const jwtService = new JwtService();
       const payload = jwtService.verifyToken(validatedRequest.refresh_token);
 
-      const accountService = new AccountService();
-      const account = await accountService.findOne(payload.account.id);
+      const account = await AccountService.findOne(payload.account.id);
 
       if (account) {
         const accessToken = jwtService.createToken({

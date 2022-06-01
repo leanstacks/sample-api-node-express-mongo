@@ -23,13 +23,12 @@ export const updateAccount = async (req: Request, res: Response, next: NextFunct
 
     const validatedRequest = validate(req.body);
 
-    const accountService = new AccountService();
-    const updatedAccount = await accountService.updateOne(req?.params?.id, validatedRequest);
+    const updatedAccount = await AccountService.updateOne(req?.params?.id, validatedRequest);
 
     if (updatedAccount) {
       res.send(updatedAccount);
     } else {
-      res.send(404).end();
+      res.status(404).end();
     }
   } catch (err: any) {
     next(err);

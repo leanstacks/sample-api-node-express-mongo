@@ -33,8 +33,7 @@ export const signUp = async (req: Request, res: Response, next: NextFunction): P
 
     const validatedRequest = validate(req.body);
 
-    const accountService = new AccountService();
-    const account = await accountService.createOne(validatedRequest);
+    const account = await AccountService.createOne(validatedRequest);
 
     res.send(account);
   } catch (err: any) {

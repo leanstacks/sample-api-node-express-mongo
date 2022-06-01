@@ -28,15 +28,14 @@ describe('AccountService', () => {
       username: 'user@example.com',
       password: 'P@ssW0rdSuccess!',
     };
-    const service = new AccountService();
 
-    const account = await service.createOne(data);
+    const account = await AccountService.createOne(data);
     expect(account.id).not.toBeNull();
     expect(account.password).not.toBeNull();
     expect(account.password).not.toEqual('P@ssW0rdSuccess!');
     expect(account.username).toEqual(data.username);
 
-    const foundAccount = await service.findOne(account.id?.toString() || '');
+    const foundAccount = await AccountService.findOne(account.id?.toString() || '');
     expect(foundAccount).not.toBeNull();
   });
 
@@ -45,66 +44,55 @@ describe('AccountService', () => {
       username: 'user@example.com',
       password: 'P@ssW0rdSuccess!',
     };
-    const service = new AccountService();
 
-    const account = await service.createOne(data);
+    const account = await AccountService.createOne(data);
     expect(account).not.toBeNull();
 
     try {
-      await service.createOne(data);
+      await AccountService.createOne(data);
     } catch (err: AccountExistsError | unknown) {
       expect(err instanceof AccountExistsError).toBeTruthy();
     }
   });
 
   it('should list all Accounts', async () => {
-    const service = new AccountService();
-
-    let accounts = await service.list();
+    let accounts = await AccountService.list();
     expect(accounts.length).toEqual(0);
 
-    await service.createOne({ username: 'one@example.com', password: 'Iamagoodpassword1!' });
-    await service.createOne({ username: 'two@example.com', password: 'Iamagoodpassword1!' });
+    await AccountService.createOne({ username: 'one@example.com', password: 'Iamagoodpassword1!' });
+    await AccountService.createOne({ username: 'two@example.com', password: 'Iamagoodpassword1!' });
 
-    accounts = await service.list();
+    accounts = await AccountService.list();
     expect(accounts.length).toEqual(2);
   });
 
   it('should find an Account by id', async () => {
-    const service = new AccountService();
-
-    const account = await service.createOne({ username: 'one@example.com', password: 'Iamagoodpassword1!' });
+    const account = await AccountService.createOne({ username: 'one@example.com', password: 'Iamagoodpassword1!' });
     expect(account.id).not.toBeNull();
 
-    const foundAccount = await service.findOne(account.id?.toString() || '');
+    const foundAccount = await AccountService.findOne(account.id?.toString() || '');
     expect(foundAccount).not.toBeNull();
     expect(foundAccount.id).toEqual(account.id);
   });
 
   it('should return null when searching for non-existent id', async () => {
-    const service = new AccountService();
-
-    const account = await service.findOne('doesNotExist');
+    const account = await AccountService.findOne('doesNotExist');
     expect(account).toBeNull();
   });
 
   it('should update an Account', async () => {
-    const service = new AccountService();
-
-    const account = await service.createOne({ username: 'one@example.com', password: 'Iamagoodpassword1!' });
+    const account = await AccountService.createOne({ username: 'one@example.com', password: 'Iamagoodpassword1!' });
     expect(account.id).not.toBeNull();
     expect(account.username).toEqual('one@example.com');
 
     account.username = 'two@example.com';
-    const updatedAccount = await service.updateOne(account.id?.toString() || '', account);
+    const updatedAccount = await AccountService.updateOne(account.id?.toString() || '', account);
     expect(updatedAccount).not.toBeNull();
     expect(updatedAccount?.username).toEqual('two@example.com');
   });
 
   it('should return null when updating a non-existent id', async () => {
-    const service = new AccountService();
-
-    const account = await service.updateOne('doesNotExist', {
+    const account = await AccountService.updateOne('doesNotExist', {
       username: 'one@example.com',
       password: 'Iamagoodpassword1!',
     });
@@ -112,53 +100,47 @@ describe('AccountService', () => {
   });
 
   it('should throw AccountExistsError when updating to non-unique username', async () => {
-    const service = new AccountService();
-
-    await service.createOne({ username: 'one@example.com', password: 'Iamagoodpassword1!' });
-    const account = await service.createOne({ username: 'two@example.com', password: 'Iamagoodpassword1!' });
+    await AccountService.createOne({ username: 'one@example.com', password: 'Iamagoodpassword1!' });
+    const account = await AccountService.createOne({ username: 'two@example.com', password: 'Iamagoodpassword1!' });
 
     try {
       account.username = 'one@example.com';
-      await service.updateOne(account.id?.toString() || '', account);
+      await AccountService.updateOne(account.id?.toString() || '', account);
     } catch (err: AccountExistsError | unknown) {
       expect(err instanceof AccountExistsError).toBeTruthy();
     }
   });
 
   it('should delete an Account', async () => {
-    const service = new AccountService();
-
-    const account = await service.createOne({ username: 'one@example.com', password: 'Iamagoodpassword1!' });
+    const account = await AccountService.createOne({ username: 'one@example.com', password: 'Iamagoodpassword1!' });
     expect(account.id).not.toBeNull();
 
-    await service.deleteOne(account.id?.toString() || '');
+    await AccountService.deleteOne(account.id?.toString() || '');
 
-    const deletedAccount = await service.findOne(account.id?.toString() || '');
+    const deletedAccount = await AccountService.findOne(account.id?.toString() || '');
     expect(deletedAccount).toBeNull();
   });
 
   it('should successfully authenticate', async () => {
-    const service = new AccountService();
     const username = 'one@example.com';
     const password = 'Iamagoodpassword1!';
 
-    const account = await service.createOne({ username, password });
+    const account = await AccountService.createOne({ username, password });
     expect(account.id).not.toBeNull();
 
-    const authenticated = await service.authenticate(username, password);
+    const authenticated = await AccountService.authenticate(username, password);
     expect(authenticated).not.toBeNull();
     expect(authenticated?.id).toEqual(account.id);
   });
 
   it('should fail to authenticate', async () => {
-    const service = new AccountService();
     const username = 'one@example.com';
     const password = 'Iamagoodpassword1!';
 
-    const account = await service.createOne({ username, password });
+    const account = await AccountService.createOne({ username, password });
     expect(account.id).not.toBeNull();
 
-    const authenticated = await service.authenticate(username, 'someOtherPassword1!');
+    const authenticated = await AccountService.authenticate(username, 'someOtherPassword1!');
     expect(authenticated).toBeNull();
   });
 });

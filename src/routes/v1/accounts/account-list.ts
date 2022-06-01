@@ -7,8 +7,7 @@ export const listAccounts = async (req: Request, res: Response, next: NextFuncti
   try {
     logger.info('handler::listAccounts');
 
-    const accountService = new AccountService();
-    const accounts = await accountService.list();
+    const accounts = await AccountService.list();
 
     res.send(accounts);
   } catch (err: any) {

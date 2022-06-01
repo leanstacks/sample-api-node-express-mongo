@@ -42,8 +42,7 @@ export const signIn = async (req: Request, res: Response, next: NextFunction): P
 
     const validatedRequest = validate(req.body);
 
-    const accountService = new AccountService();
-    const account = await accountService.authenticate(validatedRequest.username, validatedRequest.password);
+    const account = await AccountService.authenticate(validatedRequest.username, validatedRequest.password);
     if (account) {
       const jwtService = new JwtService();
       const access_token = jwtService.createToken({

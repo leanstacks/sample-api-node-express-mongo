@@ -7,8 +7,7 @@ export const findAccount = async (req: Request, res: Response, next: NextFunctio
   try {
     logger.info('handler::findAccount');
 
-    const accountService = new AccountService();
-    const account = await accountService.findOne(req.params.id);
+    const account = await AccountService.findOne(req.params.id);
 
     if (account) {
       res.send(account);
