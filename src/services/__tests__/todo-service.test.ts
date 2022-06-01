@@ -36,8 +36,8 @@ describe('TodoService', () => {
 
     const foundTodo = await TodoService.findOne(createdTodo.id?.toString() || '');
     expect(foundTodo).not.toBeNull();
-    expect(foundTodo.title).toEqual(todo.title);
-    expect(foundTodo.isComplete).toEqual(todo.isComplete);
+    expect(foundTodo?.title).toEqual(todo.title);
+    expect(foundTodo?.isComplete).toEqual(todo.isComplete);
   });
 
   it('should list all Todos', async () => {
@@ -57,7 +57,7 @@ describe('TodoService', () => {
 
     const foundTodo = await TodoService.findOne(todo.id?.toString() || '');
     expect(foundTodo).not.toBeNull();
-    expect(foundTodo.id).toEqual(todo.id);
+    expect(foundTodo?.id).toEqual(todo.id);
   });
 
   it('should return null when searching for non-existent id', async () => {
@@ -73,7 +73,7 @@ describe('TodoService', () => {
     todo.title = 'updated';
     const updatedTodo = await TodoService.updateOne(todo.id?.toString() || '', todo);
     expect(updatedTodo).not.toBeNull();
-    expect(updatedTodo.title).toEqual('updated');
+    expect(updatedTodo?.title).toEqual('updated');
   });
 
   it('should return null when updating a non-existent id', async () => {

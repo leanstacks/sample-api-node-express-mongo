@@ -11,13 +11,13 @@ const list = async (): Promise<ITodo[]> => {
   return Todo.find();
 };
 
-const findOne = async (id: string): Promise<ITodo> => {
+const findOne = async (id: string): Promise<ITodo | null> => {
   logger.debug('TodoService::findOne');
   const todo = (await Todo.findById(id)) as ITodo;
   return todo;
 };
 
-const updateOne = async (id: string, todo: ITodo): Promise<ITodo> => {
+const updateOne = async (id: string, todo: ITodo): Promise<ITodo | null> => {
   logger.debug('TodoService::updateOne');
   const todoUpdated = (await Todo.findByIdAndUpdate(id, todo, { new: true })) as ITodo;
   return todoUpdated;

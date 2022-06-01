@@ -7,7 +7,7 @@ export const findTodo = async (req: Request, res: Response, next: NextFunction):
   try {
     logger.info('handler::findTodo');
 
-    const todo = await TodoService.findOne(req?.params?.id);
+    const todo = await TodoService.findOne(req.params.id);
 
     if (todo) {
       res.send(todo);
