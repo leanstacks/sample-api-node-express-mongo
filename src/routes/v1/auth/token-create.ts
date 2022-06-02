@@ -36,25 +36,21 @@ export const createToken = async (req: Request, res: Response, next: NextFunctio
 
     const validatedRequest = validate(req.body);
 
-    if (validatedRequest.grant_type === 'refresh_token') {
-      const payload = JwtService.verifyToken(validatedRequest.refresh_token);
+    const payload = JwtService.verifyToken(validatedRequest.refresh_token);
 
-      const account = await AccountService.findOne(payload.account.id);
+    const account = await AccountService.findOne(payload.account.id);
 
-      if (account) {
-        const accessToken = JwtService.createToken({
-          account,
-        });
+    if (account) {
+      const accessToken = JwtService.createToken({
+        account,
+      });
 
-        res.send({
-          access_token: accessToken,
-          expires_in: config.JWT_ACCESS_TOKEN_EXPIRES_IN,
-          refresh_token: validatedRequest.refresh_token,
-          token_type: 'Bearer',
-        } as TokenResponse);
-      }
-    } else {
-      res.status(400).send({ message: 'unsupported grant type' });
+      res.send({
+        access_token: accessToken,
+        expires_in: config.JWT_ACCESS_TOKEN_EXPIRES_IN,
+        refresh_token: validatedRequest.refresh_token,
+        token_type: 'Bearer',
+      } as TokenResponse);
     }
   } catch (err) {
     next(err);
