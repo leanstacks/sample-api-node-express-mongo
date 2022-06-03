@@ -1,10 +1,10 @@
 import request from 'supertest';
 
-import AccountService from '../../../services/account-service';
-import JwtService from '../../../services/jwt-service';
-import app from '../../../app';
+import AccountService from '../../../../services/account-service';
+import JwtService from '../../../../services/jwt-service';
+import app from '../../../../app';
 
-jest.mock('../../../services/account-service');
+jest.mock('../../../../services/account-service');
 
 const mockedAccountService = jest.mocked(AccountService);
 
