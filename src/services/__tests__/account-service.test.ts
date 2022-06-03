@@ -67,12 +67,15 @@ describe('AccountService', () => {
   });
 
   it('should find an Account by id', async () => {
-    const account = await AccountService.createOne({ username: 'one@example.com', password: 'Iamagoodpassword1!' });
+    const account = await AccountService.createOne({
+      username: 'one@example.com',
+      password: 'Iamagoodpassword1!',
+    });
     expect(account.id).not.toBeNull();
 
     const foundAccount = await AccountService.findOne(account.id?.toString() || '');
     expect(foundAccount).not.toBeNull();
-    expect(foundAccount.id).toEqual(account.id);
+    expect(foundAccount?.id).toEqual(account.id);
   });
 
   it('should return null when searching for non-existent id', async () => {
@@ -81,7 +84,10 @@ describe('AccountService', () => {
   });
 
   it('should update an Account', async () => {
-    const account = await AccountService.createOne({ username: 'one@example.com', password: 'Iamagoodpassword1!' });
+    const account = await AccountService.createOne({
+      username: 'one@example.com',
+      password: 'Iamagoodpassword1!',
+    });
     expect(account.id).not.toBeNull();
     expect(account.username).toEqual('one@example.com');
 
@@ -101,7 +107,10 @@ describe('AccountService', () => {
 
   it('should throw AccountExistsError when updating to non-unique username', async () => {
     await AccountService.createOne({ username: 'one@example.com', password: 'Iamagoodpassword1!' });
-    const account = await AccountService.createOne({ username: 'two@example.com', password: 'Iamagoodpassword1!' });
+    const account = await AccountService.createOne({
+      username: 'two@example.com',
+      password: 'Iamagoodpassword1!',
+    });
 
     try {
       account.username = 'one@example.com';
@@ -112,7 +121,10 @@ describe('AccountService', () => {
   });
 
   it('should delete an Account', async () => {
-    const account = await AccountService.createOne({ username: 'one@example.com', password: 'Iamagoodpassword1!' });
+    const account = await AccountService.createOne({
+      username: 'one@example.com',
+      password: 'Iamagoodpassword1!',
+    });
     expect(account.id).not.toBeNull();
 
     await AccountService.deleteOne(account.id?.toString() || '');

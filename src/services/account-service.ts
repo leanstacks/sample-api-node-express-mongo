@@ -35,13 +35,13 @@ const list = async (): Promise<IAccount[]> => {
   return accounts;
 };
 
-const findOne = async (id: string): Promise<IAccount> => {
+const findOne = async (id: string): Promise<IAccount | null> => {
   logger.info('AccountService::findOne');
   const account = (await Account.findById(id)) as IAccount;
   return account;
 };
 
-const findOneByUsername = async (username: string): Promise<IAccount> => {
+const findOneByUsername = async (username: string): Promise<IAccount | null> => {
   logger.info('AccountService::findOneByUsername');
   const account = (await Account.findOne({ username })) as IAccount;
   return account;
