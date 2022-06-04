@@ -10,19 +10,24 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
   try {
     switch (err.name) {
       case 'ValidationError':
-        res.status(422).send({ message: err.message });
+        res.status(422);
+        res.send({ message: err.message });
         break;
       case 'TokenExpiredError':
-        res.status(400).send({ message: 'token expired' });
+        res.status(400);
+        res.send({ message: 'token expired' });
         break;
       case 'JsonWebTokenError':
-        res.status(400).send({ message: 'token invalid' });
+        res.status(400);
+        res.send({ message: 'token invalid' });
         break;
       case 'AccountExistsError':
-        res.status(409).send({ message: 'account exists' });
+        res.status(409);
+        res.send({ message: 'account exists' });
         break;
       default:
-        res.status(500).end();
+        res.status(500);
+        res.end();
     }
   } catch (err) {
     next(err);

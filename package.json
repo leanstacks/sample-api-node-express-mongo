@@ -16,6 +16,7 @@
     "start:build": "tsc -w",
     "start:run": "nodemon dist/index.js",
     "start": "run-p start:**",
+    "test:coverage": "jest --coverage",
     "test": "jest"
   },
   "repository": "github:mwarman/example-rest-node-express-mongo",
