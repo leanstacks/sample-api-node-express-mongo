@@ -11,7 +11,7 @@ const levels = {
 };
 
 const loggerOptions: LoggerOptions = {
-  level: 'info',
+  level: config.LOG_LEVEL,
   levels,
   format: format.combine(format.timestamp(), format.json()),
   defaultMeta: { service: 'todo-service' },
@@ -19,14 +19,5 @@ const loggerOptions: LoggerOptions = {
 };
 
 const logger = createLogger(loggerOptions);
-
-switch (config.NODE_ENV) {
-  case 'development':
-    logger.level = 'debug';
-    break;
-  case 'test':
-    logger.level = 'fatal';
-    break;
-}
 
 export default logger;

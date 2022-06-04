@@ -8,6 +8,7 @@ interface ConfigProps {
   JWT_ISSUER: string;
   JWT_REFRESH_TOKEN_EXPIRES_IN: number;
   JWT_SECRET: string;
+  LOG_LEVEL: string;
   MONGO_DBNAME: string;
   MONGO_INMEMORY: string;
   MONGO_URL: string;
@@ -23,6 +24,7 @@ const configSchema = Joi.object({
   JWT_ISSUER: Joi.string().default('todos.leanstacks.net'),
   JWT_REFRESH_TOKEN_EXPIRES_IN: Joi.number().default(86400),
   JWT_SECRET: Joi.string().default('762af28c0ae24ba19df1c8761ed983e7'),
+  LOG_LEVEL: Joi.string().valid('verbose', 'debug', 'info', 'error', 'fatal').default('info'),
   MONGO_DBNAME: Joi.string().default('todo_db'),
   MONGO_INMEMORY: Joi.boolean().default(false),
   MONGO_URL: Joi.string().default('mongodb://username:password@host:27017'),
