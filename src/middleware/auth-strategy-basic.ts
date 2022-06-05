@@ -1,17 +1,12 @@
 import { BasicStrategy, BasicVerifyFunction } from 'passport-http';
 
-const CLIENT_ID = 'clientId';
-const CLIENT_SECRET = 'clientSecret';
+import AccountService from '../services/account-service';
 
-const verify: BasicVerifyFunction = (username, password, done): void => {
+export const verify: BasicVerifyFunction = async (username, password, done): Promise<void> => {
   try {
-    if (username === CLIENT_ID && password === CLIENT_SECRET) {
-      const user = {
-        name: username,
-        isAuthorized: true,
-        role: 'client',
-      };
-      return done(null, user);
+    const account = await AccountService.authenticate(username, password);
+    if (account) {
+      return done(null, account);
     } else {
       return done(null, false);
     }
