@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 
-import { logger } from '../../../utils/logger';
+import logger from '../../../utils/logger';
 import TodoService from '../../../services/todo-service';
 import { ITodo } from '../../../models/todo';
 
@@ -23,8 +23,7 @@ export const createTodo = async (req: Request, res: Response, next: NextFunction
 
     const validatedRequest = validate(req.body);
 
-    const todoService = new TodoService();
-    const createdTodo = await todoService.createOne(validatedRequest);
+    const createdTodo = await TodoService.createOne(validatedRequest);
 
     res.send(createdTodo);
   } catch (err: unknown) {

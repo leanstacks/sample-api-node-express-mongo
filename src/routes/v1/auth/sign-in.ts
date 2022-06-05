@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 
-import { logger } from '../../../utils/logger';
+import logger from '../../../utils/logger';
 import config from '../../../config/config';
 import AccountService from '../../../services/account-service';
 import JwtService from '../../../services/jwt-service';
@@ -42,14 +42,12 @@ export const signIn = async (req: Request, res: Response, next: NextFunction): P
 
     const validatedRequest = validate(req.body);
 
-    const accountService = new AccountService();
-    const account = await accountService.authenticate(validatedRequest.username, validatedRequest.password);
+    const account = await AccountService.authenticate(validatedRequest.username, validatedRequest.password);
     if (account) {
-      const jwtService = new JwtService();
-      const access_token = jwtService.createToken({
+      const access_token = JwtService.createToken({
         account,
       });
-      const refresh_token = jwtService.createToken(
+      const refresh_token = JwtService.createToken(
         {
           account,
         },

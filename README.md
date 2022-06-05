@@ -280,6 +280,7 @@ FOOBAR=${FOO}${BAR} // foobar
 | JWT_ISSUER                   |                                          | The JWT issuer attribute value.                                       |
 | JWT_REFRESH_TOKEN_EXPIRES_IN | `86400`                                  | The JWT duration a refresh token is valid.                            |
 | JWT_SECRET                   |                                          | The JWT signing secret value.                                         |
+| LOG_LEVEL                    | `info`                                   | The logging level threshold.                                          |
 | MONGO_DBNAME                 | `todo_db`                                | The MongoDB database name.                                            |
 | MONGO_INMEMORY               | `false`                                  | Use an in-memory MongoDB instance.                                    |
 | MONGO_URL                    | `mongodb://username:password@host:27017` | The connection URL for MongoDB. Optional if `MONGO_INMEMORY` is true. |

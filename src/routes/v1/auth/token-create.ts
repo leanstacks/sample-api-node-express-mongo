@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 
-import { logger } from '../../../utils/logger';
+import logger from '../../../utils/logger';
 import config from '../../../config/config';
 import JwtService from '../../../services/jwt-service';
 import AccountService from '../../../services/account-service';
@@ -36,27 +36,21 @@ export const createToken = async (req: Request, res: Response, next: NextFunctio
 
     const validatedRequest = validate(req.body);
 
-    if (validatedRequest.grant_type === 'refresh_token') {
-      const jwtService = new JwtService();
-      const payload = jwtService.verifyToken(validatedRequest.refresh_token);
+    const payload = JwtService.verifyToken(validatedRequest.refresh_token);
 
-      const accountService = new AccountService();
-      const account = await accountService.findOne(payload.account.id);
+    const account = await AccountService.findOne(payload.account.id);
 
-      if (account) {
-        const accessToken = jwtService.createToken({
-          account,
-        });
+    if (account) {
+      const accessToken = JwtService.createToken({
+        account,
+      });
 
-        res.send({
-          access_token: accessToken,
-          expires_in: config.JWT_ACCESS_TOKEN_EXPIRES_IN,
-          refresh_token: validatedRequest.refresh_token,
-          token_type: 'Bearer',
-        } as TokenResponse);
-      }
-    } else {
-      res.status(400).send({ message: 'unsupported grant type' });
+      res.send({
+        access_token: accessToken,
+        expires_in: config.JWT_ACCESS_TOKEN_EXPIRES_IN,
+        refresh_token: validatedRequest.refresh_token,
+        token_type: 'Bearer',
+      } as TokenResponse);
     }
   } catch (err) {
     next(err);

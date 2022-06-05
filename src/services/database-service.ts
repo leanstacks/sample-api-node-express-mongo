@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
-import { logger } from '../utils/logger';
+import logger from '../utils/logger';
 import config from '../config/config';
 
 export const connectToDatabase = async (): Promise<void> => {

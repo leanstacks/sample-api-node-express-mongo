@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 
-import { logger } from '../../../utils/logger';
+import logger from '../../../utils/logger';
 import AccountService from '../../../services/account-service';
 import { IAccount } from '../../../models/account';
 
@@ -29,8 +29,7 @@ export const createAccount = async (req: Request, res: Response, next: NextFunct
 
     const validatedRequest = validate(req.body);
 
-    const accountService = new AccountService();
-    const account = await accountService.createOne(validatedRequest);
+    const account = await AccountService.createOne(validatedRequest);
 
     res.send(account);
   } catch (err: any) {

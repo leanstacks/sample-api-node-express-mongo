@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 
-import { logger } from '../../../utils/logger';
+import logger from '../../../utils/logger';
 import TodoService from '../../../services/todo-service';
 import { ITodo } from '../../../models/todo';
 
@@ -21,10 +21,9 @@ const validate = (input: ITodo): ITodo => {
 export const updateTodo = async (req: Request, res: Response, next: NextFunction) => {
   try {
     logger.info('handler::updateTodo');
-    const validatedRequest = validate(req?.body);
+    const validatedRequest = validate(req.body);
 
-    const todoService = new TodoService();
-    const updatedTodo = await todoService.updateOne(req?.params?.id, validatedRequest);
+    const updatedTodo = await TodoService.updateOne(req.params.id, validatedRequest);
 
     if (updatedTodo) {
       res.send(updatedTodo);
