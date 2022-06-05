@@ -18,7 +18,7 @@ const options: StrategyOptions = {
   secretOrKey: config.JWT_SECRET,
 };
 
-const verify: VerifyCallback = async (payload, done) => {
+export const verify: VerifyCallback = async (payload, done) => {
   try {
     const account = await AccountService.findOne(payload?.account?.id);
 
