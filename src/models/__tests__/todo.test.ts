@@ -24,7 +24,7 @@ describe('Todo Model', () => {
   });
 
   it('should create a Todo', async () => {
-    const data = { title: 'run tests', isComplete: false };
+    const data = { account: '629e461fdc7347786c5fa080', title: 'run tests', isComplete: false };
 
     const todo = new Todo(data);
     await todo.save();
@@ -33,7 +33,7 @@ describe('Todo Model', () => {
   });
 
   it('should have "id" in JSON', async () => {
-    const data = { title: 'run tests', isComplete: false };
+    const data = { account: '629e461fdc7347786c5fa080', title: 'run tests', isComplete: false };
 
     const todo = new Todo(data);
     await todo.save();
@@ -43,7 +43,7 @@ describe('Todo Model', () => {
   });
 
   it('should not have "_id" in JSON', async () => {
-    const data = { title: 'run tests', isComplete: false };
+    const data = { account: '629e461fdc7347786c5fa080', title: 'run tests', isComplete: false };
 
     const todo = new Todo(data);
     await todo.save();

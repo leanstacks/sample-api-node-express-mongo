@@ -8,6 +8,7 @@ import { ITodo } from '../../../models/todo';
 const validate = (input: ITodo): ITodo => {
   const schema = Joi.object({
     id: Joi.string(),
+    account: Joi.string().required(),
     title: Joi.string().required(),
     isComplete: Joi.boolean().required(),
   });

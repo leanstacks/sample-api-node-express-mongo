@@ -21,7 +21,10 @@ describe('POST /v1/todos', () => {
   });
 
   beforeEach(async () => {
-    const account = await AccountService.createOne({ username: 'user@example.com', password: 'Iamagoodpassword1!' });
+    const account = await AccountService.createOne({
+      username: 'user@example.com',
+      password: 'Iamagoodpassword1!',
+    });
     token = JwtService.createToken({ account });
   });
 
@@ -40,7 +43,7 @@ describe('POST /v1/todos', () => {
   });
 
   it('should require authentication', async () => {
-    const data = { title: 'run tests' };
+    const data = { account: '629e461fdc7347786c5fa080', title: 'run tests' };
 
     const res = await request(app)
       .post('/v1/todos')
@@ -52,7 +55,7 @@ describe('POST /v1/todos', () => {
   });
 
   it('should return status code 200', async () => {
-    const data = { title: 'run tests' };
+    const data = { account: '629e461fdc7347786c5fa080', title: 'run tests' };
 
     const res = await request(app)
       .post('/v1/todos')
@@ -79,8 +82,13 @@ describe('POST /v1/todos', () => {
   });
 
   it('should call TodoService', async () => {
-    const data = { title: 'run tests' };
-    const createdData = { id: 'a1', title: 'run tests', isComplete: false };
+    const data = { account: '629e461fdc7347786c5fa080', title: 'run tests' };
+    const createdData = {
+      id: 'a1',
+      account: '629e461fdc7347786c5fa080',
+      title: 'run tests',
+      isComplete: false,
+    };
     mockedTodoService.createOne.mockResolvedValue(createdData);
 
     const res = await request(app)
@@ -91,6 +99,11 @@ describe('POST /v1/todos', () => {
       .set('Accept', 'application/json');
 
     expect(mockedTodoService.createOne).toHaveBeenCalled();
-    expect(res.body).toEqual({ id: 'a1', title: 'run tests', isComplete: false });
+    expect(res.body).toEqual({
+      id: 'a1',
+      account: '629e461fdc7347786c5fa080',
+      title: 'run tests',
+      isComplete: false,
+    });
   });
 });

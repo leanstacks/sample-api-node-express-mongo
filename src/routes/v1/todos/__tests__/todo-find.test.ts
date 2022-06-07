@@ -21,7 +21,10 @@ describe('GET /v1/todos/:id', () => {
   });
 
   beforeEach(async () => {
-    const account = await AccountService.createOne({ username: 'user@example.com', password: 'Iamagoodpassword1!' });
+    const account = await AccountService.createOne({
+      username: 'user@example.com',
+      password: 'Iamagoodpassword1!',
+    });
     token = JwtService.createToken({ account });
   });
 
@@ -46,10 +49,18 @@ describe('GET /v1/todos/:id', () => {
   });
 
   it('should return status code 200', async () => {
-    const data = { id: '1', title: 'run tests', isComplete: false };
+    const data = {
+      id: '1',
+      account: '629e461fdc7347786c5fa080',
+      title: 'run tests',
+      isComplete: false,
+    };
     mockedTodoService.findOne.mockResolvedValueOnce(data);
 
-    const res = await request(app).get('/v1/todos/1').auth(token, { type: 'bearer' }).set('Accept', 'application/json');
+    const res = await request(app)
+      .get('/v1/todos/1')
+      .auth(token, { type: 'bearer' })
+      .set('Accept', 'application/json');
 
     expect(res.statusCode).toEqual(200);
     expect(res.headers['content-type']).toMatch(/json/);
@@ -59,7 +70,10 @@ describe('GET /v1/todos/:id', () => {
   it('should return status code 404 when not found', async () => {
     mockedTodoService.findOne.mockResolvedValueOnce(null);
 
-    const res = await request(app).get('/v1/todos/1').auth(token, { type: 'bearer' }).set('Accept', 'application/json');
+    const res = await request(app)
+      .get('/v1/todos/1')
+      .auth(token, { type: 'bearer' })
+      .set('Accept', 'application/json');
 
     expect(res.statusCode).toEqual(404);
   });
@@ -74,7 +88,12 @@ describe('GET /v1/todos/:id', () => {
   });
 
   it('should call TodoService', async () => {
-    const data = { id: '1', title: 'run tests', isComplete: false };
+    const data = {
+      id: '1',
+      account: '629e461fdc7347786c5fa080',
+      title: 'run tests',
+      isComplete: false,
+    };
     mockedTodoService.findOne.mockResolvedValueOnce(data);
 
     const res = await request(app).get('/v1/todos/1').auth(token, { type: 'bearer' });

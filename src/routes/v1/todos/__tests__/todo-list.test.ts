@@ -21,7 +21,10 @@ describe('GET /v1/todos', () => {
   });
 
   beforeEach(async () => {
-    const account = await AccountService.createOne({ username: 'user@example.com', password: 'Iamagoodpassword1!' });
+    const account = await AccountService.createOne({
+      username: 'user@example.com',
+      password: 'Iamagoodpassword1!',
+    });
     token = JwtService.createToken({ account });
   });
 
@@ -46,10 +49,15 @@ describe('GET /v1/todos', () => {
   });
 
   it('should return status code 200', async () => {
-    const data = [{ id: '1', title: 'run tests', isComplete: false }];
+    const data = [
+      { id: '1', account: '629e461fdc7347786c5fa080', title: 'run tests', isComplete: false },
+    ];
     mockedTodoService.list.mockResolvedValueOnce(data);
 
-    const res = await request(app).get('/v1/todos').auth(token, { type: 'bearer' }).set('Accept', 'application/json');
+    const res = await request(app)
+      .get('/v1/todos')
+      .auth(token, { type: 'bearer' })
+      .set('Accept', 'application/json');
 
     expect(res.statusCode).toEqual(200);
     expect(res.headers['content-type']).toMatch(/json/);
@@ -59,17 +67,25 @@ describe('GET /v1/todos', () => {
   it('should call return status code 500 when an error occurs', async () => {
     mockedTodoService.list.mockRejectedValueOnce(new Error());
 
-    const res = await request(app).get('/v1/todos').auth(token, { type: 'bearer' }).set('Accept', 'application/json');
+    const res = await request(app)
+      .get('/v1/todos')
+      .auth(token, { type: 'bearer' })
+      .set('Accept', 'application/json');
 
     expect(mockedTodoService.list).toHaveBeenCalled();
     expect(res.statusCode).toEqual(500);
   });
 
   it('should call TodoService', async () => {
-    const data = [{ id: '1', title: 'run tests', isComplete: false }];
+    const data = [
+      { id: '1', account: '629e461fdc7347786c5fa080', title: 'run tests', isComplete: false },
+    ];
     mockedTodoService.list.mockResolvedValueOnce(data);
 
-    const res = await request(app).get('/v1/todos').auth(token, { type: 'bearer' }).set('Accept', 'application/json');
+    const res = await request(app)
+      .get('/v1/todos')
+      .auth(token, { type: 'bearer' })
+      .set('Accept', 'application/json');
 
     expect(mockedTodoService.list).toHaveBeenCalled();
   });

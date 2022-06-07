@@ -7,6 +7,7 @@ import { ITodo } from '../../../models/todo';
 
 const validate = (input: ITodo): ITodo => {
   const schema = Joi.object({
+    account: Joi.string().required(),
     title: Joi.string().required(),
     isComplete: Joi.boolean().default(false),
   });
@@ -17,7 +18,11 @@ const validate = (input: ITodo): ITodo => {
   return value;
 };
 
-export const createTodo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const createTodo = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
   try {
     logger.info('handler::createTodo');
 
