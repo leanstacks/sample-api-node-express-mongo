@@ -11,6 +11,11 @@ const list = async (): Promise<ITodo[]> => {
   return Todo.find();
 };
 
+const listByAccount = async (accountId: string): Promise<ITodo[]> => {
+  logger.debug('TodoService::listByAccount');
+  return Todo.find({ account: accountId });
+};
+
 const findOne = async (id: string): Promise<ITodo | null> => {
   logger.debug('TodoService::findOne');
   const todo = (await Todo.findById(id)) as ITodo;
@@ -32,6 +37,7 @@ const deleteOne = async (id: string): Promise<void> => {
 export default {
   createOne,
   list,
+  listByAccount,
   findOne,
   updateOne,
   deleteOne,

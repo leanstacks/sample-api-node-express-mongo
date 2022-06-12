@@ -60,6 +60,30 @@ describe('TodoService', () => {
     expect(todos.length).toEqual(2);
   });
 
+  it('should list all Todos for an account', async () => {
+    let todos = await TodoService.list();
+    expect(todos.length).toEqual(0);
+
+    await TodoService.createOne({
+      account: '629e461fdc7347786c5fa080',
+      title: 'test',
+      isComplete: false,
+    });
+    await TodoService.createOne({
+      account: '629e461fdc7347786c5fa080',
+      title: 'test2',
+      isComplete: true,
+    });
+    await TodoService.createOne({
+      account: '549e461fdc7347786c5fa02a',
+      title: 'Another account todo',
+      isComplete: false,
+    });
+
+    todos = await TodoService.listByAccount('629e461fdc7347786c5fa080');
+    expect(todos.length).toEqual(2);
+  });
+
   it('should find a Todo by id', async () => {
     const todo = await TodoService.createOne({
       account: '629e461fdc7347786c5fa080',
