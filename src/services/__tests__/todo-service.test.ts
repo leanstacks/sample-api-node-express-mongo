@@ -25,6 +25,7 @@ describe('TodoService', () => {
 
   it('should create a Todo', async () => {
     const todo: ITodo = {
+      account: '629e461fdc7347786c5fa080',
       title: 'run tests',
       isComplete: false,
     };
@@ -44,15 +45,51 @@ describe('TodoService', () => {
     let todos = await TodoService.list();
     expect(todos.length).toEqual(0);
 
-    await TodoService.createOne({ title: 'test', isComplete: false });
-    await TodoService.createOne({ title: 'test2', isComplete: true });
+    await TodoService.createOne({
+      account: '629e461fdc7347786c5fa080',
+      title: 'test',
+      isComplete: false,
+    });
+    await TodoService.createOne({
+      account: '629e461fdc7347786c5fa080',
+      title: 'test2',
+      isComplete: true,
+    });
 
     todos = await TodoService.list();
     expect(todos.length).toEqual(2);
   });
 
+  it('should list all Todos for an account', async () => {
+    let todos = await TodoService.list();
+    expect(todos.length).toEqual(0);
+
+    await TodoService.createOne({
+      account: '629e461fdc7347786c5fa080',
+      title: 'test',
+      isComplete: false,
+    });
+    await TodoService.createOne({
+      account: '629e461fdc7347786c5fa080',
+      title: 'test2',
+      isComplete: true,
+    });
+    await TodoService.createOne({
+      account: '549e461fdc7347786c5fa02a',
+      title: 'Another account todo',
+      isComplete: false,
+    });
+
+    todos = await TodoService.listByAccount('629e461fdc7347786c5fa080');
+    expect(todos.length).toEqual(2);
+  });
+
   it('should find a Todo by id', async () => {
-    const todo = await TodoService.createOne({ title: 'test', isComplete: false });
+    const todo = await TodoService.createOne({
+      account: '629e461fdc7347786c5fa080',
+      title: 'test',
+      isComplete: false,
+    });
     expect(todo.id).not.toBeNull();
 
     const foundTodo = await TodoService.findOne(todo.id?.toString() || '');
@@ -66,7 +103,11 @@ describe('TodoService', () => {
   });
 
   it('should update a Todo', async () => {
-    const todo = await TodoService.createOne({ title: 'test', isComplete: false });
+    const todo = await TodoService.createOne({
+      account: '629e461fdc7347786c5fa080',
+      title: 'test',
+      isComplete: false,
+    });
     expect(todo.id).not.toBeNull();
     expect(todo.title).toEqual('test');
 
@@ -77,12 +118,20 @@ describe('TodoService', () => {
   });
 
   it('should return null when updating a non-existent id', async () => {
-    const todo = await TodoService.updateOne('doesNotExist', { title: 'cant find me', isComplete: true });
+    const todo = await TodoService.updateOne('doesNotExist', {
+      account: '629e461fdc7347786c5fa080',
+      title: 'cant find me',
+      isComplete: true,
+    });
     expect(todo).toBeNull();
   });
 
   it('should delete a Todo', async () => {
-    const todo = await TodoService.createOne({ title: 'test', isComplete: false });
+    const todo = await TodoService.createOne({
+      account: '629e461fdc7347786c5fa080',
+      title: 'test',
+      isComplete: false,
+    });
     expect(todo.id).not.toBeNull();
 
     await TodoService.deleteOne(todo.id?.toString() || '');

@@ -1,9 +1,8 @@
-import { ObjectId } from 'mongodb';
-import { Schema, model } from 'mongoose';
+import { Schema, model, Types } from 'mongoose';
 import toJSON from './plugins/toJSON';
 
 export interface IAccount {
-  id?: ObjectId | string;
+  id?: Types.ObjectId | string;
   username: string;
   password: string;
 }

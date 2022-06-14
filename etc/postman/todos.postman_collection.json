@@ -41,7 +41,8 @@
 					"path": [
 						"health"
 					]
-				}
+				},
+				"description": "Public API to fetch the component health. Useful for load balancers or other monitoring tools."
 			},
 			"response": []
 		},
@@ -80,7 +81,8 @@
 					"path": [
 						"status"
 					]
-				}
+				},
+				"description": "Deep component status check. Not for use by frequent monitoring."
 			},
 			"response": []
 		},
@@ -91,8 +93,8 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 201\", function () {",
-							"    pm.response.to.have.status(201);",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
 							"});",
 							"var jsonData = pm.response.json();",
 							"pm.environment.set(\"accountId\", jsonData.id);"
@@ -185,7 +187,8 @@
 						"auth",
 						"signin"
 					]
-				}
+				},
+				"description": "Authenticate to the API."
 			},
 			"response": []
 		},
@@ -231,7 +234,8 @@
 						"auth",
 						"token"
 					]
-				}
+				},
+				"description": "Use a refresh token to obtain a new access token."
 			},
 			"response": []
 		},
@@ -268,7 +272,8 @@
 						"v1",
 						"accounts"
 					]
-				}
+				},
+				"description": "List all accounts."
 			},
 			"response": []
 		},
@@ -316,7 +321,8 @@
 						"v1",
 						"accounts"
 					]
-				}
+				},
+				"description": "Create an account."
 			},
 			"response": []
 		},
@@ -365,7 +371,8 @@
 							"value": "{{accountId}}"
 						}
 					]
-				}
+				},
+				"description": "Get a single account by id."
 			},
 			"response": []
 		},
@@ -422,7 +429,8 @@
 							"value": "{{accountId}}"
 						}
 					]
-				}
+				},
+				"description": "Update an account."
 			},
 			"response": []
 		},
@@ -461,7 +469,46 @@
 							"value": "{{accountId}}"
 						}
 					]
+				},
+				"description": "Delete an account."
+			},
+			"response": []
+		},
+		{
+			"name": "/v1/accounts/:accountId/todos",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
 				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/v1/accounts/:accountId/todos",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"accounts",
+						":accountId",
+						"todos"
+					],
+					"variable": [
+						{
+							"key": "accountId",
+							"value": "{{accountId}}"
+						}
+					]
+				},
+				"description": "List todos for an account."
 			},
 			"response": []
 		},
@@ -498,7 +545,8 @@
 						"v1",
 						"todos"
 					]
-				}
+				},
+				"description": "List all todos."
 			},
 			"response": []
 		},
@@ -535,7 +583,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"title\": \"Vacuum living room\"\n}"
+					"raw": "{\n    \"account\": \"{{accountId}}\",\n    \"title\": \"Vacuum living room\"\n}"
 				},
 				"url": {
 					"raw": "{{baseUrl}}/v1/todos",
@@ -546,7 +594,8 @@
 						"v1",
 						"todos"
 					]
-				}
+				},
+				"description": "Create a todo."
 			},
 			"response": []
 		},
@@ -595,7 +644,8 @@
 							"value": "{{todoId}}"
 						}
 					]
-				}
+				},
+				"description": "Get a single todo by id."
 			},
 			"response": []
 		},
@@ -652,7 +702,8 @@
 							"value": "{{todoId}}"
 						}
 					]
-				}
+				},
+				"description": "Update a todo."
 			},
 			"response": []
 		},
@@ -695,7 +746,8 @@
 							"value": "{{todoId}}"
 						}
 					]
-				}
+				},
+				"description": "Delete a todo."
 			},
 			"response": []
 		}

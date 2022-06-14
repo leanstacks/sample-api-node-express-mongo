@@ -7,12 +7,14 @@ import JwtService from '../../../../services/jwt-service';
 import app from '../../../../app';
 
 import TodoService from '../../../../services/todo-service';
+import { IAccount } from '../../../../models/account';
 jest.mock('../../../../services/todo-service');
 
 const mockedTodoService = jest.mocked(TodoService);
 
-describe('GET /v1/todos', () => {
+describe('GET /v1/accounts/:id/todos', () => {
   let mongo: MongoMemoryServer;
+  let account: IAccount;
   let token: string;
 
   beforeAll(async () => {
@@ -21,7 +23,7 @@ describe('GET /v1/todos', () => {
   });
 
   beforeEach(async () => {
-    const account = await AccountService.createOne({
+    account = await AccountService.createOne({
       username: 'user@example.com',
       password: 'Iamagoodpassword1!',
     });
@@ -34,7 +36,7 @@ describe('GET /v1/todos', () => {
       await collections[key].deleteMany({});
     }
 
-    mockedTodoService.list.mockClear();
+    mockedTodoService.listByAccount.mockClear();
   });
 
   afterAll(async () => {
@@ -43,19 +45,18 @@ describe('GET /v1/todos', () => {
   });
 
   it('should require authentication', async () => {
-    const res = await request(app).get('/v1/todos');
+    const res = await request(app).get(`/v1/accounts/${account.id}/todos`);
 
     expect(res.statusCode).toEqual(401);
   });
 
   it('should return status code 200', async () => {
-    const data = [
-      { id: '1', account: '629e461fdc7347786c5fa080', title: 'run tests', isComplete: false },
-    ];
-    mockedTodoService.list.mockResolvedValueOnce(data);
+    const accountId: string = account.id?.toString() || '';
+    const data = [{ id: '1', account: accountId, title: 'run tests', isComplete: false }];
+    mockedTodoService.listByAccount.mockResolvedValueOnce(data);
 
     const res = await request(app)
-      .get('/v1/todos')
+      .get(`/v1/accounts/${account.id}/todos`)
       .auth(token, { type: 'bearer' })
       .set('Accept', 'application/json');
 
@@ -65,28 +66,27 @@ describe('GET /v1/todos', () => {
   });
 
   it('should call return status code 500 when an error occurs', async () => {
-    mockedTodoService.list.mockRejectedValueOnce(new Error());
+    mockedTodoService.listByAccount.mockRejectedValueOnce(new Error());
 
     const res = await request(app)
-      .get('/v1/todos')
+      .get(`/v1/accounts/${account.id}/todos`)
       .auth(token, { type: 'bearer' })
       .set('Accept', 'application/json');
 
-    expect(mockedTodoService.list).toHaveBeenCalled();
+    expect(mockedTodoService.listByAccount).toHaveBeenCalled();
     expect(res.statusCode).toEqual(500);
   });
 
   it('should call TodoService', async () => {
-    const data = [
-      { id: '1', account: '629e461fdc7347786c5fa080', title: 'run tests', isComplete: false },
-    ];
-    mockedTodoService.list.mockResolvedValueOnce(data);
+    const accountId: string = account.id?.toString() || '';
+    const data = [{ id: '1', account: accountId, title: 'run tests', isComplete: false }];
+    mockedTodoService.listByAccount.mockResolvedValueOnce(data);
 
     const res = await request(app)
-      .get('/v1/todos')
+      .get(`/v1/accounts/${account.id}/todos`)
       .auth(token, { type: 'bearer' })
       .set('Accept', 'application/json');
 
-    expect(mockedTodoService.list).toHaveBeenCalled();
+    expect(mockedTodoService.listByAccount).toHaveBeenCalledWith(accountId);
   });
 });

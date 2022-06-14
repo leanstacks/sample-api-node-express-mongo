@@ -21,7 +21,10 @@ describe('PUT /v1/todos/:id', () => {
   });
 
   beforeEach(async () => {
-    const account = await AccountService.createOne({ username: 'user@example.com', password: 'Iamagoodpassword1!' });
+    const account = await AccountService.createOne({
+      username: 'user@example.com',
+      password: 'Iamagoodpassword1!',
+    });
     token = JwtService.createToken({ account });
   });
 
@@ -40,7 +43,12 @@ describe('PUT /v1/todos/:id', () => {
   });
 
   it('should require authentication', async () => {
-    const data = { id: '1', title: 'run tests', isComplete: false };
+    const data = {
+      id: '1',
+      account: '629e461fdc7347786c5fa080',
+      title: 'run tests',
+      isComplete: false,
+    };
     const res = await request(app)
       .put('/v1/todos/1')
       .send(data)
@@ -51,7 +59,12 @@ describe('PUT /v1/todos/:id', () => {
   });
 
   it('should return status code 200', async () => {
-    const data = { id: '1', title: 'run tests', isComplete: false };
+    const data = {
+      id: '1',
+      account: '629e461fdc7347786c5fa080',
+      title: 'run tests',
+      isComplete: false,
+    };
     mockedTodoService.updateOne.mockResolvedValueOnce(data);
 
     const res = await request(app)
@@ -81,7 +94,12 @@ describe('PUT /v1/todos/:id', () => {
   });
 
   it('should return status code 404 when not found', async () => {
-    const data = { id: '1', title: 'run tests', isComplete: false };
+    const data = {
+      id: '1',
+      account: '629e461fdc7347786c5fa080',
+      title: 'run tests',
+      isComplete: false,
+    };
     mockedTodoService.updateOne.mockResolvedValueOnce(null);
 
     const res = await request(app)
@@ -95,7 +113,12 @@ describe('PUT /v1/todos/:id', () => {
   });
 
   it('should call return status code 500 when an error occurs', async () => {
-    const data = { id: '1', title: 'run tests', isComplete: false };
+    const data = {
+      id: '1',
+      account: '629e461fdc7347786c5fa080',
+      title: 'run tests',
+      isComplete: false,
+    };
     mockedTodoService.updateOne.mockRejectedValueOnce(new Error());
 
     const res = await request(app)
@@ -110,7 +133,12 @@ describe('PUT /v1/todos/:id', () => {
   });
 
   it('should call TodoService', async () => {
-    const data = { id: '1', title: 'run tests', isComplete: false };
+    const data = {
+      id: '1',
+      account: '629e461fdc7347786c5fa080',
+      title: 'run tests',
+      isComplete: false,
+    };
     mockedTodoService.updateOne.mockResolvedValueOnce(data);
 
     const res = await request(app)
