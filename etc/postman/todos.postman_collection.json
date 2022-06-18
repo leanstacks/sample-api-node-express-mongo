@@ -94,10 +94,12 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
+							"  pm.response.to.have.status(200);",
 							"});",
-							"var jsonData = pm.response.json();",
-							"pm.environment.set(\"accountId\", jsonData.id);"
+							"if (pm.response.code === 200) {",
+							"  var jsonData = pm.response.json();",
+							"  pm.environment.set(\"accountId\", jsonData.id);",
+							"}"
 						],
 						"type": "text/javascript"
 					}
@@ -146,11 +148,14 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
+							"  pm.response.to.have.status(200);",
 							"});",
-							"var jsonData = pm.response.json();",
-							"pm.environment.set(\"accessToken\", jsonData.access_token);",
-							"pm.environment.set(\"refreshToken\", jsonData.refresh_token);"
+							"if (pm.response.code === 200) {",
+							"  var jsonData = pm.response.json();",
+							"  pm.environment.set(\"accessToken\", jsonData.access_token);",
+							"  pm.environment.set(\"refreshToken\", jsonData.refresh_token);",
+							"}",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -200,10 +205,12 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
+							"  pm.response.to.have.status(200);",
 							"});",
-							"var jsonData = pm.response.json();",
-							"pm.environment.set(\"accessToken\", jsonData.access_token);"
+							"if (pm.response.status === 200) {",
+							"  var jsonData = pm.response.json();",
+							"  pm.environment.set(\"accessToken\", jsonData.access_token);",
+							"}"
 						],
 						"type": "text/javascript"
 					}
@@ -247,7 +254,7 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
+							"  pm.response.to.have.status(200);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -285,10 +292,12 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
+							"  pm.response.to.have.status(200);",
 							"});",
-							"var jsonData = pm.response.json();",
-							"pm.environment.set(\"accountId\", jsonData.id);"
+							"if (pm.response.code === 200) {",
+							"  var jsonData = pm.response.json();",
+							"  pm.environment.set(\"accountId\", jsonData.id);",
+							"}"
 						],
 						"type": "text/javascript"
 					}
@@ -334,11 +343,11 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
+							"  pm.response.to.have.status(200);",
 							"});",
 							"pm.test(\"ID match\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData.id).to.eql(pm.environment.get('accountId'));",
+							"  var jsonData = pm.response.json();",
+							"  pm.expect(jsonData.id).to.eql(pm.environment.get('accountId'));",
 							"});",
 							""
 						],
@@ -384,11 +393,11 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
+							"  pm.response.to.have.status(200);",
 							"});",
 							"pm.test(\"clientId matches\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData.username).to.eql('user3+updated@example.com');",
+							"  var jsonData = pm.response.json();",
+							"  pm.expect(jsonData.username).to.eql('user3+updated@example.com');",
 							"});"
 						],
 						"type": "text/javascript"
@@ -442,7 +451,7 @@
 					"script": {
 						"exec": [
 							"pm.test(\"status code is 204\", function () {",
-							"    pm.response.to.have.status(204);",
+							"  pm.response.to.have.status(204);",
 							"});",
 							""
 						],
@@ -476,6 +485,19 @@
 		},
 		{
 			"name": "/v1/accounts/:accountId/todos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
@@ -558,10 +580,12 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
+							"  pm.response.to.have.status(200);",
 							"});",
-							"var jsonData = pm.response.json();",
-							"pm.environment.set(\"todoId\", jsonData.id);"
+							"if (pm.response.code === 200) {",
+							"  var jsonData = pm.response.json();",
+							"  pm.environment.set(\"todoId\", jsonData.id);",
+							"}"
 						],
 						"type": "text/javascript"
 					}
