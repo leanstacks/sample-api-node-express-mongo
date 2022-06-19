@@ -1,3 +1,5 @@
+import merge from 'lodash/merge';
+
 import Todo, { ITodo } from '../models/todo';
 import logger from '../utils/logger';
 
@@ -24,8 +26,12 @@ const findOne = async (id: string): Promise<ITodo | null> => {
 
 const updateOne = async (id: string, todo: ITodo): Promise<ITodo | null> => {
   logger.debug('TodoService::updateOne');
-  const todoUpdated = (await Todo.findByIdAndUpdate(id, todo, { new: true })) as ITodo;
-  return todoUpdated;
+  const todoToUpdate = await Todo.findById(id);
+  if (todoToUpdate) {
+    merge(todoToUpdate, todo);
+    await todoToUpdate.save();
+  }
+  return todoToUpdate;
 };
 
 const deleteOne = async (id: string): Promise<void> => {

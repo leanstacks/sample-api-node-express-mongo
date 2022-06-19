@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 # A wildcard ensures both package.json AND package-lock.json are copied
 COPY package*.json ./
 
-RUN npm ci --only=production
+RUN npm clean-install
 
 # Bundle app source
 COPY ./dist .

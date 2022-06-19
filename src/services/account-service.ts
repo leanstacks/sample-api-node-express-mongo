@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import merge from 'lodash/merge';
 
 import Account, { IAccount } from '../models/account';
 import logger from '../utils/logger';
@@ -64,7 +65,7 @@ const updateOne = async (id: string, account: IAccount): Promise<IAccount | null
   try {
     const accountToUpdate = await Account.findById(id);
     if (accountToUpdate) {
-      accountToUpdate.username = account.username;
+      merge(accountToUpdate, account);
       await accountToUpdate.save();
     }
     return accountToUpdate;
