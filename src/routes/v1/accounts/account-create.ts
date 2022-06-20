@@ -10,7 +10,8 @@ const validate = (input: IAccount): IAccount => {
     username: Joi.string().email().required(),
     password: Joi.string()
       .required()
-      .pattern(new RegExp('^[a-zA-Z0-9!@#$%^&*()]{12,30}$'))
+      .min(12)
+      .max(30)
       .pattern(new RegExp('[a-z]+'))
       .pattern(new RegExp('[A-Z]+'))
       .pattern(new RegExp('[0-9]+'))
@@ -23,7 +24,11 @@ const validate = (input: IAccount): IAccount => {
   return value;
 };
 
-export const createAccount = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const createAccount = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
   try {
     logger.info('handler::createAccount');
 

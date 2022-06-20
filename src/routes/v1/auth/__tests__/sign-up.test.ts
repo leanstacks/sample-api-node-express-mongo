@@ -9,7 +9,13 @@ const mockedAccountService = jest.mocked(AccountService);
 
 describe('POST /v1/auth/signup', () => {
   const data = { username: 'user@example.com', password: 'StrongPassword0!' };
-  const account = { id: '1', username: 'user@example.com', password: 'StrongPassword0!' };
+  const account = {
+    id: '1',
+    username: 'user@example.com',
+    password: 'StrongPassword0!',
+    isActive: true,
+    isLocked: false,
+  };
 
   afterEach(async () => {
     mockedAccountService.createOne.mockClear();

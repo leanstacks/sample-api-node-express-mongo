@@ -26,6 +26,8 @@ describe('GET /v1/accounts/:id/todos', () => {
     account = await AccountService.createOne({
       username: 'user@example.com',
       password: 'Iamagoodpassword1!',
+      isActive: true,
+      isLocked: false,
     });
     token = JwtService.createToken({ account });
   });

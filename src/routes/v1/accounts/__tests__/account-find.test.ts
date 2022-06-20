@@ -10,7 +10,13 @@ const mockedAccountService = jest.mocked(AccountService);
 
 describe('GET /v1/accounts/:id', () => {
   let token: string;
-  const accountData = { id: '1', username: 'user@example.com', password: 'StrongP@ssw0rd' };
+  const accountData = {
+    id: '1',
+    username: 'user@example.com',
+    password: 'StrongP@ssw0rd',
+    isActive: true,
+    isLocked: false,
+  };
 
   beforeEach(async () => {
     token = JwtService.createToken({ accountData });

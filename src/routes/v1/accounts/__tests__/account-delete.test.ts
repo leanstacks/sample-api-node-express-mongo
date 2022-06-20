@@ -10,7 +10,13 @@ const mockedAccountService = jest.mocked(AccountService);
 
 describe('DELETE /v1/accounts/:id', () => {
   let token: string;
-  const accountData = { id: '1', username: 'user@example.com', password: 'StrongP@ssw0rd' };
+  const accountData = {
+    id: '1',
+    username: 'user@example.com',
+    password: 'StrongP@ssw0rd',
+    isActive: true,
+    isLocked: false,
+  };
   const data = { username: 'test1@example.com', password: 'StrongP@ssw0rd' };
   const createdData = { id: '2', username: data.username, password: data.password };
 

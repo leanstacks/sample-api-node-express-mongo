@@ -13,7 +13,13 @@ const mockedJwtService = jest.mocked(JwtService);
 
 describe('POST /v1/auth/token', () => {
   const data = { grant_type: 'refresh_token', refresh_token: 'abc123' };
-  const account = { id: '1', username: 'user@example.com', password: 'StrongPassword0!' };
+  const account = {
+    id: '1',
+    username: 'user@example.com',
+    password: 'StrongPassword0!',
+    isActive: true,
+    isLocked: false,
+  };
 
   afterEach(async () => {
     mockedAccountService.findOne.mockClear();

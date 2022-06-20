@@ -19,7 +19,13 @@ describe('POST /v1/auth/signin', () => {
 
   it('should return status code 200', async () => {
     const data = { username: 'user@example.com', password: 'StrongPassword0!' };
-    const account = { id: '1', username: data.username, password: data.password };
+    const account = {
+      id: '1',
+      username: data.username,
+      password: data.password,
+      isActive: true,
+      isLocked: false,
+    };
     mockedAccountService.authenticate.mockResolvedValue(account);
 
     const res = await request(app)
@@ -66,7 +72,13 @@ describe('POST /v1/auth/signin', () => {
 
   it('should call AccountService', async () => {
     const data = { username: 'user@example.com', password: 'StrongPassword0!' };
-    const account = { id: '1', username: data.username, password: data.password };
+    const account = {
+      id: '1',
+      username: data.username,
+      password: data.password,
+      isActive: true,
+      isLocked: false,
+    };
     mockedAccountService.authenticate.mockResolvedValue(account);
 
     const res = await request(app)
@@ -80,7 +92,13 @@ describe('POST /v1/auth/signin', () => {
 
   it('should call JwtService', async () => {
     const data = { username: 'user@example.com', password: 'StrongPassword0!' };
-    const account = { id: '1', username: data.username, password: data.password };
+    const account = {
+      id: '1',
+      username: data.username,
+      password: data.password,
+      isActive: true,
+      isLocked: false,
+    };
     mockedAccountService.authenticate.mockResolvedValue(account);
 
     const res = await request(app)

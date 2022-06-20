@@ -21,7 +21,12 @@ describe('DELETE /v1/todos/:id', () => {
   });
 
   beforeEach(async () => {
-    const account = await AccountService.createOne({ username: 'user@example.com', password: 'Iamagoodpassword1!' });
+    const account = await AccountService.createOne({
+      username: 'user@example.com',
+      password: 'Iamagoodpassword1!',
+      isActive: true,
+      isLocked: false,
+    });
     token = JwtService.createToken({ account });
   });
 

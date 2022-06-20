@@ -24,7 +24,12 @@ describe('Account Model', () => {
   });
 
   it('should create an Account', async () => {
-    const data = { username: 'user@example.com', password: 'IamApassword1!' };
+    const data = {
+      username: 'user@example.com',
+      password: 'IamApassword1!',
+      isActive: true,
+      isLocked: false,
+    };
 
     const account = new Account(data);
     await account.save();
@@ -33,7 +38,12 @@ describe('Account Model', () => {
   });
 
   it('should have "id" in JSON', async () => {
-    const data = { username: 'user@example.com', password: 'IamApassword1!' };
+    const data = {
+      username: 'user@example.com',
+      password: 'IamApassword1!',
+      isActive: true,
+      isLocked: false,
+    };
 
     const account = new Account(data);
     await account.save();
@@ -43,7 +53,12 @@ describe('Account Model', () => {
   });
 
   it('should not have "_id" in JSON', async () => {
-    const data = { username: 'user@example.com', password: 'IamApassword1!' };
+    const data = {
+      username: 'user@example.com',
+      password: 'IamApassword1!',
+      isActive: true,
+      isLocked: false,
+    };
 
     const account = new Account(data);
     await account.save();
@@ -52,11 +67,16 @@ describe('Account Model', () => {
   });
 
   it('should not have private attributes in JSON', async () => {
-    const data = { username: 'user@example.com', password: 'IamApassword1!' };
+    const data = {
+      username: 'user@example.com',
+      password: 'IamApassword1!',
+      isActive: true,
+      isLocked: false,
+    };
 
     const account = new Account(data);
     await account.save();
     expect(account).not.toBeNull();
-    expect(JSON.stringify(account.toJSON())).not.toMatch(/password/);
+    expect(JSON.stringify(account.toJSON())).not.toMatch(/"password"/);
   });
 });

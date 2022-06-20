@@ -10,9 +10,21 @@ const mockedAccountService = jest.mocked(AccountService);
 
 describe('PUT /v1/accounts/:id', () => {
   let token: string;
-  const accountData = { id: '1', username: 'user@example.com', password: 'StrongP@ssw0rd' };
+  const accountData = {
+    id: '1',
+    username: 'user@example.com',
+    password: 'StrongP@ssw0rd',
+    isActive: true,
+    isLocked: false,
+  };
   const data = { id: '2', username: 'test1@example.com' };
-  const updatedData = { id: '2', username: data.username, password: 'StrongP@ssw0rd' };
+  const updatedData = {
+    id: '2',
+    username: data.username,
+    password: 'StrongP@ssw0rd',
+    isActive: true,
+    isLocked: false,
+  };
 
   beforeEach(async () => {
     token = JwtService.createToken({ accountData });
@@ -61,7 +73,7 @@ describe('PUT /v1/accounts/:id', () => {
   });
 
   it('should return status code 422 when request is invalid', async () => {
-    const data = {};
+    const data = { username: 'test@example' };
 
     const res = await request(app)
       .put('/v1/accounts/1')

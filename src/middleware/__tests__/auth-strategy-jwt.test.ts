@@ -5,7 +5,13 @@ jest.mock('../../services/account-service');
 const mockedAccountService = jest.mocked(AccountService);
 
 describe('Passport JWT Strategy', () => {
-  const account = { id: '1', username: 'user@example.com', password: 'StrongP@ssw0rd' };
+  const account = {
+    id: '1',
+    username: 'user@example.com',
+    password: 'StrongP@ssw0rd',
+    isActive: true,
+    isLocked: false,
+  };
   const payload = { account };
   const done = jest.fn();
 

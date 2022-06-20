@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt';
 import merge from 'lodash/merge';
 
 import Account, { IAccount } from '../models/account';
@@ -19,12 +18,10 @@ const createOne = async (account: IAccount): Promise<IAccount> => {
     throw new AccountExistsError('Username in use');
   }
 
-  // hash password
-  const passwordHash = await bcrypt.hash(account.password, 10);
-  account.password = passwordHash;
-
   // save account
   const newAccount = new Account(account);
+  newAccount.isActive = true;
+  newAccount.isLocked = false;
   await newAccount.save();
 
   return newAccount;
@@ -50,9 +47,9 @@ const findOneByUsername = async (username: string): Promise<IAccount | null> => 
 
 const authenticate = async (username: string, password: string): Promise<IAccount | null> => {
   logger.info('AccountService::authenticate');
-  const account = await findOneByUsername(username);
+  const account = await Account.findOne({ username });
   if (account) {
-    const isPasswordMatch = await bcrypt.compare(password, account.password);
+    const isPasswordMatch = await account.isPasswordMatch(password);
     if (isPasswordMatch) {
       return account;
     }
