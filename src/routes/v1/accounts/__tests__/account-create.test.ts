@@ -16,6 +16,7 @@ describe('POST /v1/accounts', () => {
     password: 'StrongP@ssw0rd',
     isActive: true,
     isLocked: false,
+    invalidAuthenticationCount: 0,
   };
   const data = { username: 'test1@example.com', password: 'StrongP@ssw0rd' };
   const createdData = {
@@ -24,6 +25,7 @@ describe('POST /v1/accounts', () => {
     password: data.password,
     isActive: true,
     isLocked: false,
+    invalidAuthenticationCount: 0,
   };
 
   beforeEach(async () => {

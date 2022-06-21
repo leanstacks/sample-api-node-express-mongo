@@ -16,6 +16,7 @@ describe('GET /v1/accounts/:id', () => {
     password: 'StrongP@ssw0rd',
     isActive: true,
     isLocked: false,
+    invalidAuthenticationCount: 0,
   };
 
   beforeEach(async () => {

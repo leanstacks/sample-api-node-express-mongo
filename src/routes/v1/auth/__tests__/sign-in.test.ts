@@ -25,6 +25,7 @@ describe('POST /v1/auth/signin', () => {
       password: data.password,
       isActive: true,
       isLocked: false,
+      invalidAuthenticationCount: 0,
     };
     mockedAccountService.authenticate.mockResolvedValue(account);
 
@@ -78,6 +79,7 @@ describe('POST /v1/auth/signin', () => {
       password: data.password,
       isActive: true,
       isLocked: false,
+      invalidAuthenticationCount: 0,
     };
     mockedAccountService.authenticate.mockResolvedValue(account);
 
@@ -98,6 +100,7 @@ describe('POST /v1/auth/signin', () => {
       password: data.password,
       isActive: true,
       isLocked: false,
+      invalidAuthenticationCount: 0,
     };
     mockedAccountService.authenticate.mockResolvedValue(account);
 

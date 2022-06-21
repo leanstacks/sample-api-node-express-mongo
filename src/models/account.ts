@@ -10,6 +10,7 @@ export interface IAccount {
   isLocked: boolean;
   passwordChangedAt?: Date;
   lastAuthenticatedAt?: Date;
+  invalidAuthenticationCount: number;
 }
 
 interface IAccountQueryHelpers {}
@@ -21,12 +22,13 @@ interface IAccountMethods {
 type AccountModel = Model<IAccount, IAccountQueryHelpers, IAccountMethods>;
 
 const accountSchema = new Schema<IAccount, AccountModel, IAccountMethods>({
-  username: { type: String, unique: true, required: true },
+  username: { type: String, required: true, unique: true },
   password: { type: String, required: true, private: true },
-  isActive: { type: Boolean, required: true },
-  isLocked: { type: Boolean, required: true },
+  isActive: { type: Boolean, default: true },
+  isLocked: { type: Boolean, default: false },
   passwordChangedAt: { type: Date },
   lastAuthenticatedAt: { type: Date },
+  invalidAuthenticationCount: { type: Number, default: 0 },
 });
 accountSchema.method(
   'isPasswordMatch',

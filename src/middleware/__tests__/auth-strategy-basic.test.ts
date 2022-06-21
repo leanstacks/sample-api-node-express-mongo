@@ -7,7 +7,14 @@ const mockedAccountService = jest.mocked(AccountService);
 describe('Passport Basic Strategy', () => {
   const username = 'user@example.com';
   const password = 'StrongP@ssw0rd';
-  const account = { id: '1', username, password, isActive: true, isLocked: false };
+  const account = {
+    id: '1',
+    username,
+    password,
+    isActive: true,
+    isLocked: false,
+    invalidAuthenticationCount: 0,
+  };
   const done = jest.fn();
 
   afterEach(() => {

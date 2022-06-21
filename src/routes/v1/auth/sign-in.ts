@@ -20,15 +20,8 @@ interface SignInResponse {
 
 const validate = (input: SignInRequest): SignInRequest => {
   const schema = Joi.object({
-    username: Joi.string().email().required(),
-    password: Joi.string()
-      .required()
-      .min(12)
-      .max(30)
-      .pattern(new RegExp('[a-z]+'))
-      .pattern(new RegExp('[A-Z]+'))
-      .pattern(new RegExp('[0-9]+'))
-      .pattern(new RegExp('[!@#$%^&*()]+')),
+    username: Joi.string().required(),
+    password: Joi.string().required(),
   });
   const { value, error } = schema.validate(input);
   if (error) {

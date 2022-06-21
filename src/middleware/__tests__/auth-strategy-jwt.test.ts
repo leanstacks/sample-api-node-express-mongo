@@ -11,6 +11,7 @@ describe('Passport JWT Strategy', () => {
     password: 'StrongP@ssw0rd',
     isActive: true,
     isLocked: false,
+    invalidAuthenticationCount: 0,
   };
   const payload = { account };
   const done = jest.fn();

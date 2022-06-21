@@ -29,6 +29,7 @@ describe('AccountService', () => {
       password: 'P@ssW0rdSuccess!',
       isActive: true,
       isLocked: false,
+      invalidAuthenticationCount: 0,
     };
 
     const account = await AccountService.createOne(data);
@@ -47,6 +48,7 @@ describe('AccountService', () => {
       password: 'P@ssW0rdSuccess!',
       isActive: true,
       isLocked: false,
+      invalidAuthenticationCount: 0,
     };
 
     const account = await AccountService.createOne(data);
@@ -68,12 +70,14 @@ describe('AccountService', () => {
       password: 'Iamagoodpassword1!',
       isActive: true,
       isLocked: false,
+      invalidAuthenticationCount: 0,
     });
     await AccountService.createOne({
       username: 'two@example.com',
       password: 'Iamagoodpassword1!',
       isActive: true,
       isLocked: false,
+      invalidAuthenticationCount: 0,
     });
 
     accounts = await AccountService.list();
@@ -86,6 +90,7 @@ describe('AccountService', () => {
       password: 'Iamagoodpassword1!',
       isActive: true,
       isLocked: false,
+      invalidAuthenticationCount: 0,
     });
     expect(account.id).not.toBeNull();
 
@@ -105,6 +110,7 @@ describe('AccountService', () => {
       password: 'Iamagoodpassword1!',
       isActive: true,
       isLocked: false,
+      invalidAuthenticationCount: 0,
     });
     expect(account.id).not.toBeNull();
     expect(account.username).toEqual('one@example.com');
@@ -121,6 +127,7 @@ describe('AccountService', () => {
       password: 'Iamagoodpassword1!',
       isActive: true,
       isLocked: false,
+      invalidAuthenticationCount: 0,
     });
     expect(account).toBeNull();
   });
@@ -131,12 +138,14 @@ describe('AccountService', () => {
       password: 'Iamagoodpassword1!',
       isActive: true,
       isLocked: false,
+      invalidAuthenticationCount: 0,
     });
     const account = await AccountService.createOne({
       username: 'two@example.com',
       password: 'Iamagoodpassword1!',
       isActive: true,
       isLocked: false,
+      invalidAuthenticationCount: 0,
     });
 
     try {
@@ -153,6 +162,7 @@ describe('AccountService', () => {
       password: 'Iamagoodpassword1!',
       isActive: true,
       isLocked: false,
+      invalidAuthenticationCount: 0,
     });
     expect(account.id).not.toBeNull();
 
@@ -171,6 +181,7 @@ describe('AccountService', () => {
       password,
       isActive: true,
       isLocked: false,
+      invalidAuthenticationCount: 0,
     });
     expect(account.id).not.toBeNull();
 
@@ -188,10 +199,37 @@ describe('AccountService', () => {
       password,
       isActive: true,
       isLocked: false,
+      invalidAuthenticationCount: 0,
     });
     expect(account.id).not.toBeNull();
 
     const authenticated = await AccountService.authenticate(username, 'someOtherPassword1!');
     expect(authenticated).toBeNull();
+  });
+
+  it('should lock account after N failed authentication attempts', async () => {
+    const username = 'one@example.com';
+    const password = 'Iamagoodpassword1!';
+
+    const account = await AccountService.createOne({
+      username,
+      password,
+      isActive: true,
+      isLocked: false,
+      invalidAuthenticationCount: 0,
+    });
+    expect(account.id).not.toBeNull();
+
+    let authenticated = await AccountService.authenticate(username, 'someOtherPassword1!');
+    expect(authenticated).toBeNull();
+
+    authenticated = await AccountService.authenticate(username, 'someOtherPassword1!');
+    expect(authenticated).toBeNull();
+
+    authenticated = await AccountService.authenticate(username, 'someOtherPassword1!');
+    expect(authenticated).toBeNull();
+
+    const lockedAccount = await AccountService.findOne(account.id as string);
+    expect(lockedAccount?.isLocked).toEqual(true);
   });
 });

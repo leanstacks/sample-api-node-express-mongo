@@ -26,6 +26,7 @@ describe('DELETE /v1/todos/:id', () => {
       password: 'Iamagoodpassword1!',
       isActive: true,
       isLocked: false,
+      invalidAuthenticationCount: 0,
     });
     token = JwtService.createToken({ account });
   });

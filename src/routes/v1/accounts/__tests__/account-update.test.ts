@@ -16,6 +16,7 @@ describe('PUT /v1/accounts/:id', () => {
     password: 'StrongP@ssw0rd',
     isActive: true,
     isLocked: false,
+    invalidAuthenticationCount: 0,
   };
   const data = { id: '2', username: 'test1@example.com' };
   const updatedData = {
@@ -24,6 +25,7 @@ describe('PUT /v1/accounts/:id', () => {
     password: 'StrongP@ssw0rd',
     isActive: true,
     isLocked: false,
+    invalidAuthenticationCount: 0,
   };
 
   beforeEach(async () => {

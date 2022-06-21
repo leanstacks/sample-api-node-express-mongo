@@ -15,6 +15,7 @@ describe('POST /v1/auth/signup', () => {
     password: 'StrongPassword0!',
     isActive: true,
     isLocked: false,
+    invalidAuthenticationCount: 0,
   };
 
   afterEach(async () => {

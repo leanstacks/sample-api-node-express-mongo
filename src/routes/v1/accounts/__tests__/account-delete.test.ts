@@ -16,9 +16,9 @@ describe('DELETE /v1/accounts/:id', () => {
     password: 'StrongP@ssw0rd',
     isActive: true,
     isLocked: false,
+    invalidAuthenticationCount: 0,
   };
   const data = { username: 'test1@example.com', password: 'StrongP@ssw0rd' };
-  const createdData = { id: '2', username: data.username, password: data.password };
 
   beforeEach(async () => {
     token = JwtService.createToken({ accountData });

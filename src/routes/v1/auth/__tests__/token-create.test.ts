@@ -19,6 +19,7 @@ describe('POST /v1/auth/token', () => {
     password: 'StrongPassword0!',
     isActive: true,
     isLocked: false,
+    invalidAuthenticationCount: 0,
   };
 
   afterEach(async () => {

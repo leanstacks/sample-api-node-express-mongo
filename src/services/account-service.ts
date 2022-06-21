@@ -1,6 +1,7 @@
 import merge from 'lodash/merge';
 
 import Account, { IAccount } from '../models/account';
+import config from '../config/config';
 import logger from '../utils/logger';
 
 export class AccountExistsError extends Error {
@@ -47,11 +48,25 @@ const findOneByUsername = async (username: string): Promise<IAccount | null> => 
 
 const authenticate = async (username: string, password: string): Promise<IAccount | null> => {
   logger.info('AccountService::authenticate');
-  const account = await Account.findOne({ username });
+  let account = await Account.findOne({ username });
   if (account) {
-    const isPasswordMatch = await account.isPasswordMatch(password);
-    if (isPasswordMatch) {
-      return account;
+    // account found
+    if (account.isActive && !account.isLocked) {
+      const isPasswordMatch = await account.isPasswordMatch(password);
+      if (isPasswordMatch) {
+        // password matches; authenticate
+        account.lastAuthenticatedAt = new Date();
+        account.invalidAuthenticationCount = 0;
+        account = await account.save();
+        return account;
+      } else {
+        // password does NOT match
+        account.invalidAuthenticationCount++;
+        if (account.invalidAuthenticationCount >= config.AUTH_ATTEMPTS_MAX) {
+          account.isLocked = true;
+        }
+        await account.save();
+      }
     }
   }
   return null;
