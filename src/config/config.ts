@@ -4,6 +4,7 @@ import Joi from 'joi';
 
 interface ConfigProps {
   AUTH_ATTEMPTS_MAX: number;
+  AUTH_PASSWORD_EXPIRES_IN_DAYS: number;
   JWT_AUDIENCE: string;
   JWT_ACCESS_TOKEN_EXPIRES_IN: number;
   JWT_ISSUER: string;
@@ -21,6 +22,7 @@ interface ConfigProps {
 
 const configSchema = Joi.object({
   AUTH_ATTEMPTS_MAX: Joi.number().default(3),
+  AUTH_PASSWORD_EXPIRES_IN_DAYS: Joi.number().default(60),
   JWT_AUDIENCE: Joi.string().default('leanstacks.net'),
   JWT_ACCESS_TOKEN_EXPIRES_IN: Joi.number().default(3600),
   JWT_ISSUER: Joi.string().default('todos.leanstacks.net'),

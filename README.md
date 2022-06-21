@@ -273,22 +273,23 @@ FOOBAR=${FOO}${BAR} // foobar
 
 ## Configuration Values
 
-| name                         | default                                  | description                                                                              |
-| ---------------------------- | ---------------------------------------- | ---------------------------------------------------------------------------------------- |
-| AUTH_ATTEMPTS_MAX            | `3`                                      | The maximum number of invalid authentication attempts after which the account is locked. |
-| JWT_AUDIENCE                 |                                          | The JWT audience attribute value.                                                        |
-| JWT_ACCESS_TOKEN_EXPIRES_IN  | `3600`                                   | The JWT duration an access token is valid.                                               |
-| JWT_ISSUER                   |                                          | The JWT issuer attribute value.                                                          |
-| JWT_REFRESH_TOKEN_EXPIRES_IN | `86400`                                  | The JWT duration a refresh token is valid.                                               |
-| JWT_SECRET                   |                                          | The JWT signing secret value.                                                            |
-| LOG_LEVEL                    | `info`                                   | The logging level threshold.                                                             |
-| MONGO_DBNAME                 | `todo_db`                                | The MongoDB database name.                                                               |
-| MONGO_INMEMORY               | `false`                                  | Use an in-memory MongoDB instance.                                                       |
-| MONGO_URL                    | `mongodb://username:password@host:27017` | The connection URL for MongoDB. Optional if `MONGO_INMEMORY` is true.                    |
-| NODE_ENV                     | `development`                            | The environment type. One of: `development`, `test`, `production`                        |
-| SERVER_PORT                  | `3001`                                   | The port on which the application listens for requests.                                  |
-| SERVER_HOST                  | `localhost`                              | The hostname (or DNS name) on which the server is hosted.                                |
-| SERVER_BASEURL               | `http://${SERVER_PORT}:${SERVER_PORT}`   | The base URL of the application.                                                         |
+| name                          | default                                  | description                                                                              |
+| ----------------------------- | ---------------------------------------- | ---------------------------------------------------------------------------------------- |
+| AUTH_ATTEMPTS_MAX             | `3`                                      | The maximum number of invalid authentication attempts after which the account is locked. |
+| AUTH_PASSWORD_EXPIRES_IN_DAYS | `90`                                     | The number of days after which a password is flagged as expired.                         |
+| JWT_AUDIENCE                  |                                          | The JWT audience attribute value.                                                        |
+| JWT_ACCESS_TOKEN_EXPIRES_IN   | `3600`                                   | The JWT duration an access token is valid.                                               |
+| JWT_ISSUER                    |                                          | The JWT issuer attribute value.                                                          |
+| JWT_REFRESH_TOKEN_EXPIRES_IN  | `86400`                                  | The JWT duration a refresh token is valid.                                               |
+| JWT_SECRET                    |                                          | The JWT signing secret value.                                                            |
+| LOG_LEVEL                     | `info`                                   | The logging level threshold.                                                             |
+| MONGO_DBNAME                  | `todo_db`                                | The MongoDB database name.                                                               |
+| MONGO_INMEMORY                | `false`                                  | Use an in-memory MongoDB instance.                                                       |
+| MONGO_URL                     | `mongodb://username:password@host:27017` | The connection URL for MongoDB. Optional if `MONGO_INMEMORY` is true.                    |
+| NODE_ENV                      | `development`                            | The environment type. One of: `development`, `test`, `production`                        |
+| SERVER_PORT                   | `3001`                                   | The port on which the application listens for requests.                                  |
+| SERVER_HOST                   | `localhost`                              | The hostname (or DNS name) on which the server is hosted.                                |
+| SERVER_BASEURL                | `http://${SERVER_PORT}:${SERVER_PORT}`   | The base URL of the application.                                                         |
 
 ## Related Information
 
