@@ -3,6 +3,7 @@ import request from 'supertest';
 import AccountService from '../../../../services/account-service';
 import JwtService from '../../../../services/jwt-service';
 import app from '../../../../app';
+import { accountFixture } from '../../../../tests/fixtures';
 
 jest.mock('../../../../services/account-service');
 
@@ -10,13 +11,11 @@ const mockedAccountService = jest.mocked(AccountService);
 
 describe('POST /v1/accounts', () => {
   let token: string;
-  const accountData = { id: '1', username: 'user@example.com', password: 'StrongP@ssw0rd' };
-  const data = { username: 'test1@example.com', password: 'StrongP@ssw0rd' };
-  const createdData = { id: '2', username: data.username, password: data.password };
+  const data = { username: accountFixture.username, password: accountFixture.password };
 
   beforeEach(async () => {
-    token = JwtService.createToken({ accountData });
-    mockedAccountService.findOne.mockResolvedValueOnce(accountData);
+    token = JwtService.createToken({ account: accountFixture });
+    mockedAccountService.findOne.mockResolvedValueOnce(accountFixture);
   });
 
   afterEach(async () => {
@@ -34,7 +33,7 @@ describe('POST /v1/accounts', () => {
   });
 
   it('should return status code 200', async () => {
-    mockedAccountService.createOne.mockResolvedValue(createdData);
+    mockedAccountService.createOne.mockResolvedValue(accountFixture);
 
     const res = await request(app)
       .post('/v1/accounts')
@@ -47,7 +46,7 @@ describe('POST /v1/accounts', () => {
   });
 
   it('should call AccountService to create an account', async () => {
-    mockedAccountService.createOne.mockResolvedValue(createdData);
+    mockedAccountService.createOne.mockResolvedValue(accountFixture);
 
     const res = await request(app)
       .post('/v1/accounts')
@@ -57,7 +56,7 @@ describe('POST /v1/accounts', () => {
       .set('Accept', 'application/json');
 
     expect(mockedAccountService.createOne).toHaveBeenCalledWith(data);
-    expect(res.body).toEqual(createdData);
+    expect(res.body).toEqual(accountFixture);
   });
 
   it('should return status code 422 when request is invalid', async () => {

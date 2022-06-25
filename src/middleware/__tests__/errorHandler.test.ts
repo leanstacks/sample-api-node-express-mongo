@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
+import BadRequestError from '../../errors/bad-request-error';
 
 import { AccountExistsError } from '../../services/account-service';
 import { errorHandler } from '../errors';
@@ -57,6 +58,15 @@ describe('errorHandler middleware', () => {
 
     expect(status).toHaveBeenLastCalledWith(400);
     expect(send).toHaveBeenCalledWith({ message: 'token invalid' });
+  });
+
+  it('should return status code 400 for BadRequestError', () => {
+    const error = new BadRequestError('bad request');
+
+    errorHandler(error, req, res, next);
+
+    expect(status).toHaveBeenLastCalledWith(400);
+    expect(send).toHaveBeenCalledWith({ message: 'bad request' });
   });
 
   it('should return status code 409 for AccountExistsError', () => {

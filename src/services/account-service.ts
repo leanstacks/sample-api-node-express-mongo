@@ -1,7 +1,8 @@
-import bcrypt from 'bcrypt';
 import merge from 'lodash/merge';
 
 import Account, { IAccount } from '../models/account';
+import BadRequestError from '../errors/bad-request-error';
+import config from '../config/config';
 import logger from '../utils/logger';
 
 export class AccountExistsError extends Error {
@@ -19,12 +20,10 @@ const createOne = async (account: IAccount): Promise<IAccount> => {
     throw new AccountExistsError('Username in use');
   }
 
-  // hash password
-  const passwordHash = await bcrypt.hash(account.password, 10);
-  account.password = passwordHash;
-
   // save account
   const newAccount = new Account(account);
+  newAccount.isActive = true;
+  newAccount.isLocked = false;
   await newAccount.save();
 
   return newAccount;
@@ -50,11 +49,25 @@ const findOneByUsername = async (username: string): Promise<IAccount | null> => 
 
 const authenticate = async (username: string, password: string): Promise<IAccount | null> => {
   logger.info('AccountService::authenticate');
-  const account = await findOneByUsername(username);
+  let account = await Account.findOne({ username });
   if (account) {
-    const isPasswordMatch = await bcrypt.compare(password, account.password);
-    if (isPasswordMatch) {
-      return account;
+    // account found
+    if (account.isActive && !account.isLocked) {
+      const isPasswordMatch = await account.isPasswordMatch(password);
+      if (isPasswordMatch) {
+        // password matches; authenticate
+        account.lastAuthenticatedAt = new Date();
+        account.invalidAuthenticationCount = 0;
+        account = await account.save();
+        return account;
+      } else {
+        // password does NOT match
+        account.invalidAuthenticationCount++;
+        if (account.invalidAuthenticationCount >= config.AUTH_ATTEMPTS_MAX) {
+          account.isLocked = true;
+        }
+        await account.save();
+      }
     }
   }
   return null;
@@ -65,6 +78,13 @@ const updateOne = async (id: string, account: IAccount): Promise<IAccount | null
   try {
     const accountToUpdate = await Account.findById(id);
     if (accountToUpdate) {
+      if (account.password) {
+        // password is being updated
+        const isPasswordReused = accountToUpdate.isPasswordReused(account.password);
+        if (isPasswordReused) {
+          throw new BadRequestError('Password used recently.');
+        }
+      }
       merge(accountToUpdate, account);
       await accountToUpdate.save();
     }

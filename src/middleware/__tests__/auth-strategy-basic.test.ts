@@ -1,13 +1,11 @@
 import { verify } from '../auth-strategy-basic';
 
+import { accountFixture } from '../../tests/fixtures';
 import AccountService from '../../services/account-service';
 jest.mock('../../services/account-service');
 const mockedAccountService = jest.mocked(AccountService);
 
 describe('Passport Basic Strategy', () => {
-  const username = 'user@example.com';
-  const password = 'StrongP@ssw0rd';
-  const account = { id: '1', username, password };
   const done = jest.fn();
 
   afterEach(() => {
@@ -16,17 +14,17 @@ describe('Passport Basic Strategy', () => {
   });
 
   it('should call done with user when authentication successful', async () => {
-    mockedAccountService.authenticate.mockResolvedValue(account);
+    mockedAccountService.authenticate.mockResolvedValue(accountFixture);
 
-    await verify(username, password, done);
+    await verify(accountFixture.username, accountFixture.password, done);
 
-    expect(done).toHaveBeenCalledWith(null, account);
+    expect(done).toHaveBeenCalledWith(null, accountFixture);
   });
 
   it('should call done with false when authentication fails', async () => {
     mockedAccountService.authenticate.mockResolvedValue(null);
 
-    await verify(username, 'incorrectPassword', done);
+    await verify(accountFixture.username, 'incorrectPassword', done);
 
     expect(done).toHaveBeenCalledWith(null, false);
   });
@@ -35,7 +33,7 @@ describe('Passport Basic Strategy', () => {
     const error = new Error('test error');
     mockedAccountService.authenticate.mockRejectedValue(error);
 
-    await verify(username, password, done);
+    await verify(accountFixture.username, accountFixture.password, done);
 
     expect(done).toHaveBeenCalledWith(error);
   });

@@ -8,9 +8,18 @@ import AccountService from '../../../services/account-service';
 const validate = (input: IAccount): IAccount => {
   const schema = Joi.object({
     id: Joi.string(),
-    username: Joi.string().email().required(),
+    username: Joi.string().email(),
+    password: Joi.string()
+      .min(12)
+      .max(30)
+      .pattern(new RegExp('[a-z]+'))
+      .pattern(new RegExp('[A-Z]+'))
+      .pattern(new RegExp('[0-9]+'))
+      .pattern(new RegExp('[!@#$%^&*()]+')),
+    isActive: Joi.boolean(),
+    isLocked: Joi.boolean(),
   });
-  const { value, error } = schema.validate(input);
+  const { value, error } = schema.validate(input, { abortEarly: false });
   if (error) {
     throw error;
   }

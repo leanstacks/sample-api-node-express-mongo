@@ -3,6 +3,6 @@ module.exports = {
   preset: 'ts-jest',
   setupFiles: ['<rootDir>/jest.setup.js'],
   testEnvironment: 'node',
-  testPathIgnorePatterns: ['/node_modules/', '<rootDir>/dist/'],
+  testPathIgnorePatterns: ['/node_modules/', '<rootDir>/dist/', '<rootDir>/src/tests'],
   verbose: true,
 };

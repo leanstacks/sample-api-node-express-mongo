@@ -3,6 +3,7 @@ import Joi from 'joi';
 
 import logger from '../../../utils/logger';
 import AccountService from '../../../services/account-service';
+import { IAccount } from '../../../models/account';
 
 interface SignUpRequest {
   username: string;
@@ -33,7 +34,7 @@ export const signUp = async (req: Request, res: Response, next: NextFunction): P
 
     const validatedRequest = validate(req.body);
 
-    const account = await AccountService.createOne(validatedRequest);
+    const account = await AccountService.createOne(validatedRequest as IAccount);
 
     res.send(account);
   } catch (err: any) {

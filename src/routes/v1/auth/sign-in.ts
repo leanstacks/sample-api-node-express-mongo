@@ -20,14 +20,8 @@ interface SignInResponse {
 
 const validate = (input: SignInRequest): SignInRequest => {
   const schema = Joi.object({
-    username: Joi.string().email().required(),
-    password: Joi.string()
-      .required()
-      .pattern(new RegExp('^[a-zA-Z0-9!@#$%^&*()]{12,30}$'))
-      .pattern(new RegExp('[a-z]+'))
-      .pattern(new RegExp('[A-Z]+'))
-      .pattern(new RegExp('[0-9]+'))
-      .pattern(new RegExp('[!@#$%^&*()]+')),
+    username: Joi.string().required(),
+    password: Joi.string().required(),
   });
   const { value, error } = schema.validate(input);
   if (error) {
@@ -42,7 +36,10 @@ export const signIn = async (req: Request, res: Response, next: NextFunction): P
 
     const validatedRequest = validate(req.body);
 
-    const account = await AccountService.authenticate(validatedRequest.username, validatedRequest.password);
+    const account = await AccountService.authenticate(
+      validatedRequest.username,
+      validatedRequest.password,
+    );
     if (account) {
       const access_token = JwtService.createToken({
         account,
