@@ -37,7 +37,7 @@ interface IAccountQueryHelpers {}
 
 type IAccountMethodsAndOverrides = {
   isPasswordMatch(value: string): boolean;
-  isPasswordReused(password: string, historyCount?: number): boolean;
+  isPasswordReused(password: string): boolean;
   passwordHistory: Types.DocumentArray<IPasswordHistory>;
 };
 
@@ -66,19 +66,16 @@ accountSchema.method(
   },
 );
 
-accountSchema.method(
-  'isPasswordReused',
-  function isPasswordReused(password: string, historyCount = 1): boolean {
-    const recentPasswords = take(
-      orderBy(this.passwordHistory, ['changedAt'], ['desc']),
-      historyCount,
-    );
-    const passwordMatch = find(recentPasswords, (recentPassword) => {
-      return bcrypt.compareSync(password, recentPassword.password);
-    });
-    return !!passwordMatch;
-  },
-);
+accountSchema.method('isPasswordReused', function isPasswordReused(password: string): boolean {
+  const recentPasswords = take(
+    orderBy(this.passwordHistory, ['changedAt'], ['desc']),
+    config.AUTH_PASSWORD_REUSE_COUNT,
+  );
+  const passwordMatch = find(recentPasswords, (recentPassword) => {
+    return bcrypt.compareSync(password, recentPassword.password);
+  });
+  return !!passwordMatch;
+});
 
 accountSchema.virtual('isPasswordExpired').get(function () {
   const lastChanged: Dayjs = dayjs(this.passwordChangedAt);

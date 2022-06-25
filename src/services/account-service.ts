@@ -80,10 +80,7 @@ const updateOne = async (id: string, account: IAccount): Promise<IAccount | null
     if (accountToUpdate) {
       if (account.password) {
         // password is being updated
-        const isPasswordReused = accountToUpdate.isPasswordReused(
-          account.password,
-          config.AUTH_ATTEMPTS_MAX,
-        );
+        const isPasswordReused = accountToUpdate.isPasswordReused(account.password);
         if (isPasswordReused) {
           throw new BadRequestError('Password used recently.');
         }

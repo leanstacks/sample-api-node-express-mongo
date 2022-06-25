@@ -277,6 +277,8 @@ FOOBAR=${FOO}${BAR} // foobar
 | ----------------------------- | ---------------------------------------- | ---------------------------------------------------------------------------------------- |
 | AUTH_ATTEMPTS_MAX             | `3`                                      | The maximum number of invalid authentication attempts after which the account is locked. |
 | AUTH_PASSWORD_EXPIRES_IN_DAYS | `90`                                     | The number of days after which a password is flagged as expired.                         |
+| AUTH_PASSWORD_HISTORY_COUNT   | `5`                                      | The maximum number of password history records to store.                                 |
+| AUTH_PASSWORD_REUSE_COUNT     | `3`                                      | The number of password history records to examine for password reuse.                    |
 | JWT_AUDIENCE                  |                                          | The JWT audience attribute value.                                                        |
 | JWT_ACCESS_TOKEN_EXPIRES_IN   | `3600`                                   | The JWT duration an access token is valid.                                               |
 | JWT_ISSUER                    |                                          | The JWT issuer attribute value.                                                          |
