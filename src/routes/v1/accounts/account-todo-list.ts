@@ -15,10 +15,7 @@ export const listTodosByAccount = async (
 
     let todos: ITodo[] = [];
 
-    const account: IAccount = req.user as IAccount;
-    if (account && account.id) {
-      todos = await TodoService.listByAccount(account.id.toString());
-    }
+    todos = await TodoService.listByAccount(req.params.id);
 
     res.send(todos);
   } catch (err: any) {

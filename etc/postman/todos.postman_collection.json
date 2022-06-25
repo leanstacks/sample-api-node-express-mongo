@@ -93,7 +93,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
+							"pm.test(\"should have status code 200\", function () {",
 							"  pm.response.to.have.status(200);",
 							"});",
 							"if (pm.response.code === 200) {",
@@ -147,7 +147,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
+							"pm.test(\"should have status code 200\", function () {",
 							"  pm.response.to.have.status(200);",
 							"});",
 							"if (pm.response.code === 200) {",
@@ -253,7 +253,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
+							"pm.test(\"should have status 200\", function () {",
 							"  pm.response.to.have.status(200);",
 							"});"
 						],
@@ -291,7 +291,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
+							"pm.test(\"should have status code 200\", function () {",
 							"  pm.response.to.have.status(200);",
 							"});",
 							"if (pm.response.code === 200) {",
@@ -392,10 +392,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
+							"pm.test(\"should have status code 200\", function () {",
 							"  pm.response.to.have.status(200);",
 							"});",
-							"pm.test(\"clientId matches\", function () {",
+							"pm.test(\"should have username\", function () {",
 							"  var jsonData = pm.response.json();",
 							"  pm.expect(jsonData.username).to.eql('user3+updated@example.com');",
 							"});"
@@ -415,7 +415,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"user3+updated@example.com\",\n    \"id\": \"{{accountId}}\"\n}",
+					"raw": "{\n    \"id\": \"{{accountId}}\",\n    \"username\": \"user3+updated@example.com\",\n    \"password\": \"StrongPassword0!\",\n    \"isActive\": true,\n    \"isLocked\": false\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -450,7 +450,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"status code is 204\", function () {",
+							"pm.test(\"should have status code 204\", function () {",
 							"  pm.response.to.have.status(204);",
 							"});",
 							""
@@ -708,7 +708,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": \"{{todoId}}\",\n    \"title\": \"Vacuum living room\",\n    \"isComplete\": true\n}"
+					"raw": "{\n  \"id\": \"{{todoId}}\",\n  \"account\": \"{{accountId}}\",\n  \"title\": \"Vacuum living room\",\n  \"isComplete\": true\n}"
 				},
 				"url": {
 					"raw": "{{baseUrl}}/v1/todos/:todoId",
