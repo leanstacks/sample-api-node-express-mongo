@@ -2,6 +2,8 @@ import request from 'supertest';
 
 import app from '../../../../app';
 
+import { accountFixture } from '../../../../tests/fixtures';
+
 import AccountService from '../../../../services/account-service';
 jest.mock('../../../../services/account-service');
 
@@ -13,14 +15,6 @@ const mockedJwtService = jest.mocked(JwtService);
 
 describe('POST /v1/auth/token', () => {
   const data = { grant_type: 'refresh_token', refresh_token: 'abc123' };
-  const account = {
-    id: '1',
-    username: 'user@example.com',
-    password: 'StrongPassword0!',
-    isActive: true,
-    isLocked: false,
-    invalidAuthenticationCount: 0,
-  };
 
   afterEach(async () => {
     mockedAccountService.findOne.mockClear();
@@ -29,8 +23,8 @@ describe('POST /v1/auth/token', () => {
   });
 
   it('should return status code 200', async () => {
-    mockedJwtService.verifyToken.mockReturnValue({ account });
-    mockedAccountService.findOne.mockResolvedValue(account);
+    mockedJwtService.verifyToken.mockReturnValue({ account: accountFixture });
+    mockedAccountService.findOne.mockResolvedValue(accountFixture);
 
     const res = await request(app)
       .post('/v1/auth/token')
@@ -71,7 +65,7 @@ describe('POST /v1/auth/token', () => {
   });
 
   it('should call AccountService to find the account', async () => {
-    mockedAccountService.findOne.mockResolvedValue(account);
+    mockedAccountService.findOne.mockResolvedValue(accountFixture);
 
     const res = await request(app)
       .post('/v1/auth/token')
@@ -79,11 +73,11 @@ describe('POST /v1/auth/token', () => {
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json');
 
-    expect(mockedAccountService.findOne).toHaveBeenCalledWith(account.id);
+    expect(mockedAccountService.findOne).toHaveBeenCalledWith(accountFixture.id);
   });
 
   it('should call JwtService to create an access token', async () => {
-    mockedAccountService.findOne.mockResolvedValue(account);
+    mockedAccountService.findOne.mockResolvedValue(accountFixture);
 
     const res = await request(app)
       .post('/v1/auth/token')
@@ -91,6 +85,6 @@ describe('POST /v1/auth/token', () => {
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json');
 
-    expect(mockedJwtService.createToken).toHaveBeenCalledWith({ account });
+    expect(mockedJwtService.createToken).toHaveBeenCalledWith({ account: accountFixture });
   });
 });

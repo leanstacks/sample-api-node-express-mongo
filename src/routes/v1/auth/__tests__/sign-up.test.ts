@@ -5,25 +5,19 @@ import app from '../../../../app';
 import AccountService from '../../../../services/account-service';
 jest.mock('../../../../services/account-service');
 
+import { accountFixture } from '../../../../tests/fixtures';
+
 const mockedAccountService = jest.mocked(AccountService);
 
 describe('POST /v1/auth/signup', () => {
-  const data = { username: 'user@example.com', password: 'StrongPassword0!' };
-  const account = {
-    id: '1',
-    username: 'user@example.com',
-    password: 'StrongPassword0!',
-    isActive: true,
-    isLocked: false,
-    invalidAuthenticationCount: 0,
-  };
+  const data = { username: accountFixture.username, password: accountFixture.password };
 
   afterEach(async () => {
     mockedAccountService.createOne.mockClear();
   });
 
   it('should return status code 200', async () => {
-    mockedAccountService.createOne.mockResolvedValue(account);
+    mockedAccountService.createOne.mockResolvedValue(accountFixture);
 
     const res = await request(app)
       .post('/v1/auth/signup')
@@ -32,8 +26,8 @@ describe('POST /v1/auth/signup', () => {
       .set('Accept', 'application/json');
 
     expect(res.statusCode).toEqual(200);
-    expect(res.body.id).toEqual(account.id);
-    expect(res.body.username).toEqual(account.username);
+    expect(res.body.id).toEqual(accountFixture.id);
+    expect(res.body.username).toEqual(accountFixture.username);
   });
 
   it('should call return status code 422 when request is invalid', async () => {
@@ -62,7 +56,7 @@ describe('POST /v1/auth/signup', () => {
   });
 
   it('should call AccountService', async () => {
-    mockedAccountService.createOne.mockResolvedValue(account);
+    mockedAccountService.createOne.mockResolvedValue(accountFixture);
 
     const res = await request(app)
       .post('/v1/auth/signup')

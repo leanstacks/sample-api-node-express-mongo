@@ -1,60 +1,35 @@
 import request from 'supertest';
-import mongoose from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 
+import TodoService from '../../../../services/todo-service';
 import AccountService from '../../../../services/account-service';
 import JwtService from '../../../../services/jwt-service';
 import app from '../../../../app';
+import { accountFixture, todoFixture } from '../../../../tests/fixtures';
 
-import TodoService from '../../../../services/todo-service';
 jest.mock('../../../../services/todo-service');
+jest.mock('../../../../services/account-service');
 
+const mockedAccountService = jest.mocked(AccountService);
 const mockedTodoService = jest.mocked(TodoService);
 
 describe('PUT /v1/todos/:id', () => {
-  let mongo: MongoMemoryServer;
   let token: string;
 
-  beforeAll(async () => {
-    mongo = await MongoMemoryServer.create();
-    mongoose.connect(mongo.getUri());
-  });
-
   beforeEach(async () => {
-    const account = await AccountService.createOne({
-      username: 'user@example.com',
-      password: 'Iamagoodpassword1!',
-      isActive: true,
-      isLocked: false,
-      invalidAuthenticationCount: 0,
-    });
-    token = JwtService.createToken({ account });
+    // create an auth token for test requests
+    token = JwtService.createToken({ account: accountFixture });
+    // mock AccountService for auth token verification
+    mockedAccountService.findOne.mockResolvedValueOnce(accountFixture);
   });
 
   afterEach(async () => {
-    const collections = mongoose.connection.collections;
-    for (const key in collections) {
-      await collections[key].deleteMany({});
-    }
-
     mockedTodoService.updateOne.mockClear();
   });
 
-  afterAll(async () => {
-    await mongoose.connection.close();
-    await mongo.stop();
-  });
-
   it('should require authentication', async () => {
-    const data = {
-      id: '1',
-      account: '629e461fdc7347786c5fa080',
-      title: 'run tests',
-      isComplete: false,
-    };
     const res = await request(app)
       .put('/v1/todos/1')
-      .send(data)
+      .send(todoFixture)
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json');
 
@@ -62,24 +37,18 @@ describe('PUT /v1/todos/:id', () => {
   });
 
   it('should return status code 200', async () => {
-    const data = {
-      id: '1',
-      account: '629e461fdc7347786c5fa080',
-      title: 'run tests',
-      isComplete: false,
-    };
-    mockedTodoService.updateOne.mockResolvedValueOnce(data);
+    mockedTodoService.updateOne.mockResolvedValueOnce(todoFixture);
 
     const res = await request(app)
       .put('/v1/todos/1')
       .auth(token, { type: 'bearer' })
-      .send(data)
+      .send(todoFixture)
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json');
 
     expect(res.statusCode).toEqual(200);
     expect(res.headers['content-type']).toMatch(/json/);
-    expect(res.body).toEqual(data);
+    expect(res.body).toEqual(todoFixture);
   });
 
   it('should call return status code 422 when request is invalid', async () => {
@@ -97,18 +66,12 @@ describe('PUT /v1/todos/:id', () => {
   });
 
   it('should return status code 404 when not found', async () => {
-    const data = {
-      id: '1',
-      account: '629e461fdc7347786c5fa080',
-      title: 'run tests',
-      isComplete: false,
-    };
     mockedTodoService.updateOne.mockResolvedValueOnce(null);
 
     const res = await request(app)
       .put('/v1/todos/1')
       .auth(token, { type: 'bearer' })
-      .send(data)
+      .send(todoFixture)
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json');
 
@@ -116,18 +79,12 @@ describe('PUT /v1/todos/:id', () => {
   });
 
   it('should call return status code 500 when an error occurs', async () => {
-    const data = {
-      id: '1',
-      account: '629e461fdc7347786c5fa080',
-      title: 'run tests',
-      isComplete: false,
-    };
     mockedTodoService.updateOne.mockRejectedValueOnce(new Error());
 
     const res = await request(app)
       .put('/v1/todos/1')
       .auth(token, { type: 'bearer' })
-      .send(data)
+      .send(todoFixture)
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json');
 
@@ -136,18 +93,12 @@ describe('PUT /v1/todos/:id', () => {
   });
 
   it('should call TodoService', async () => {
-    const data = {
-      id: '1',
-      account: '629e461fdc7347786c5fa080',
-      title: 'run tests',
-      isComplete: false,
-    };
-    mockedTodoService.updateOne.mockResolvedValueOnce(data);
+    mockedTodoService.updateOne.mockResolvedValueOnce(todoFixture);
 
     const res = await request(app)
       .put('/v1/todos/1')
       .auth(token, { type: 'bearer' })
-      .send(data)
+      .send(todoFixture)
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json');
 

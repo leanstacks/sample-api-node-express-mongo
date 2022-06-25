@@ -8,6 +8,8 @@ import app from '../../../../app';
 
 import TodoService from '../../../../services/todo-service';
 import { IAccount } from '../../../../models/account';
+import { accountFixture } from '../../../../tests/fixtures';
+
 jest.mock('../../../../services/todo-service');
 
 const mockedTodoService = jest.mocked(TodoService);
@@ -23,13 +25,7 @@ describe('GET /v1/accounts/:id/todos', () => {
   });
 
   beforeEach(async () => {
-    account = await AccountService.createOne({
-      username: 'user@example.com',
-      password: 'Iamagoodpassword1!',
-      isActive: true,
-      isLocked: false,
-      invalidAuthenticationCount: 0,
-    });
+    account = await AccountService.createOne(accountFixture);
     token = JwtService.createToken({ account });
   });
 

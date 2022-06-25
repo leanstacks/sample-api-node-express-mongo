@@ -3,6 +3,7 @@ import request from 'supertest';
 import AccountService from '../../../../services/account-service';
 import JwtService from '../../../../services/jwt-service';
 import app from '../../../../app';
+import { accountFixture } from '../../../../tests/fixtures';
 
 jest.mock('../../../../services/account-service');
 
@@ -10,19 +11,10 @@ const mockedAccountService = jest.mocked(AccountService);
 
 describe('DELETE /v1/accounts/:id', () => {
   let token: string;
-  const accountData = {
-    id: '1',
-    username: 'user@example.com',
-    password: 'StrongP@ssw0rd',
-    isActive: true,
-    isLocked: false,
-    invalidAuthenticationCount: 0,
-  };
-  const data = { username: 'test1@example.com', password: 'StrongP@ssw0rd' };
 
   beforeEach(async () => {
-    token = JwtService.createToken({ accountData });
-    mockedAccountService.findOne.mockResolvedValueOnce(accountData);
+    token = JwtService.createToken({ accountFixture });
+    mockedAccountService.findOne.mockResolvedValueOnce(accountFixture);
   });
 
   afterEach(async () => {

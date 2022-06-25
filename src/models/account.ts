@@ -1,10 +1,25 @@
 import { Schema, model, Types, Model } from 'mongoose';
 import bcrypt from 'bcrypt';
+import find from 'lodash/find';
+import orderBy from 'lodash/orderBy';
+import take from 'lodash/take';
+import takeRight from 'lodash/takeRight';
 import toJSON from './plugins/toJSON';
 import config from '../config/config';
 import dayjs, { Dayjs } from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore);
+
+interface IPasswordHistory {
+  _id: Types.ObjectId;
+  password: string;
+  changedAt: Date;
+}
+
+const passwordHistorySchema = new Schema<IPasswordHistory>({
+  password: { type: String, required: true },
+  changedAt: { type: Date, required: true },
+});
 
 export interface IAccount {
   id?: Types.ObjectId | string;
@@ -15,17 +30,20 @@ export interface IAccount {
   passwordChangedAt?: Date;
   lastAuthenticatedAt?: Date;
   invalidAuthenticationCount: number;
+  passwordHistory: IPasswordHistory[];
 }
 
 interface IAccountQueryHelpers {}
 
-interface IAccountMethods {
+type IAccountMethodsAndOverrides = {
   isPasswordMatch(value: string): boolean;
-}
+  isPasswordReused(password: string, historyCount?: number): boolean;
+  passwordHistory: Types.DocumentArray<IPasswordHistory>;
+};
 
-type AccountModel = Model<IAccount, IAccountQueryHelpers, IAccountMethods>;
+type AccountModel = Model<IAccount, IAccountQueryHelpers, IAccountMethodsAndOverrides>;
 
-const accountSchema = new Schema<IAccount, AccountModel, IAccountMethods>(
+const accountSchema = new Schema<IAccount, AccountModel, IAccountMethodsAndOverrides>(
   {
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true, private: true },
@@ -34,17 +52,34 @@ const accountSchema = new Schema<IAccount, AccountModel, IAccountMethods>(
     passwordChangedAt: { type: Date },
     lastAuthenticatedAt: { type: Date },
     invalidAuthenticationCount: { type: Number, default: 0 },
+    passwordHistory: { type: [passwordHistorySchema], private: true },
   },
   {
     toJSON: { virtuals: true },
   },
 );
+
 accountSchema.method(
   'isPasswordMatch',
   async function isPasswordMatch(value: string): Promise<boolean> {
     return bcrypt.compare(value, this.password);
   },
 );
+
+accountSchema.method(
+  'isPasswordReused',
+  function isPasswordReused(password: string, historyCount = 1): boolean {
+    const recentPasswords = take(
+      orderBy(this.passwordHistory, ['changedAt'], ['desc']),
+      historyCount,
+    );
+    const passwordMatch = find(recentPasswords, (recentPassword) => {
+      return bcrypt.compareSync(password, recentPassword.password);
+    });
+    return !!passwordMatch;
+  },
+);
+
 accountSchema.virtual('isPasswordExpired').get(function () {
   const lastChanged: Dayjs = dayjs(this.passwordChangedAt);
   const now: Dayjs = dayjs();
@@ -53,8 +88,28 @@ accountSchema.virtual('isPasswordExpired').get(function () {
 
 accountSchema.pre('save', async function (next) {
   if (this.isModified('password')) {
-    this.password = await bcrypt.hash(this.password, 10);
-    this.passwordChangedAt = new Date();
+    const password = await bcrypt.hash(this.password, 10);
+    const now = new Date();
+    this.password = password;
+    this.passwordChangedAt = now;
+    this.passwordHistory.push({ password, changedAt: now });
+  }
+  next();
+});
+
+accountSchema.pre('save', async function (next) {
+  if (this.isModified('password')) {
+    // manage password history
+    const expireCount = this.passwordHistory.length - config.AUTH_PASSWORD_HISTORY_COUNT;
+    if (expireCount > 0) {
+      const expiredPasswordHistory = takeRight(
+        orderBy(this.passwordHistory, ['changedAt'], ['desc']),
+        expireCount,
+      );
+      expiredPasswordHistory.forEach(async (passwordHistory) => {
+        await passwordHistory.remove();
+      });
+    }
   }
   next();
 });

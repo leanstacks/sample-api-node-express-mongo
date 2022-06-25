@@ -3,6 +3,7 @@ import request from 'supertest';
 import AccountService from '../../../../services/account-service';
 import JwtService from '../../../../services/jwt-service';
 import app from '../../../../app';
+import { accountFixture } from '../../../../tests/fixtures';
 
 jest.mock('../../../../services/account-service');
 
@@ -10,18 +11,10 @@ const mockedAccountService = jest.mocked(AccountService);
 
 describe('GET /v1/accounts/:id', () => {
   let token: string;
-  const accountData = {
-    id: '1',
-    username: 'user@example.com',
-    password: 'StrongP@ssw0rd',
-    isActive: true,
-    isLocked: false,
-    invalidAuthenticationCount: 0,
-  };
 
   beforeEach(async () => {
-    token = JwtService.createToken({ accountData });
-    mockedAccountService.findOne.mockResolvedValueOnce(accountData);
+    token = JwtService.createToken({ accountFixture });
+    mockedAccountService.findOne.mockResolvedValueOnce(accountFixture);
   });
 
   afterEach(async () => {
@@ -35,7 +28,7 @@ describe('GET /v1/accounts/:id', () => {
   });
 
   it('should return status code 200', async () => {
-    mockedAccountService.list.mockResolvedValue([accountData]);
+    mockedAccountService.list.mockResolvedValue([accountFixture]);
 
     const res = await request(app)
       .get('/v1/accounts')
@@ -44,7 +37,7 @@ describe('GET /v1/accounts/:id', () => {
 
     expect(res.statusCode).toEqual(200);
     expect(res.headers['content-type']).toMatch(/json/);
-    expect(res.body).toEqual([accountData]);
+    expect(res.body).toEqual([accountFixture]);
   });
 
   it('should return status code 500 when an error occurs', async () => {
@@ -59,7 +52,7 @@ describe('GET /v1/accounts/:id', () => {
   });
 
   it('should call AccountService to list accounts', async () => {
-    mockedAccountService.list.mockResolvedValue([accountData]);
+    mockedAccountService.list.mockResolvedValue([accountFixture]);
 
     const res = await request(app)
       .get('/v1/accounts')

@@ -8,26 +8,21 @@ jest.mock('../../../../services/account-service');
 import JwtService from '../../../../services/jwt-service';
 jest.mock('../../../../services/jwt-service');
 
+import { accountFixture } from '../../../../tests/fixtures';
+
 const mockedAccountService = jest.mocked(AccountService);
 const mockedJwtService = jest.mocked(JwtService);
 
 describe('POST /v1/auth/signin', () => {
+  const data = { username: accountFixture.username, password: accountFixture.password };
+
   afterEach(async () => {
     mockedAccountService.authenticate.mockClear();
     mockedJwtService.createToken.mockClear();
   });
 
   it('should return status code 200', async () => {
-    const data = { username: 'user@example.com', password: 'StrongPassword0!' };
-    const account = {
-      id: '1',
-      username: data.username,
-      password: data.password,
-      isActive: true,
-      isLocked: false,
-      invalidAuthenticationCount: 0,
-    };
-    mockedAccountService.authenticate.mockResolvedValue(account);
+    mockedAccountService.authenticate.mockResolvedValue(accountFixture);
 
     const res = await request(app)
       .post('/v1/auth/signin')
@@ -57,7 +52,6 @@ describe('POST /v1/auth/signin', () => {
   });
 
   it('should call return status code 400 when account not found', async () => {
-    const data = { username: 'user@example.com', password: 'StrongPassword0!' };
     mockedAccountService.authenticate.mockResolvedValue(null);
 
     const res = await request(app)
@@ -72,16 +66,7 @@ describe('POST /v1/auth/signin', () => {
   });
 
   it('should call AccountService', async () => {
-    const data = { username: 'user@example.com', password: 'StrongPassword0!' };
-    const account = {
-      id: '1',
-      username: data.username,
-      password: data.password,
-      isActive: true,
-      isLocked: false,
-      invalidAuthenticationCount: 0,
-    };
-    mockedAccountService.authenticate.mockResolvedValue(account);
+    mockedAccountService.authenticate.mockResolvedValue(accountFixture);
 
     const res = await request(app)
       .post('/v1/auth/signin')
@@ -93,16 +78,7 @@ describe('POST /v1/auth/signin', () => {
   });
 
   it('should call JwtService', async () => {
-    const data = { username: 'user@example.com', password: 'StrongPassword0!' };
-    const account = {
-      id: '1',
-      username: data.username,
-      password: data.password,
-      isActive: true,
-      isLocked: false,
-      invalidAuthenticationCount: 0,
-    };
-    mockedAccountService.authenticate.mockResolvedValue(account);
+    mockedAccountService.authenticate.mockResolvedValue(accountFixture);
 
     const res = await request(app)
       .post('/v1/auth/signin')

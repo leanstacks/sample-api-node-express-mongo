@@ -9,10 +9,6 @@ export const logErrors = (err: Error, req: Request, res: Response, next: NextFun
 export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
   try {
     switch (err.name) {
-      case 'ValidationError':
-        res.status(422);
-        res.send({ message: err.message });
-        break;
       case 'TokenExpiredError':
         res.status(400);
         res.send({ message: 'token expired' });
@@ -21,9 +17,17 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
         res.status(400);
         res.send({ message: 'token invalid' });
         break;
+      case 'BadRequestError':
+        res.status(400);
+        res.send({ message: err.message });
+        break;
       case 'AccountExistsError':
         res.status(409);
         res.send({ message: 'account exists' });
+        break;
+      case 'ValidationError':
+        res.status(422);
+        res.send({ message: err.message });
         break;
       default:
         res.status(500);

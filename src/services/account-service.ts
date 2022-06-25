@@ -1,6 +1,7 @@
 import merge from 'lodash/merge';
 
 import Account, { IAccount } from '../models/account';
+import BadRequestError from '../errors/bad-request-error';
 import config from '../config/config';
 import logger from '../utils/logger';
 
@@ -77,6 +78,16 @@ const updateOne = async (id: string, account: IAccount): Promise<IAccount | null
   try {
     const accountToUpdate = await Account.findById(id);
     if (accountToUpdate) {
+      if (account.password) {
+        // password is being updated
+        const isPasswordReused = accountToUpdate.isPasswordReused(
+          account.password,
+          config.AUTH_ATTEMPTS_MAX,
+        );
+        if (isPasswordReused) {
+          throw new BadRequestError('Password used recently.');
+        }
+      }
       merge(accountToUpdate, account);
       await accountToUpdate.save();
     }

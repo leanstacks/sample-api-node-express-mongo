@@ -1,19 +1,12 @@
 import { verify } from '../auth-strategy-jwt';
 
+import { accountFixture } from '../../tests/fixtures';
 import AccountService from '../../services/account-service';
 jest.mock('../../services/account-service');
 const mockedAccountService = jest.mocked(AccountService);
 
 describe('Passport JWT Strategy', () => {
-  const account = {
-    id: '1',
-    username: 'user@example.com',
-    password: 'StrongP@ssw0rd',
-    isActive: true,
-    isLocked: false,
-    invalidAuthenticationCount: 0,
-  };
-  const payload = { account };
+  const payload = { account: accountFixture };
   const done = jest.fn();
 
   afterEach(() => {
@@ -22,12 +15,12 @@ describe('Passport JWT Strategy', () => {
   });
 
   it('should call done with user when authentication successful', async () => {
-    mockedAccountService.findOne.mockResolvedValue(account);
+    mockedAccountService.findOne.mockResolvedValue(accountFixture);
 
     await verify(payload, done);
 
     expect(mockedAccountService.findOne).toHaveBeenCalledWith(payload.account.id);
-    expect(done).toHaveBeenCalledWith(null, account);
+    expect(done).toHaveBeenCalledWith(null, accountFixture);
   });
 
   it('should call done with false when authentication fails', async () => {

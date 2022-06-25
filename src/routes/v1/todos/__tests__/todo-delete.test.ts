@@ -1,48 +1,29 @@
 import request from 'supertest';
-import mongoose from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 
 import AccountService from '../../../../services/account-service';
+import TodoService from '../../../../services/todo-service';
 import JwtService from '../../../../services/jwt-service';
 import app from '../../../../app';
+import { accountFixture, todoFixture } from '../../../../tests/fixtures';
 
-import TodoService from '../../../../services/todo-service';
 jest.mock('../../../../services/todo-service');
+jest.mock('../../../../services/account-service');
 
+const mockedAccountService = jest.mocked(AccountService);
 const mockedTodoService = jest.mocked(TodoService);
 
 describe('DELETE /v1/todos/:id', () => {
-  let mongo: MongoMemoryServer;
   let token: string;
 
-  beforeAll(async () => {
-    mongo = await MongoMemoryServer.create();
-    mongoose.connect(mongo.getUri());
-  });
-
   beforeEach(async () => {
-    const account = await AccountService.createOne({
-      username: 'user@example.com',
-      password: 'Iamagoodpassword1!',
-      isActive: true,
-      isLocked: false,
-      invalidAuthenticationCount: 0,
-    });
-    token = JwtService.createToken({ account });
+    // create an auth token for test requests
+    token = JwtService.createToken({ account: accountFixture });
+    // mock AccountService for auth token verification
+    mockedAccountService.findOne.mockResolvedValueOnce(accountFixture);
   });
 
   afterEach(async () => {
-    const collections = mongoose.connection.collections;
-    for (const key in collections) {
-      await collections[key].deleteMany({});
-    }
-
     mockedTodoService.deleteOne.mockClear();
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-    await mongo.stop();
   });
 
   it('should require authentication', async () => {
