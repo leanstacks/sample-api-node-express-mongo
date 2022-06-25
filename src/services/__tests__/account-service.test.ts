@@ -1,9 +1,9 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import { IAccount } from '../../models/account';
 import AccountService, { AccountExistsError } from '../account-service';
 
 import { accountFixture, accountsFixture } from '../../tests/fixtures';
+import BadRequestError from '../../errors/bad-request-error';
 
 describe('AccountService', () => {
   let mongo: MongoMemoryServer;
@@ -78,6 +78,7 @@ describe('AccountService', () => {
     expect(account.username).toEqual(accountFixture.username);
 
     account.username = 'two@example.com';
+    account.password = accountFixture.password + 'unique';
     const updatedAccount = await AccountService.updateOne(account.id?.toString() || '', account);
     expect(updatedAccount).not.toBeNull();
     expect(updatedAccount?.username).toEqual('two@example.com');
@@ -93,10 +94,21 @@ describe('AccountService', () => {
     const account = await AccountService.createOne(accountsFixture[1]);
 
     try {
-      account.username = 'one@example.com';
+      account.username = accountsFixture[0].username;
       await AccountService.updateOne(account.id?.toString() || '', account);
     } catch (err: AccountExistsError | unknown) {
       expect(err instanceof AccountExistsError).toBeTruthy();
+    }
+  });
+
+  it('should thrown BadRequestError when updating to a recently used password', async () => {
+    const account = await AccountService.createOne(accountFixture);
+
+    try {
+      account.password = accountFixture.password;
+      await AccountService.updateOne(account.id?.toString() || '', account);
+    } catch (err: unknown) {
+      expect(err instanceof BadRequestError).toBeTruthy();
     }
   });
 
