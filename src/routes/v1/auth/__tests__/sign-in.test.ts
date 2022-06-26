@@ -8,7 +8,7 @@ jest.mock('../../../../services/account-service');
 import JwtService from '../../../../services/jwt-service';
 jest.mock('../../../../services/jwt-service');
 
-import { accountFixture } from '../../../../tests/fixtures';
+import { accountFixture } from '../../../../__fixtures__/models';
 
 const mockedAccountService = jest.mocked(AccountService);
 const mockedJwtService = jest.mocked(JwtService);

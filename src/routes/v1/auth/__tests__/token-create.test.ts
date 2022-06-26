@@ -2,7 +2,7 @@ import request from 'supertest';
 
 import app from '../../../../app';
 
-import { accountFixture } from '../../../../tests/fixtures';
+import { accountFixture } from '../../../../__fixtures__/models';
 
 import AccountService from '../../../../services/account-service';
 jest.mock('../../../../services/account-service');

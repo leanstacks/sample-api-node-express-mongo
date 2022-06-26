@@ -6,7 +6,7 @@ import app from '../../../../app';
 
 import TodoService from '../../../../services/todo-service';
 import { IAccount } from '../../../../models/account';
-import { accountFixture, todosFixture } from '../../../../tests/fixtures';
+import { accountFixture, todosFixture } from '../../../../__fixtures__/models';
 
 jest.mock('../../../../services/todo-service');
 jest.mock('../../../../services/account-service');

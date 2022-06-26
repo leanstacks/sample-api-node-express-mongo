@@ -1,6 +1,6 @@
 import { verify } from '../auth-strategy-basic';
 
-import { accountFixture } from '../../tests/fixtures';
+import { accountFixture } from '../../__fixtures__/models';
 import AccountService from '../../services/account-service';
 jest.mock('../../services/account-service');
 const mockedAccountService = jest.mocked(AccountService);

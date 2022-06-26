@@ -1,6 +1,6 @@
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
-  coveragePathIgnorePatterns: ['/node_modules/', '<rootDir>/src/tests/'],
+  coveragePathIgnorePatterns: ['/node_modules/', '<rootDir>/src/__fixtures__/'],
   coverageThreshold: {
     global: {
       branches: 80,
@@ -12,6 +12,6 @@ module.exports = {
   preset: 'ts-jest',
   setupFiles: ['<rootDir>/jest.setup.js'],
   testEnvironment: 'node',
-  testPathIgnorePatterns: ['/node_modules/', '<rootDir>/dist/', '<rootDir>/src/tests/'],
+  testPathIgnorePatterns: ['/node_modules/', '<rootDir>/dist/', '<rootDir>/src/__fixtures__/'],
   verbose: true,
 };
