@@ -4,7 +4,7 @@ import TodoService from '../../../../services/todo-service';
 import AccountService from '../../../../services/account-service';
 import JwtService from '../../../../services/jwt-service';
 import app from '../../../../app';
-import { accountFixture, todoFixture } from '../../../../tests/fixtures';
+import { accountFixture, todoFixture } from '../../../../__fixtures__/models';
 
 jest.mock('../../../../services/todo-service');
 jest.mock('../../../../services/account-service');

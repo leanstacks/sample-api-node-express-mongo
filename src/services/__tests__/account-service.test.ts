@@ -2,7 +2,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import AccountService, { AccountExistsError } from '../account-service';
 
-import { accountFixture, accountsFixture } from '../../tests/fixtures';
+import { accountFixture, accountsFixture } from '../../__fixtures__/models';
 import BadRequestError from '../../errors/bad-request-error';
 
 describe('AccountService', () => {

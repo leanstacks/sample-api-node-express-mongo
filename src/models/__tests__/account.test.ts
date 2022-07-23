@@ -2,7 +2,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
 import Account from '../account';
-import { accountFixture } from '../../tests/fixtures';
+import { accountFixture } from '../../__fixtures__/models';
 
 describe('Account Model', () => {
   let mongo: MongoMemoryServer;

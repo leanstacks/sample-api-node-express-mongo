@@ -5,7 +5,7 @@ import app from '../../../../app';
 import AccountService from '../../../../services/account-service';
 jest.mock('../../../../services/account-service');
 
-import { accountFixture } from '../../../../tests/fixtures';
+import { accountFixture } from '../../../../__fixtures__/models';
 
 const mockedAccountService = jest.mocked(AccountService);
 
