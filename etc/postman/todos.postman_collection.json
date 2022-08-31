@@ -1504,7 +1504,7 @@
 							"});",
 							"pm.test(\"ID match\", function () {",
 							"  var jsonData = pm.response.json();",
-							"  pm.expect(jsonData.id).to.eql(pm.environment.get('accountId'));",
+							"  pm.expect(jsonData.id).to.eql(pm.collectionVariables.get('accountId'));",
 							"});",
 							""
 						],
@@ -2550,7 +2550,7 @@
 							"});",
 							"if (pm.response.code === 200) {",
 							"  var jsonData = pm.response.json();",
-							"  pm.environment.set(\"todoId\", jsonData.id);",
+							"  pm.collectionVariables.set(\"todoId\", jsonData.id);",
 							"}"
 						],
 						"type": "text/javascript"
@@ -2654,7 +2654,7 @@
 							"});",
 							"pm.test(\"ID match\", function () {",
 							"  var jsonData = pm.response.json();",
-							"  pm.expect(jsonData.id).to.eql(pm.environment.get('todoId'));",
+							"  pm.expect(jsonData.id).to.eql(pm.collectionVariables.get('todoId'));",
 							"});",
 							""
 						],
